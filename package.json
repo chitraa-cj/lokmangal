@@ -1,0 +1,33 @@
+{
+  "name": "business-culture-invoicing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "server.js",
+  "author": "Sooraj Gupta",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "devServer": "nodemon backend/devServer.js",
+    "client": "cd frontend && pnpm run dev",
+    "dev": "concurrently -n \"DevServer,Frontend\" -c \"green,blue\" \"pnpm run devServer\" \"pnpm run client\"",
+    "dev:DPF": "concurrently -n \"BCJBP_DevServer,BCJBP_Frontend,BCJBP_ProdServer\" -c \"cyan,magenta,red\" \"pnpm run devServer\" \"pnpm run client\" \"pnpm start\"",
+    "data:import": "node backend/seeder.js",
+    "data:destroy": "node backend/seeder.js -d",
+    "build": "cd frontend && pnpm install && pnpm build && cd .. && pnpm install"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "nodemon": "^3.1.9"
+  }
+}
