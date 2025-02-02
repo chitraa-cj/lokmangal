@@ -8,10 +8,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
-    "devServer": "nodemon backend/devServer.js",
     "client": "cd frontend && pnpm run dev",
-    "dev": "concurrently -n \"DevServer,Frontend\" -c \"green,blue\" \"pnpm run devServer\" \"pnpm run client\"",
-    "dev:DPF": "concurrently -n \"BCJBP_DevServer,BCJBP_Frontend,BCJBP_ProdServer\" -c \"cyan,magenta,red\" \"pnpm run devServer\" \"pnpm run client\" \"pnpm start\"",
+    "dev": "concurrently -n \"backend,frontend\" -c \"green,blue\" \"pnpm run server\" \"pnpm run client\"",
     "data:import": "node backend/seeder.js",
     "data:destroy": "node backend/seeder.js -d",
     "build": "cd frontend && pnpm install && pnpm build && cd .. && pnpm install"
