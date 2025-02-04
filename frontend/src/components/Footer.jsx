@@ -1,162 +1,173 @@
 import React from "react";
-import {
-  Mail,
-  Phone,
-  Facebook,
-  Link2,
-  Instagram,
-  Heart,
-  Map,
-} from "lucide-react";
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
+const NewsHomepage = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-auto noPrint">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
-              Business Culture
-            </h3>
-            <p className="mb-4 text-sm sm:text-base">
-              At Business Culture, we build lasting relationships with our
-              customers, understanding their needs, exceeding expectations, and
-              delivering personalized service.
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Header */}
+      {/* <header className="mb-6"> */}
+      {/* <div className="flex items-center justify-between mb-4"> */}
+      {/* <h1 className="text-4xl font-bold">लोक मंगल</h1> */}
+      {/* </div> */}
+      {/* </header> */}
+
+      {/* Latest News Banner */}
+      <div className="bg-gray-100 p-4 mb-8 rounded">
+        <h2 className="font-semibold mb-2">Latest News in Hindi</h2>
+        <p className="text-sm text-gray-700 leading-relaxed">
+          US Indians Deportation: सी-17 वैन्य विमान में भारतीयों को अमेरिका से
+          वापस भेजे जाने की खबर; ट्रंप प्रशासन सख्त; Delhi Elections :
+          मुख्यमंत्री आवासीय के दफ्तर में काम करने वाले कर्मचारी से 5 लाख कैश
+          बरामद, पुलिस एक्शन में;
+        </p>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Left Column */}
+        <div className="md:col-span-1">
+          <h3 className="font-semibold mb-4">News From Indian States</h3>
+          <ul className="space-y-2">
+            <li>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Madhya Pradesh News
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Uttar Pradesh News
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Rajasthan News
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Haryana News
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Bihar News
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Center Columns */}
+        <div className="md:col-span-2">
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-semibold mb-4">Lifestyle</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Health News
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Fitness News
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Fashion News
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Spirituality
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Entertainment News</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Bollywood News
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    TV Serials
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Hollywood News
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                    Movie Reviews
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="md:col-span-1">
+          <div className="bg-red-600 p-4 rounded text-white text-center">
+            <img
+              src="/api/placeholder/150/50"
+              alt="E-Paper"
+              className="mx-auto mb-2"
+            />
+            <h3 className="font-bold mb-2">जोखो! पढ़ो! करो!</h3>
+            <button className="bg-white text-red-600 px-4 py-2 rounded font-semibold">
+              Read E-Paper
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="mt-12 pt-8 border-t border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <div className="flex flex-wrap gap-2">
+              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+                About Us
+              </a>
+              <span className="text-gray-300">|</span>
+              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+                Careers
+              </a>
+              <span className="text-gray-300">|</span>
+              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+                Contact Us
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-4">Subscribe</h4>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-l"
+              />
+              <button className="bg-red-600 text-white px-6 py-2 rounded-r">
+                Subscribe
+              </button>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-gray-600">
+              © 2024-25 Lok Mangal Limited
             </p>
           </div>
-
-          {/* Quick Links */}
-          <div className="text-center sm:text-left">
-            <h4 className="text-lg font-semibold text-white mb-4">Links</h4>
-            <div className="flex flex-col items-center sm:items-start">
-              <a
-                target="_blank"
-                href="https://www.facebook.com/businesscultureadagency"
-                className="text-gray-400 hover:text-white transition-colors mb-3"
-              >
-                <div className="flex items-center">
-                  <Facebook className="w-5 h-5 mr-3" />
-                  Facebook
-                </div>
-              </a>
-              <a
-                target="_blank"
-                href="https://www.instagram.com/businesscultureagency/"
-                className="text-gray-400 hover:text-white transition-colors mb-3"
-              >
-                <div className="flex items-center">
-                  <Instagram className="w-5 h-5 mr-3" />
-                  Instagram
-                </div>
-              </a>
-              <a
-                target="_blank"
-                href="https://businessculture.co.in/"
-                className="text-gray-400 hover:text-white transition-colors mb-3"
-              >
-                <div className="flex items-center">
-                  <Link2 className="w-5 h-5 mr-3" />
-                  Website
-                </div>
-              </a>
-            </div>
-          </div>
-
-          {/* Contact */}
-          <div className="text-center sm:text-left">
-            <h4 className="text-lg font-semibold text-white mb-4">
-              Contact Us
-            </h4>
-            <div className="space-y-3 flex flex-col items-center sm:items-start">
-              <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-gray-400" />
-                <a
-                  target="_blank"
-                  href="mailto:deepakdd123@gmail.com"
-                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
-                >
-                  deepakdd123@gmail.com
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gray-400" />
-                <a
-                  target="_blank"
-                  href="tel:+919602523456"
-                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
-                >
-                  9602523456
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gray-400" />
-                <a
-                  target="_blank"
-                  href="tel:+919827007227"
-                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
-                >
-                  9827007227
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gray-400" />
-                <a
-                  target="_blank"
-                  href="tel:0761-2627285"
-                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
-                >
-                  0761-2627285
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Location */}
-          <div className="text-center sm:text-left">
-            <h2 className="text-lg font-semibold text-white mb-4">
-              Our Locations
-            </h2>
-            <a
-              target="_blank"
-              href="https://maps.app.goo.gl/fFa6XUQaFUEHwV858"
-              className="group flex flex-col items-center sm:items-start"
-            >
-              <Map className="mb-3 text-gray-400 group-hover:text-white transition-colors" />
-              <span className="text-sm sm:text-base text-gray-400 group-hover:text-white transition-colors flex items-center">
-                <span>
-                  Regd. Office: 1563, 2nd Floor, Vidya Height, Dr. Barat Road,
-                  Russel Chowk, Jabalpur (M.P.) 482002
-                </span>
-              </span>
-            </a>
-          </div>
         </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-center sm:text-left">
-            <div className="text-xs sm:text-sm text-gray-400 mb-4 sm:mb-0">
-              <span>
-                © {currentYear} Business Culture. All rights reserved.
-              </span>
-            </div>
-            <div className="flex items-center justify-center text-xs sm:text-sm text-gray-400">
-              <span className="flex items-center">
-                Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> by
-                Business Culture Team
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   );
 };
 
-export default Footer;
+export default NewsHomepage;
