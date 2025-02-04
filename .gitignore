@@ -25,3 +25,5 @@ dist-ssr
 
 .env
 startup_log.txt
+
+large_file.xml
