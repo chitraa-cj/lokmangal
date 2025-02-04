@@ -155,9 +155,9 @@ import { Share2, Bookmark, MoreVertical } from "lucide-react";
 
 const NewsArticlePage = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Left Sidebar */}
-      <div className="fixed left-20 top-1/4 w-40 hidden lg:block">
+      <div className="fixed left-40 top-1/4 w-40 hidden lg:block">
         <div className="text-center border-b border-gray-200 pb-4 mb-4">
           <h3 className="text-sm font-semibold mb-2">ताजा खबरें</h3>
           <p className="text-xs text-gray-600 mb-2">
@@ -250,7 +250,7 @@ const NewsArticlePage = () => {
           </h3>
         </div>
         {/* Right Sidebar News */}
-        <div className="lg:fixed lg:-right-10 lg:top-1/4 lg:w-72 space-y-4">
+        <div className="lg:fixed lg:right-10 lg:top-1/4 lg:w-72 space-y-4">
           <div className="border-b pb-4">
             <div className="flex gap-2">
               <div className="w-20 h-20 bg-gray-200 rounded flex-shrink-0"></div>

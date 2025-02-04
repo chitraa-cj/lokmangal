@@ -54,7 +54,7 @@ export default function Navbar() {
         </div>
       </div>
       <div className="bg-gray-100">
-        <div className="px-4 py-2 text-sm flex space-x-4 max-w-6xl mx-auto font-semibold">
+        <div className="px-4 py-2 text-sm flex items-center justify-center space-x-4 max-w-6xl mx-auto font-semibold">
           <span className="cursor-pointer"># Delhi Election 2025</span>
           <span className="cursor-pointer">Budget 2025-26</span>
           <span className="cursor-pointer">Mahakumbh Mela Live</span>
