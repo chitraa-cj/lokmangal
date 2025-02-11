@@ -17,6 +17,7 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 
 import Home from "./Pages/Home.jsx";
+import ArticlePage from "./Pages/ArticlePage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
+      <Route path="/article" element={<ArticlePage />} />
 
       {/* Private Routes */}
       <Route element={<PrivateRoute />} errorElement={<ErrorPage />}></Route>
