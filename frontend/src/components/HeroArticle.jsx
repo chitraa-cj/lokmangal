@@ -8,21 +8,15 @@ const HeroArticle = ({
   description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est nesciunt optio consequuntur in eos, quas ipsa consequatur perferendis dignissimos dolores quae, numquam repellat.",
 }) => {
   return (
-    <Link to="/article">
+    <Link to="/article" className="block">
       {/* Article Header */}
       <div className="mb-6">
         <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">
-          <a href="#" className="text-red-600">
-            {kicker1}
-          </a>
+          <span className="text-red-600 cursor-pointer">{kicker1}</span>
           <span>|</span>
-          <a href="#" className="text-gray-600">
-            {kicker2}
-          </a>
+          <span className="text-gray-600 cursor-pointer">{kicker2}</span>
           <span>|</span>
-          <a href="#" className="text-gray-600">
-            {kicker3}
-          </a>
+          <span className="text-gray-600 cursor-pointer">{kicker3}</span>
         </div>
         <h1 className="text-2xl font-bold mb-4">{heading}</h1>
       </div>
