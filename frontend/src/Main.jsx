@@ -22,6 +22,7 @@ import ArticlePage from "./Pages/ArticlePage.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/Home.jsx";
+import AddNewPage from "./Pages/AddNewPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       {/* <Route element={<PrivateRoute />} errorElement={<ErrorPage />}></Route> */}
       <Route element={<AdminRoute />} errorElement={<ErrorPage />}>
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/add-new" element={<AddNewPage />} />;
       </Route>
     </Route>
   )
