@@ -26,7 +26,7 @@ const LeftSidebar = () => {
   ];
 
   return (
-    <div className="w-72 h-fit p-4 bg-white border border-gray-300 shadow-sm rounded-sm">
+    <div className="sticky top-4 w-72 h-fit p-4 bg-white border border-gray-300 shadow-sm rounded-sm">
       <h3 className="text-lg font-bold border-b pb-2 mb-3">ताजा खबरें</h3>
       {newsList.map((news, index) => (
         <div key={index} className="mb-4">

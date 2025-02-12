@@ -26,8 +26,8 @@ const NewsArticlePage = () => {
   }
 
   return (
-    <div className="min-w-full px-4 bg-stone-100 pb-16">
-      <main className="grid grid-cols-[25%_40%_25%] gap-x-10">
+    <div className="min-w-full px-4 bg-stone-100 pb-12">
+      <main className="grid grid-cols-[25%_40%_25%] gap-x-10 relative">
         <div className="flex flex-col items-end">
           <LeftSideBar />
         </div>
@@ -64,7 +64,6 @@ const NewsArticlePage = () => {
         </div>
 
         <div className="flex flex-col items-start">
-          <div className="text-xl font-bold py-2">ट्रेंडिंग</div>
           <RightSideBar />
         </div>
       </main>
