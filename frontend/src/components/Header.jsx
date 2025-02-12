@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
 
+//cspell:disable
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -11,7 +13,8 @@ export default function Navbar() {
       <div className="bg-white flex items-center justify-center px-4">
         <div className="py-3">
           <Link to="/">
-            <h1 className="text-2xl md:text-5xl font-bold">लोक मंगल</h1>
+            {/* <h1 className="text-2xl md:text-5xl font-bold">लोक मंगल</h1> */}
+            <img src="./image.png" alt="logo" className="w-20 h-20" />
           </Link>
         </div>
       </div>
@@ -46,19 +49,29 @@ export default function Navbar() {
               } md:block absolute top-full left-0 w-full bg-gray-800 z-10 md:static md:w-auto md:bg-transparent`}
             >
               <ul className="md:flex items-center">
-                {/* Added mobile-friendly styling */}
-                {[
-                  "Home",
+                {/* "Home",
                   "Country",
                   "City and state",
                   "Election",
                   "Word search",
                   "Entertainment",
-                  "More...",
+                  "More...", */}
+                {/* "घर", */}
+                {[
+                  "होम",
+                  "देश",
+                  "दुनिया",
+                  "प्रदेशक खबरे",
+                  "राजनीति",
+                  "अप्राध",
+                  "खेल",
+                  "हमारा शहर",
+                  "वीडियो",
+                  "मनोरंजन",
                 ].map((item) => (
                   <li
                     key={item}
-                    className="p-4 uppercase cursor-pointer hover:text-red-600 transition-all w-full md:w-auto border-b md:border-none border-gray-700"
+                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 hover:scale-105 hover:font-semibold transition-all w-full md:w-auto border-b md:border-none border-gray-700"
                   >
                     {item}
                   </li>
@@ -67,11 +80,7 @@ export default function Navbar() {
             </div>
             {/* Desktop Search/Location */}
             <div className="hidden md:flex items-center">
-              <button className="p-4 flex items-center justify-center space-x-2 hover:text-red-600 transition-all">
-                <MapPin size={20} />
-                <span className="hidden lg:inline">My city</span>
-              </button>
-              <button className="p-4 hover:text-red-600 transition-all">
+              <button className="p-4">
                 <Search size={20} />
               </button>
             </div>
@@ -80,7 +89,7 @@ export default function Navbar() {
       </div>
 
       {/* Trending Topics - Added mobile padding */}
-      <div className="bg-gray-100 overflow-x-auto">
+      <div className="bg-gray-100 overflow-x-auto flex items-center justify-center">
         <div className="px-4 py-2 text-sm flex items-center space-x-4 max-w-6xl mx-auto font-semibold whitespace-nowrap">
           {[
             "# Delhi Election 2025",

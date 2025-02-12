@@ -1,3 +1,5 @@
+import { useNewsPosts } from "../hooks/useApi";
+import { Link } from "react-router-dom";
 import HeroArticle from "../components/HeroArticle";
 import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
@@ -5,44 +7,66 @@ import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
 
 const NewsArticlePage = () => {
+  const { data: newsPosts, isLoading, error } = useNewsPosts();
+
+  if (isLoading) {
+    return (
+      <p className="min-h-screen flex items-center justify-center">
+        Loading...
+      </p>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="min-h-screen flex items-center justify-center">
+        Error loading news articles.
+      </p>
+    );
+  }
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      {/* Left Sidebar */}
-      {/* <LeftSideBar /> */}
+    <div className="min-w-full px-4 bg-stone-100 pb-16">
+      <main className="grid grid-cols-[25%_40%_25%] gap-x-10">
+        <div className="flex flex-col items-end">
+          <LeftSideBar />
+        </div>
 
-      {/* Main Content */}
-      <main className="">
-        <HeroArticle
-          kicker1={"US Indians Deportation"}
-          kicker2={"National News"}
-          kicker3={"Business deportation updates"}
-          heading={
-            "सी-17 वैन्य विमान में भारतीयों को अमेरिका से वापस भेजे जाने की खबर ट्रंप प्रशासन सख्त"
-          }
-          description={
-            "अमेरिका में अवैध स्थानीयकरण पर सख्ती बढ़ती जा रही है। मैक्सिको की सीमा पर अवैध रूप से घुसने की कोशिश के  सिलसिले में हिरासत में लिए गए भारतीयों को सी-17 वैन्य विमान में भारत वापस भेजे जाने की खबर है। ट्रंप प्रशासन सख्त कार्रवाई कर रहा है।"
-          }
-        />
+        <div className="min-w-3xl bg-white px-4 border border-gray-300 shadow-sm rounded-sm">
+          {newsPosts.length > 0 && (
+            <Link to={`/news/${newsPosts[0]._id}`}>
+              <HeroArticle
+                kicker1={newsPosts[0].category}
+                kicker2={newsPosts[0].subCategory}
+                heading={newsPosts[0].title}
+                description={newsPosts[0].content}
+              />
+            </Link>
+          )}
 
-        <Grid redText={"महत्वपूर्ण-2024:"} text={"विशेष कवरेज"} />
+          <Grid redText={"महत्वपूर्ण-2024:"} text={"विशेष कवरेज"} />
 
-        <HeroArticle />
+          {newsPosts.slice(1).map((post) => (
+            <Link to={`/news/${post._id}`} key={post._id}>
+              <HeroArticle
+                key={post._id}
+                kicker1={post.category}
+                kicker2={post.subCategory}
+                heading={post.title}
+                description={post.content}
+              />
+            </Link>
+          ))}
 
-        <HeroArticle />
+          <Grid />
 
-        <Grid />
+          <VideoCard />
+        </div>
 
-        <HeroArticle />
-
-        <HeroArticle />
-
-        <Grid />
-
-        {/* Video Section */}
-        <VideoCard />
-
-        {/* Right Sidebar News */}
-        {/* <RightSideBar /> */}
+        <div className="flex flex-col items-start">
+          <div className="text-xl font-bold py-2">ट्रेंडिंग</div>
+          <RightSideBar />
+        </div>
       </main>
     </div>
   );

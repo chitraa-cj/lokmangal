@@ -5,6 +5,7 @@ dotenv.config();
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
+import newsPostRoute from "./routes/newsPostRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 // Connect to database
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
+app.use("/api/news", newsPostRoute);
 
 const __dirname = path.resolve();
 

@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const HeroArticle = ({
   kicker1 = "Lorem ipsum dolor sit",
   kicker2 = "Lorem, ipsum dolor",
@@ -8,9 +6,9 @@ const HeroArticle = ({
   description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est nesciunt optio consequuntur in eos, quas ipsa consequatur perferendis dignissimos dolores quae, numquam repellat.",
 }) => {
   return (
-    <Link to="/article" className="block">
+    <div className="min-w-3xl flex flex-col items-center justify-center">
       {/* Article Header */}
-      <div className="mb-6">
+      <div className="mb-6 pt-2">
         <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">
           <span className="text-red-600 cursor-pointer">{kicker1}</span>
           <span>|</span>
@@ -28,7 +26,7 @@ const HeroArticle = ({
       <div className="prose max-w-none mb-8">
         <p className="mb-4">{description}</p>
       </div>
-    </Link>
+    </div>
   );
 };
 export default HeroArticle;
