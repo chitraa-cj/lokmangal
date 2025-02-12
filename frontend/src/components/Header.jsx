@@ -96,7 +96,7 @@ export default function Navbar() {
             "Budget 2025-26",
             "Mahakumbh Mela Live",
             "Mahakumbh",
-            "Brand Studio",
+            "महाकुंभ",
           ].map((topic) => (
             <span
               key={topic}
