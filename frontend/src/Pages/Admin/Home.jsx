@@ -26,34 +26,37 @@ const NewsTable = ({ news }) => (
       <table className="w-full">
         <thead>
           <tr className="border-b">
-            <th className="text-left py-3 px-4">TITLE</th>
             <th className="text-left py-3 px-4">IMAGE</th>
-            <th className="text-left py-3 px-4">CATEGORY</th>
-            <th className="text-left py-3 px-4">DESCRIPTION</th>
+            <th className="text-left py-3 px-4">TITLE</th>
+            <th className="text-left py-3 px-4">EXCERPT</th>
+            {/* <th className="text-left py-3 px-4">CATEGORY</th> */}
+            {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
             <th className="text-left py-3 px-4">DATE</th>
-            <th className="text-left py-3 px-4">STATUS</th>
-            <th className="text-left py-3 px-4">ACTION</th>
+            {/* <th className="text-left py-3 px-4">STATUS</th> */}
+            {/* <th className="text-left py-3 px-4">ACTION</th> */}
           </tr>
         </thead>
         <tbody>
           {news.map((item, index) => (
-            <tr key={index} className="border-b hover:bg-gray-50">
-              <td className="py-3 px-4">{item.title}</td>
+            <tr key={index} className="border-b hover:bg-stone-100">
+              {console.log(item)}
               <td className="py-3 px-4">
                 <img
-                  src={item.image}
+                  src={item.imgUrl}
                   alt={item.title}
                   className="w-12 h-8 object-cover rounded"
                 />
               </td>
-              <td className="py-3 px-4">{item.category}</td>
-              <td className="py-3 px-4 max-w-xs truncate">
+              <td className="py-3 px-4">{item.title}</td>
+              <td className="py-3 px-4">{item.excerpt}</td>
+              {/* <td className="py-3 px-4">{item.category}</td> */}
+              {/* <td className="py-3 px-4 max-w-xs truncate">
                 {item.description}
-              </td>
+              </td> */}
               <td className="py-3 px-4">
-                {new Date(item.date).toLocaleDateString()}
+                {new Date(item.createdAt).toLocaleDateString("en-IN")}
               </td>
-              <td className="py-3 px-4">
+              {/* <td className="py-3 px-4">
                 <span
                   className={`px-2 py-1 rounded-full text-sm ${
                     item.status === "active"
@@ -68,7 +71,7 @@ const NewsTable = ({ news }) => (
                 <button className="p-2 text-green-600 hover:text-green-800 rounded-full hover:bg-green-50">
                   <Eye size={20} />
                 </button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>
@@ -82,10 +85,10 @@ const Dashboard = () => {
 
   const stats = {
     totalNews: newsData?.length || 0,
-    pendingNews: newsData?.filter((n) => n.status === "pending").length || 0,
+    // pendingNews: newsData?.filter((n) => n.status === "pending").length || 0,
     // activeNews: newsData?.filter((n) => n.status === "active").length || 0,
     activeNews: newsData?.length || 0,
-    deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
+    // deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
 
@@ -112,7 +115,7 @@ const Dashboard = () => {
         <div className="relative">
           <input
             type="search"
-            placeholder="search"
+            placeholder="Search News Articles"
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

@@ -39,7 +39,8 @@ const NewsArticlePage = () => {
                 kicker1={newsPosts[0].category}
                 kicker2={newsPosts[0].subCategory}
                 heading={newsPosts[0].title}
-                description={newsPosts[0].content}
+                imgUrl={newsPosts[0].imgUrl}
+                description={newsPosts[0].excerpt}
               />
             </Link>
           )}
@@ -51,13 +52,14 @@ const NewsArticlePage = () => {
                 key={post._id}
                 kicker1={post.category}
                 kicker2={post.subCategory}
+                imgUrl={post.imgUrl}
                 heading={post.title}
-                description={post.content}
+                description={post.excerpt}
               />
             </Link>
           ))}
 
-          <Grid />
+          {/* <Grid /> */}
 
           <VideoCard />
         </div>

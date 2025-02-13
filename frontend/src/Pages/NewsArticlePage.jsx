@@ -34,6 +34,7 @@ const NewsArticlePage = () => {
           kicker1={newsPost.category}
           kicker2={newsPost.subCategory}
           // kicker3={newsPost.tags.join(", ")}
+          imgUrl={newsPost.imgUrl}
           heading={newsPost.title}
           description={newsPost.content}
         />
@@ -43,10 +44,10 @@ const NewsArticlePage = () => {
         <VideoCard />
 
         {/* Additional News Content */}
-        <HeroArticle
+        {/* <HeroArticle
           heading={"Related News"}
           // description={"More updates soon..."}
-        />
+        /> */}
       </main>
     </div>
   );

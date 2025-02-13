@@ -31,7 +31,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
-      <Route path="/article" element={<ArticlePage />} />
+      {/* <Route path="/article" element={<ArticlePage />} /> */}
       <Route path="/news/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}
