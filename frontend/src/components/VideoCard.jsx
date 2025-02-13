@@ -8,14 +8,11 @@ const VideoCard = () => {
         खराब रहेगा?
       </h3> */}
       <iframe
-        // width="560"
-        className="w-full h-72 rounded"
+        className="w-full h-96 rounded"
         src="https://www.youtube.com/embed/CDjD5gQjXQk?si=9oLqbmoIyEGdw3Xd"
         title="YouTube video player"
-        frameborder="0"
+        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
       ></iframe>
     </div>
   );

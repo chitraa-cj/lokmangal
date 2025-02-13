@@ -1,15 +1,16 @@
 const HeroArticle = ({
-  kicker1 = "Lorem ipsum dolor sit",
-  kicker2 = "Lorem, ipsum dolor",
-  kicker3 = "Lorem, ipsum dolor",
-  heading = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat cum non ab.",
+  kicker1,
+  kicker2,
+  kicker3,
+  heading,
   imgUrl,
-  description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est nesciunt optio consequuntur in eos, quas ipsa consequatur perferendis dignissimos dolores quae, numquam repellat.",
+  excerpt,
+  description,
 }) => {
   return (
-    <div className="min-w-3xl flex flex-col items-center justify-center">
+    <div className="min-w-3xl mb-2">
       {/* Article Header */}
-      <div className="mb-6 pt-2">
+      <div className="mb-3 pt-2">
         {/* <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">
           <span className="text-red-600 cursor-pointer">{kicker1}</span>
           <span>|</span>
@@ -17,7 +18,7 @@ const HeroArticle = ({
           <span>|</span>
           <span className="text-gray-600 cursor-pointer">{kicker3}</span>
         </div> */}
-        <h1 className="text-2xl font-bold">{heading}</h1>
+        <h1 className="text-xl font-bold">{heading}</h1>
       </div>
       {/* Main Image / Placeholder */}
       <div className="mb-6">
@@ -25,8 +26,8 @@ const HeroArticle = ({
         <img src={imgUrl} alt={heading} className="w-full h-96 rounded" />
       </div>
       {/* Article Content */}
-      <div className="prose max-w-none mb-8">
-        <p className="mb-4">{description}</p>
+      <div className="prose max-w-none m-4 mt-0">
+        <p>{excerpt}</p>
       </div>
     </div>
   );

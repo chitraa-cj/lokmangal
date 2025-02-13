@@ -5,7 +5,7 @@ const newsPosts = [
     title: "🚀 ISRO Successfully Launches Chandrayaan-4 Mission",
     subtitle: "India takes another giant leap in space exploration.",
     excerpt:
-      "ISRO has launched the Chandrayaan-4 mission for new lunar discoveries.",
+      "ISRO has launched the Chandrayaan-4 mission, aiming for groundbreaking lunar discoveries. Scientists anticipate new insights into the Moon’s surface, water ice, and potential for future human missions.",
     imgUrl:
       "https://www.seaandjob.com/wp-content/uploads/2024/08/isro-1080x675.jpg",
     content:
@@ -15,7 +15,7 @@ const newsPosts = [
     title: "🏏 India Wins T20 World Cup 2024!",
     subtitle: "A thrilling victory in the final over against Australia.",
     excerpt:
-      "India secures the T20 World Cup 2024 title in a dramatic showdown.",
+      "India secures the T20 World Cup 2024 title after a nail-biting final over against Australia. Fans celebrate as India claims its second T20 championship in cricket history.",
     imgUrl:
       "https://www.aljazeera.com/wp-content/uploads/2023/11/AP23327597067425-1700757392.jpg?resize=570%2C380&quality=80",
     content:
@@ -25,7 +25,7 @@ const newsPosts = [
     title: "📱 Apple Unveils iPhone 16 with Revolutionary Features",
     subtitle: "The future of smartphones has arrived.",
     excerpt:
-      "Apple introduces the iPhone 16 with cutting-edge AI-powered technology.",
+      "Apple introduces the iPhone 16, featuring an AI-powered A18 chip, advanced camera technology, and a sleek redesign. The new iPhone aims to redefine mobile innovation and user experience.",
     imgUrl:
       "https://www.editorskeys.com/cdn/shop/articles/the-new-iphone-16-revolutionary-features-for-content-creators-and-filmmakers-637747.png?v=1726000616&width=1000",
     content:
@@ -34,7 +34,8 @@ const newsPosts = [
   {
     title: "🌍 Climate Summit 2024: Global Leaders Commit to Net Zero",
     subtitle: "A historic agreement to combat climate change.",
-    excerpt: "World leaders pledge to achieve net-zero emissions by 2050.",
+    excerpt:
+      "World leaders at the Climate Summit 2024 pledge to achieve net-zero emissions by 2050, focusing on renewable energy, carbon reduction, and sustainable development for a greener future.",
     imgUrl:
       "https://auramag.in/wp-content/uploads/2022/05/Climate-Change-Threat-or-Opportunity-@aura-emagazine.jpg",
     content:

@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
-import { LogOut } from "lucide-react";
 
 //cspell:disable
 
@@ -85,9 +84,9 @@ export default function Navbar() {
             </button>
             {/* Mobile Search/Location - Moved before nav items */}
             <div className="flex items-center md:hidden">
-              <button className="p-4">
+              {/* <button className="p-4">
                 <MapPin size={20} />
-              </button>
+              </button> */}
               <button className="p-4">
                 <Search size={20} />
               </button>

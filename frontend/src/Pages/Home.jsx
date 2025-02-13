@@ -27,12 +27,12 @@ const NewsArticlePage = () => {
 
   return (
     <div className="min-w-full px-4 bg-stone-100 pb-12">
-      <main className="grid grid-cols-[25%_45%_25%] gap-x-10 relative">
-        <div className="flex flex-col items-end">
+      <main className="grid grid-cols-1 lg:grid-cols-[25%_45%_25%] gap-x-10 relative">
+        <div className="hidden lg:flex flex-col items-end">
           <LeftSideBar />
         </div>
 
-        <div className="min-w-3xl bg-white px-4 border border-gray-300 shadow-sm rounded-sm">
+        <div className="bg-white px-4 border border-gray-300 shadow-sm rounded-sm">
           {newsPosts.length > 0 && (
             <Link to={`/news/${newsPosts[0]._id}`}>
               <HeroArticle
@@ -40,7 +40,7 @@ const NewsArticlePage = () => {
                 kicker2={newsPosts[0].subCategory}
                 heading={newsPosts[0].title}
                 imgUrl={newsPosts[0].imgUrl}
-                description={newsPosts[0].excerpt}
+                excerpt={newsPosts[0].excerpt}
               />
             </Link>
           )}
@@ -54,7 +54,7 @@ const NewsArticlePage = () => {
                 kicker2={post.subCategory}
                 imgUrl={post.imgUrl}
                 heading={post.title}
-                description={post.excerpt}
+                excerpt={post.excerpt}
               />
             </Link>
           ))}
@@ -64,7 +64,7 @@ const NewsArticlePage = () => {
           <VideoCard />
         </div>
 
-        <div className="flex flex-col items-start">
+        <div className="hidden lg:flex flex-col items-start ">
           <RightSideBar />
         </div>
       </main>
