@@ -36,6 +36,7 @@ const NewsArticlePage = () => {
           // kicker3={newsPost.tags.join(", ")}
           imgUrl={newsPost.imgUrl}
           heading={newsPost.title}
+          excerpt={newsPost.excerpt}
           description={newsPost.content}
         />
 

@@ -29,6 +29,11 @@ const HeroArticle = ({
       <div className="prose max-w-none m-4 mt-0">
         <p>{excerpt}</p>
       </div>
+      {description && (
+        <div className="prose max-w-none m-4 mt-0">
+          <p>{description}</p>
+        </div>
+      )}
     </div>
   );
 };
