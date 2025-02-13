@@ -5,6 +5,7 @@ import {
   useDeleteNewsPostMutation,
   useNewsPosts,
 } from "../../hooks/useApi";
+import { act } from "react";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} p-6 bg-white rounded-lg shadow`}>
@@ -83,7 +84,7 @@ const Dashboard = () => {
     totalNews: newsData?.length || 0,
     pendingNews: newsData?.filter((n) => n.status === "pending").length || 0,
     // activeNews: newsData?.filter((n) => n.status === "active").length || 0,
-    activeNews: 9,
+    activeNews: newsData?.length || 0,
     deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
