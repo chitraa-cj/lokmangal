@@ -52,7 +52,7 @@ const Sidebar = () => {
     mutationFn: () =>
       axios.post("/api/users/logout", {}, { withCredentials: true }),
     onSuccess: () => {
-      navigate("/login");
+      navigate("/");
     },
     onError: (error) => {
       console.error("An error occurred during logout:", error);

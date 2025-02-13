@@ -129,25 +129,17 @@ export default function Navbar() {
                   <li
                     key="admin"
                     className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                    onClick={() => navigate("/admin")}
                   >
-                    <button
-                      onClick={() => navigate("/admin")}
-                      className="flex items-center uppercase"
-                    >
-                      ADMIN
-                    </button>
+                    ADMIN
                   </li>
                 )}
                 <li
                   key={logoutMutation}
                   className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                  onClick={handleLogout}
                 >
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center uppercase"
-                  >
-                    {LoginOrLogout}
-                  </button>
+                  {LoginOrLogout}
                 </li>
               </ul>
             </div>

@@ -44,7 +44,7 @@ const NewsTable = ({ news }) => (
                 <img
                   src={item.imgUrl}
                   alt={item.title}
-                  className="w-12 h-8 object-cover rounded"
+                  className="w-28 object-cover rounded"
                 />
               </td>
               <td className="py-3 px-4">{item.title}</td>
@@ -109,7 +109,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen w-full">
+    <div className="p-8 bg-stone-100 min-h-screen w-full">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="relative">
