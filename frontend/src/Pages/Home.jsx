@@ -27,7 +27,7 @@ const NewsArticlePage = () => {
 
   return (
     <div className="min-w-full px-4 bg-stone-100 pb-12">
-      <main className="grid grid-cols-[25%_40%_25%] gap-x-10 relative">
+      <main className="grid grid-cols-[25%_45%_25%] gap-x-10 relative">
         <div className="flex flex-col items-end">
           <LeftSideBar />
         </div>
@@ -43,7 +43,6 @@ const NewsArticlePage = () => {
               />
             </Link>
           )}
-
           <Grid redText={"महत्वपूर्ण-2024:"} text={"विशेष कवरेज"} />
 
           {newsPosts.slice(1).map((post) => (

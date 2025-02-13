@@ -1,4 +1,3 @@
-import React from "react";
 import { Share2, ThumbsUp, MessageCircle } from "lucide-react";
 
 const NewsPage = () => {

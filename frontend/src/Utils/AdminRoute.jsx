@@ -18,19 +18,12 @@ const AdminRoute = () => {
   }
 
   const isAdmin = data?.isAuthenticated && data?.user?.isAdmin;
-  const isAuthenticated = data?.isAuthenticated;
 
   if (isAdmin) {
     localStorage.setItem("userName", data.user.username);
   }
 
-  return isAdmin ? (
-    <Outlet />
-  ) : isAuthenticated ? (
-    <Navigate to="/" replace />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return isAdmin ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default AdminRoute;

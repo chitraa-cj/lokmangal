@@ -1,5 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Newspaper,
@@ -7,10 +8,12 @@ import {
   Users,
   User,
   LogOut,
+  Home,
 } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     {
@@ -24,29 +27,44 @@ const Sidebar = () => {
       path: "/admin/add-new",
     },
     {
-      title: "Add writer",
-      icon: <UserPlus size={20} />,
-      path: "/admin/add-writer",
+      title: "Go To News",
+      icon: <Home size={20} />,
+      path: "/",
     },
-    {
-      title: "Writers",
-      icon: <Users size={20} />,
-      path: "/admin/writers",
-    },
-    {
-      title: "Profile",
-      icon: <User size={20} />,
-      path: "/admin/profile",
-    },
+    // {
+    //   title: "Add writer",
+    //   icon: <UserPlus size={20} />,
+    //   path: "/admin/add-writer",
+    // },
+    // {
+    //   title: "Writers",
+    //   icon: <Users size={20} />,
+    //   path: "/admin/writers",
+    // },
+    // {
+    //   title: "Profile",
+    //   icon: <User size={20} />,
+    //   path: "/admin/profile",
+    // },
   ];
 
+  const logoutMutation = useMutation({
+    mutationFn: () =>
+      axios.post("/api/users/logout", {}, { withCredentials: true }),
+    onSuccess: () => {
+      navigate("/login");
+    },
+    onError: (error) => {
+      console.error("An error occurred during logout:", error);
+    },
+  });
+
   const handleLogout = () => {
-    // Implement logout logic here
-    console.log("Logging out...");
+    logoutMutation.mutate();
   };
 
   return (
-    <div className="w-64 h-screen bg-white border-r flex flex-col">
+    <div className="w-64 sticky top-0 h-screen bg-white border-r flex flex-col">
       {/* Logo */}
       <div className="flex items-center justify-center p-4">
         {/* <h1 className="text-2xl font-bold text-red-500">NEWS PORTAL</h1> */}
@@ -59,7 +77,7 @@ const Sidebar = () => {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
+            className={`flex items-center font-semibold gap-3 px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
               location.pathname === item.path ? "bg-blue-100 text-blue-600" : ""
             }`}
           >

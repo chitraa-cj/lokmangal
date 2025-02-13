@@ -26,7 +26,7 @@ const LoginPage = () => {
 
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
-          navigate("/"); // Redirect if authenticated
+          navigate("/admin"); // Redirect if authenticated
         } else {
           setIsAuthenticated(false);
         }
@@ -62,7 +62,7 @@ const LoginPage = () => {
 
       if (data.isAuthenticated) {
         toast.success("Login successful!");
-        navigate("/");
+        navigate("/admin");
       } else {
         toast.error("Invalid login credentials");
       }

@@ -34,11 +34,10 @@ const router = createBrowserRouter(
       <Route path="/article" element={<ArticlePage />} />
       <Route path="/news/:id" element={<NewsArticlePage />} />
 
-      {/* Private Routes */}
-      {/* <Route element={<PrivateRoute />} errorElement={<ErrorPage />}></Route> */}
+      {/*Admin Routes */}
       <Route element={<AdminRoute />} errorElement={<ErrorPage />}>
         <Route path="/admin" element={<AdminHome />} />
-        <Route path="/admin/add-new" element={<AddNewPage />} />;
+        <Route path="/admin/add-new" element={<AddNewPage />} />
       </Route>
     </Route>
   )

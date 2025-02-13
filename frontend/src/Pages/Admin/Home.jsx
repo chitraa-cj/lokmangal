@@ -1,4 +1,3 @@
-import React from "react";
 import { Eye } from "lucide-react";
 import {
   useCreateNewsPostMutation,
@@ -83,7 +82,8 @@ const Dashboard = () => {
   const stats = {
     totalNews: newsData?.length || 0,
     pendingNews: newsData?.filter((n) => n.status === "pending").length || 0,
-    activeNews: newsData?.filter((n) => n.status === "active").length || 0,
+    // activeNews: newsData?.filter((n) => n.status === "active").length || 0,
+    activeNews: 9,
     deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
@@ -117,23 +117,23 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
         <StatCard title="Total news" value={stats.totalNews} key="totalNews" />
-        <StatCard
+        {/* <StatCard
           title="Pending News"
           value={stats.pendingNews}
           key="pendingNews"
-        />
+        /> */}
         <StatCard
           title="Active News"
           value={stats.activeNews}
           key="activeNews"
         />
-        <StatCard
+        {/* <StatCard
           title="DeActive news"
           value={stats.deActiveNews}
           key="deActiveNews"
-        />
+        /> */}
         <StatCard
           title="Writers"
           value={stats.writers}

@@ -1,11 +1,61 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 //cspell:disable
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data } = await axios.get("/api/users/verify");
+
+        if (data.isAuthenticated) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
+  let LoginOrLogout;
+
+  if (isAuthenticated) {
+    LoginOrLogout = "Logout";
+  } else {
+    LoginOrLogout = "login";
+  }
+
+  const logoutMutation = useMutation({
+    mutationFn: () =>
+      axios.post("/api/users/logout", {}, { withCredentials: true }),
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("An error occurred during logout:", error);
+    },
+  });
+
+  const handleLogout = () => {
+    if (isAuthenticated) {
+      logoutMutation.mutate();
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <nav className="border-b shadow-sm">
@@ -71,11 +121,35 @@ export default function Navbar() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 hover:scale-105 hover:font-semibold transition-all w-full md:w-auto border-b md:border-none border-gray-700"
+                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
                   >
                     {item}
                   </li>
                 ))}
+                {isAuthenticated && (
+                  <li
+                    key="admin"
+                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                  >
+                    <button
+                      onClick={() => navigate("/admin")}
+                      className="flex items-center uppercase"
+                    >
+                      ADMIN
+                    </button>
+                  </li>
+                )}
+                <li
+                  key={logoutMutation}
+                  className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                >
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center uppercase"
+                  >
+                    {LoginOrLogout}
+                  </button>
+                </li>
               </ul>
             </div>
             {/* Desktop Search/Location */}
@@ -92,15 +166,15 @@ export default function Navbar() {
       <div className="bg-gray-100 overflow-x-auto flex items-center justify-center">
         <div className="px-4 py-2 text-sm flex items-center space-x-4 max-w-6xl mx-auto font-semibold whitespace-nowrap">
           {[
-            "# Delhi Election 2025",
-            "Budget 2025-26",
-            "Mahakumbh Mela Live",
-            "Mahakumbh",
-            "महाकुंभ",
+            "#Delhi Election 2025",
+            "#Budget 2025-26",
+            "#Mahakumbh Mela Live",
+            "#Mahakumbh",
+            "#महाकुंभ",
           ].map((topic) => (
             <span
               key={topic}
-              className="cursor-pointer hover:text-red-600 transition-all"
+              className="cursor-pointer text-red-600 transition-all"
             >
               {topic}
             </span>
