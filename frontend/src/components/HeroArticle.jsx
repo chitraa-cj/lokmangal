@@ -31,9 +31,17 @@ const HeroArticle = ({
       </div>
       {description && (
         <div className="prose m-4 mt-0 max-w-none">
-          <p>{description}</p>
+          <div dangerouslySetInnerHTML={{ __html: description }} />
         </div>
       )}
+      {/* <div className="prose">
+        <h1>Beautiful Typography</h1>
+        <p>This text will be styled better than default Tailwind.</p>
+        <ul>
+          <li>Bullets will have proper spacing.</li>
+          <li>Font sizes and line heights are optimized.</li>
+        </ul>
+      </div> */}
     </div>
   );
 };
