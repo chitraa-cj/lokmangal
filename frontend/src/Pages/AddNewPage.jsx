@@ -89,13 +89,13 @@ const AddNewPage = () => {
   };
 
   return (
-    <div className="p-8 w-full mx-auto min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Create New Article</h1>
+    <div className="mx-auto min-h-screen w-full p-8">
+      <h1 className="mb-6 text-2xl font-bold">Create New Article</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
         <div className="">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
             Title *
           </label>
           <input
@@ -103,18 +103,18 @@ const AddNewPage = () => {
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.title ? "border-red-500" : "border-gray-300"
             }`}
           />
           {errors.title && (
-            <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            <p className="mt-1 text-sm text-red-500">{errors.title}</p>
           )}
         </div>
 
         {/* Subtitle */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
             Subtitle
           </label>
           <input
@@ -122,13 +122,13 @@ const AddNewPage = () => {
             name="subtitle"
             value={formData.subtitle}
             onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {/* Excerpt */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
             Excerpt *
           </label>
           <textarea
@@ -136,18 +136,18 @@ const AddNewPage = () => {
             value={formData.excerpt}
             onChange={handleInputChange}
             rows="3"
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.excerpt ? "border-red-500" : "border-gray-300"
             }`}
           />
           {errors.excerpt && (
-            <p className="text-red-500 text-sm mt-1">{errors.excerpt}</p>
+            <p className="mt-1 text-sm text-red-500">{errors.excerpt}</p>
           )}
         </div>
 
         {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
             Featured Image *
           </label>
           {/* <input type="text" onChange={handleInputChange} className="mb-2" /> */}
@@ -156,34 +156,34 @@ const AddNewPage = () => {
             name="imgUrl"
             value={formData.imgUrl}
             onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           />
           {imagePreview && (
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-full max-h-48 object-cover rounded-lg"
+              className="max-h-48 w-full rounded-lg object-cover"
             />
           )}
           {errors.image && (
-            <p className="text-red-500 text-sm mt-1">{errors.image}</p>
+            <p className="mt-1 text-sm text-red-500">{errors.image}</p>
           )}
         </div>
 
         {/* Content Editor */}
         <div className="h-[460px]">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
             Content *
           </label>
           <ReactQuill
             value={formData.content}
             onChange={handleEditorChange}
-            className={`bg-white h-96 ${
+            className={`h-96 bg-white ${
               errors.content ? "border-red-500" : ""
             }`}
           />
           {errors.content && (
-            <p className="text-red-500 text-sm mt-1">{errors.content}</p>
+            <p className="mt-1 text-sm text-red-500">{errors.content}</p>
           )}
         </div>
 
@@ -192,21 +192,21 @@ const AddNewPage = () => {
           <button
             type="button"
             onClick={() => navigate("/dashboard")}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 px-6 py-2 hover:bg-gray-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={createNewsMutation.isPending}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
+            className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:bg-blue-400"
           >
             {createNewsMutation.isPending ? "Creating..." : "Create Article"}
           </button>
         </div>
 
         {errors.submit && (
-          <p className="text-red-500 text-sm text-center">{errors.submit}</p>
+          <p className="text-center text-sm text-red-500">{errors.submit}</p>
         )}
       </form>
     </div>

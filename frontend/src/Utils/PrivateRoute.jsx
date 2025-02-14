@@ -49,7 +49,7 @@ const PrivateRoute = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-200 flex items-center justify-center p-4">
+      <div className="flex min-h-screen items-center justify-center bg-slate-200 p-4">
         Loading...
       </div>
     );

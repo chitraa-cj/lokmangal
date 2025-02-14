@@ -23,14 +23,14 @@ const HeroArticle = ({
       {/* Main Image / Placeholder */}
       <div className="mb-6">
         {/* <div className="w-full h-96 bg-gray-200 rounded"></div> */}
-        <img src={imgUrl} alt={heading} className="w-full h-96 rounded" />
+        <img src={imgUrl} alt={heading} className="h-96 w-full rounded" />
       </div>
       {/* Article Content */}
-      <div className="prose max-w-none m-4 mt-0">
+      <div className="prose m-4 mt-0 max-w-none">
         <p>{excerpt}</p>
       </div>
       {description && (
-        <div className="prose max-w-none m-4 mt-0">
+        <div className="prose m-4 mt-0 max-w-none">
           <p>{description}</p>
         </div>
       )}

@@ -39,13 +39,13 @@ const router = createBrowserRouter(
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/add-new" element={<AddNewPage />} />
       </Route>
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
     <ReactQueryDevtools initialIsOpen={false} />
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );

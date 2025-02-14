@@ -59,19 +59,19 @@ export default function Navbar() {
   return (
     <nav className="border-b shadow-sm">
       {/* Logo Section - No changes needed */}
-      <div className="bg-white flex items-center justify-center px-4">
+      <div className="flex items-center justify-center bg-white px-4">
         <div className="py-3">
           <Link to="/">
             {/* <h1 className="text-2xl md:text-5xl font-bold">लोक मंगल</h1> */}
-            <img src="./image.png" alt="logo" className="w-20 h-20" />
+            <img src="./image.png" alt="logo" className="h-20 w-20" />
           </Link>
         </div>
       </div>
 
       {/* Main Navigation - Updated structure */}
       <div className="bg-gray-800">
-        <div className="max-w-6xl mx-auto text-white">
-          <div className="flex items-center justify-between relative">
+        <div className="mx-auto max-w-6xl text-white">
+          <div className="relative flex items-center justify-between">
             {" "}
             {/* Added relative positioning */}
             {/* Mobile Menu Button */}
@@ -95,9 +95,9 @@ export default function Navbar() {
             <div
               className={`${
                 menuOpen ? "block" : "hidden"
-              } md:block absolute top-full left-0 w-full bg-gray-800 z-10 md:static md:w-auto md:bg-transparent`}
+              } absolute left-0 top-full z-10 w-full bg-gray-800 md:static md:block md:w-auto md:bg-transparent`}
             >
-              <ul className="md:flex items-center">
+              <ul className="items-center md:flex">
                 {/* "Home",
                   "Country",
                   "City and state",
@@ -120,7 +120,7 @@ export default function Navbar() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
                   >
                     {item}
                   </li>
@@ -128,7 +128,7 @@ export default function Navbar() {
                 {isAuthenticated && (
                   <li
                     key="admin"
-                    className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
                     onClick={() => navigate("/admin")}
                   >
                     ADMIN
@@ -136,7 +136,7 @@ export default function Navbar() {
                 )}
                 <li
                   key={logoutMutation}
-                  className="p-4 uppercase cursor-pointer hover:bg-yellow-500 font-semibold w-full md:w-auto border-b md:border-none"
+                  className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
                   onClick={handleLogout}
                 >
                   {LoginOrLogout}
@@ -144,7 +144,7 @@ export default function Navbar() {
               </ul>
             </div>
             {/* Desktop Search/Location */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden items-center md:flex">
               <button className="p-4">
                 <Search size={20} />
               </button>
@@ -154,8 +154,8 @@ export default function Navbar() {
       </div>
 
       {/* Trending Topics - Added mobile padding */}
-      <div className="bg-gray-100 overflow-x-auto flex items-center justify-center">
-        <div className="px-4 py-2 text-sm flex items-center space-x-4 max-w-6xl mx-auto font-semibold whitespace-nowrap">
+      <div className="flex items-center justify-center overflow-x-auto bg-gray-100">
+        <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
           {[
             "#Delhi Election 2025",
             "#Budget 2025-26",

@@ -11,7 +11,7 @@ const AdminRoute = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center font-semibold text-3xl bg-stone-200">
+      <div className="flex min-h-screen w-full items-center justify-center bg-stone-200 text-3xl font-semibold">
         Checking admin access...
       </div>
     );

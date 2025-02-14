@@ -8,8 +8,8 @@ const GridItem = ({
   return (
     <div className="space-y-2">
       {/* <div className="w-full h-40 bg-gray-200 rounded"></div> */}
-      <img src={imgUrl} alt="" className="w-full h-40 rounded" />
-      <h3 className="font-semibold text-sm">{title}</h3>
+      <img src={imgUrl} alt="" className="h-40 w-full rounded" />
+      <h3 className="text-sm font-semibold">{title}</h3>
       <p className="text-sm">{description}</p>
     </div>
   );

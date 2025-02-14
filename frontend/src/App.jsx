@@ -13,7 +13,7 @@ const App = () => {
 
   if (isAdminRoute) {
     return (
-      <div className="flex relative">
+      <div className="relative flex">
         {showHeaderFooter && (isAdminRoute ? <Sidebar /> : <Header />)}
 
         <Outlet />

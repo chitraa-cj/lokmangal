@@ -8,9 +8,9 @@ import {
 import { act } from "react";
 
 const StatCard = ({ title, value, className = "" }) => (
-  <div className={`${className} p-6 bg-white rounded-lg shadow`}>
+  <div className={`${className} rounded-lg bg-white p-6 shadow`}>
     <div className="flex flex-col items-center justify-center">
-      <h3 className="text-3xl font-bold mb-2">{value}</h3>
+      <h3 className="mb-2 text-3xl font-bold">{value}</h3>
       <p className="text-gray-600">{title}</p>
     </div>
   </div>
@@ -18,20 +18,20 @@ const StatCard = ({ title, value, className = "" }) => (
 
 const NewsTable = ({ news }) => (
   <div className="mt-8">
-    <div className="flex justify-between items-center mb-4">
+    <div className="mb-4 flex items-center justify-between">
       <h2 className="text-xl font-semibold">Recent News</h2>
       {/* <button className="text-blue-600 hover:text-blue-800">View all</button> */}
     </div>
-    <div className="overflow-x-auto bg-white rounded-lg shadow">
+    <div className="overflow-x-auto rounded-lg bg-white shadow">
       <table className="w-full">
         <thead>
           <tr className="border-b">
-            <th className="text-left py-3 px-4">IMAGE</th>
-            <th className="text-left py-3 px-4">TITLE</th>
-            <th className="text-left py-3 px-4">EXCERPT</th>
+            <th className="px-4 py-3 text-left">IMAGE</th>
+            <th className="px-4 py-3 text-left">TITLE</th>
+            <th className="px-4 py-3 text-left">EXCERPT</th>
             {/* <th className="text-left py-3 px-4">CATEGORY</th> */}
             {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
-            <th className="text-left py-3 px-4">DATE</th>
+            <th className="px-4 py-3 text-left">DATE</th>
             {/* <th className="text-left py-3 px-4">STATUS</th> */}
             {/* <th className="text-left py-3 px-4">ACTION</th> */}
           </tr>
@@ -40,20 +40,20 @@ const NewsTable = ({ news }) => (
           {news.map((item, index) => (
             <tr key={index} className="border-b hover:bg-stone-100">
               {console.log(item)}
-              <td className="py-3 px-4">
+              <td className="px-4 py-3">
                 <img
                   src={item.imgUrl}
                   alt={item.title}
-                  className="w-28 object-cover rounded"
+                  className="w-28 rounded object-cover"
                 />
               </td>
-              <td className="py-3 px-4">{item.title}</td>
-              <td className="py-3 px-4">{item.excerpt}</td>
+              <td className="px-4 py-3">{item.title}</td>
+              <td className="px-4 py-3">{item.excerpt}</td>
               {/* <td className="py-3 px-4">{item.category}</td> */}
               {/* <td className="py-3 px-4 max-w-xs truncate">
                 {item.description}
               </td> */}
-              <td className="py-3 px-4">
+              <td className="px-4 py-3">
                 {new Date(item.createdAt).toLocaleDateString("en-IN")}
               </td>
               {/* <td className="py-3 px-4">
@@ -94,7 +94,7 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Loading...
       </p>
     );
@@ -102,26 +102,26 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Error loading news articles.
       </p>
     );
   }
 
   return (
-    <div className="p-8 bg-stone-100 min-h-screen w-full">
-      <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen w-full bg-stone-100 p-8">
+      <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="relative">
           <input
             type="search"
             placeholder="Search News Articles"
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
         <StatCard title="Total news" value={stats.totalNews} key="totalNews" />
         {/* <StatCard
           title="Pending News"

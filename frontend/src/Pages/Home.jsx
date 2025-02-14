@@ -11,7 +11,7 @@ const NewsArticlePage = () => {
 
   if (isLoading) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Loading...
       </p>
     );
@@ -19,20 +19,20 @@ const NewsArticlePage = () => {
 
   if (error) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Error loading news articles.
       </p>
     );
   }
 
   return (
-    <div className="min-w-full px-4 bg-stone-100 pb-12">
-      <main className="grid grid-cols-1 lg:grid-cols-[25%_45%_25%] gap-x-10 relative">
-        <div className="hidden lg:flex flex-col items-end">
+    <div className="min-w-full bg-stone-100 px-4 pb-12">
+      <main className="relative grid grid-cols-1 gap-x-10 lg:grid-cols-[25%_45%_25%]">
+        <div className="hidden flex-col items-end lg:flex">
           <LeftSideBar />
         </div>
 
-        <div className="bg-white px-4 border border-gray-300 shadow-sm rounded-sm">
+        <div className="rounded-sm border border-gray-300 bg-white px-4 shadow-sm">
           {newsPosts.length > 0 && (
             <Link to={`/news/${newsPosts[0]._id}`}>
               <HeroArticle
@@ -64,7 +64,7 @@ const NewsArticlePage = () => {
           <VideoCard />
         </div>
 
-        <div className="hidden lg:flex flex-col items-start ">
+        <div className="hidden flex-col items-start lg:flex">
           <RightSideBar />
         </div>
       </main>

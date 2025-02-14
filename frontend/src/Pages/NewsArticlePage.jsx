@@ -10,7 +10,7 @@ const NewsArticlePage = () => {
 
   if (isLoading) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Loading...
       </p>
     );
@@ -18,7 +18,7 @@ const NewsArticlePage = () => {
 
   if (error) {
     return (
-      <p className="min-h-screen flex items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center">
         Error loading news articles.
       </p>
     );
@@ -27,7 +27,7 @@ const NewsArticlePage = () => {
   console.log(newsPost);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="mx-auto max-w-3xl px-4 py-8">
       {/* Main Content */}
       <main>
         <HeroArticle

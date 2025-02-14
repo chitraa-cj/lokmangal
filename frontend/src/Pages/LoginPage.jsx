@@ -69,7 +69,7 @@ const LoginPage = () => {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "An unexpected error occurred during login"
+          "An unexpected error occurred during login",
       );
     } finally {
       setLoading(false);
@@ -77,13 +77,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-200 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-slate-200 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-10 shadow-lg">
         <h2 className="mb-3 text-center text-3xl font-extrabold text-gray-900">
           Sign In
         </h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="space-y-4 rounded-md shadow-sm">
             <input
               type="text"
               id="username"
@@ -91,7 +91,7 @@ const LoginPage = () => {
               ref={usernameRef}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none block w-full px-3 py-2 border rounded-md"
+              className="block w-full appearance-none rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Username"
               aria-label="Username"
               autoComplete="username"
@@ -102,7 +102,7 @@ const LoginPage = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none block w-full px-3 py-2 border rounded-md"
+              className="block w-full appearance-none rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Password"
               aria-label="Password"
               autoComplete="current-password"
@@ -111,7 +111,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 focus:outline-none bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:opacity-50"
+            className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none disabled:opacity-50"
             aria-busy={loading}
           >
             {loading ? "Signing in..." : "Sign in"}

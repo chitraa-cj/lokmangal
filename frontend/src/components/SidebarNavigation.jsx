@@ -64,11 +64,11 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 sticky top-0 h-screen bg-white border-r flex flex-col">
+    <div className="sticky top-0 flex h-screen w-64 flex-col border-r bg-white">
       {/* Logo */}
       <div className="flex items-center justify-center p-4">
         {/* <h1 className="text-2xl font-bold text-red-500">NEWS PORTAL</h1> */}
-        <img src="./image.png" alt="logo" className="w-20 h-20" />
+        <img src="./image.png" alt="logo" className="h-20 w-20" />
       </div>
 
       {/* Navigation */}
@@ -77,7 +77,7 @@ const Sidebar = () => {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center font-semibold gap-3 px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
+            className={`flex items-center gap-3 px-6 py-3 font-semibold text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600 ${
               location.pathname === item.path ? "bg-blue-100 text-blue-600" : ""
             }`}
           >
@@ -90,10 +90,10 @@ const Sidebar = () => {
       {/* Logout button */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors m-4 rounded"
+        className="m-4 flex items-center gap-3 rounded px-6 py-3 text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
       >
         <LogOut size={20} />
-        <span className="text-red-600 font-semibold">Logout</span>
+        <span className="font-semibold text-red-600">Logout</span>
       </button>
     </div>
   );
