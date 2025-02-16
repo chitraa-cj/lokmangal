@@ -34,6 +34,7 @@ const NewsArticlePage = () => {
         <div className="rounded-sm border border-gray-300 bg-white px-4 shadow-sm">
           {newsPosts.length > 0 && (
             <HeroArticle
+              id={newsPosts[0]._id}
               kicker1={newsPosts[0].category}
               kicker2={newsPosts[0].subCategory}
               heading={newsPosts[0].title}
@@ -45,6 +46,7 @@ const NewsArticlePage = () => {
 
           {newsPosts.slice(1).map((post) => (
             <HeroArticle
+              id={post._id}
               key={post._id}
               kicker1={post.category}
               kicker2={post.subCategory}

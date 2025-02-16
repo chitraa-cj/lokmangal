@@ -11,7 +11,7 @@ const HeroArticle = ({
   description,
 }) => {
   return (
-    <div className="min-w-3xl unselectable mb-2">
+    <div className="min-w-3xl unselectable my-2">
       {/* Article Header */}
       <div className="mb-3 pt-2">
         {/* <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">
@@ -36,7 +36,7 @@ const HeroArticle = ({
       <div className="prose m-4 mt-0 max-w-none">
         <Link to={`/news/${id}`} className="no-underline">
           <p className="text-base text-gray-700">{excerpt}</p>
-          <span className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
+          <span className="rounded-sm bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
             Read More
           </span>
         </Link>
