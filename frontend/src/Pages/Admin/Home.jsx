@@ -1,11 +1,10 @@
-import { Eye } from "lucide-react";
+import { Eye, Edit, Trash2 } from "lucide-react";
 import {
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,
   useDeleteNewsPostMutation,
   useNewsPosts,
 } from "../../hooks/useApi";
-import { act } from "react";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
@@ -16,7 +15,7 @@ const StatCard = ({ title, value, className = "" }) => (
   </div>
 );
 
-const NewsTable = ({ news }) => (
+const NewsTable = ({ news, onUpdate, onDelete }) => (
   <div className="mt-8">
     <div className="mb-4 flex items-center justify-between">
       <h2 className="text-xl font-semibold">Recent News</h2>
@@ -33,12 +32,12 @@ const NewsTable = ({ news }) => (
             {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
             <th className="px-4 py-3 text-left">DATE</th>
             {/* <th className="text-left py-3 px-4">STATUS</th> */}
-            {/* <th className="text-left py-3 px-4">ACTION</th> */}
+            <th className="px-4 py-3 text-left">ACTION</th>
           </tr>
         </thead>
         <tbody>
           {news.map((item, index) => (
-            <tr key={index} className="border-b hover:bg-stone-100">
+            <tr key={index} className="border-b hover:bg-gray-100">
               {console.log(item)}
               <td className="px-4 py-3">
                 <img
@@ -56,22 +55,20 @@ const NewsTable = ({ news }) => (
               <td className="px-4 py-3">
                 {new Date(item.createdAt).toLocaleDateString("en-IN")}
               </td>
-              {/* <td className="py-3 px-4">
-                <span
-                  className={`px-2 py-1 rounded-full text-sm ${
-                    item.status === "active"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
+              <td className="flex gap-2 px-4 py-3">
+                <button
+                  className="rounded-full p-2 text-blue-600 hover:bg-blue-50 hover:text-blue-800"
+                  onClick={() => onUpdate(item)}
                 >
-                  {item.status}
-                </span>
-              </td>
-              <td className="py-3 px-4">
-                <button className="p-2 text-green-600 hover:text-green-800 rounded-full hover:bg-green-50">
-                  <Eye size={20} />
+                  <Edit size={20} />
                 </button>
-              </td> */}
+                <button
+                  className="rounded-full p-2 text-red-600 hover:bg-red-50 hover:text-red-800"
+                  onClick={() => onDelete(item._id)}
+                >
+                  <Trash2 size={20} />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -82,6 +79,21 @@ const NewsTable = ({ news }) => (
 
 const Dashboard = () => {
   const { data: newsData, isLoading, error } = useNewsPosts();
+  const updateNewsPost = useUpdateNewsPostMutation();
+  const deleteNewsPost = useDeleteNewsPostMutation();
+
+  const handleUpdate = (newsItem) => {
+    const newTitle = prompt("Enter new title", newsItem.title);
+    if (newTitle) {
+      updateNewsPost.mutate({ ...newsItem, title: newTitle });
+    }
+  };
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this news post?")) {
+      deleteNewsPost.mutate(id);
+    }
+  };
 
   const stats = {
     totalNews: newsData?.length || 0,
@@ -109,7 +121,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-stone-100 p-8">
+    <div className="min-h-screen w-full bg-gray-100 p-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="relative">
@@ -146,7 +158,11 @@ const Dashboard = () => {
         />
       </div>
 
-      <NewsTable news={newsData || []} />
+      <NewsTable
+        news={newsData || []}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+      />
     </div>
   );
 };

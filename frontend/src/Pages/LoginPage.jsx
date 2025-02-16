@@ -77,7 +77,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-200 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-200 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-10 shadow-lg">
         <h2 className="mb-3 text-center text-3xl font-extrabold text-gray-900">
           Sign In
