@@ -30,6 +30,7 @@ const AddNewPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -40,31 +41,31 @@ const AddNewPage = () => {
     }
   };
 
-  // const handleImageChange = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     // Create preview
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImagePreview(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
 
-  //     // Here you would typically upload to your server/cloud storage
-  //     // This is a placeholder for the actual upload logic
-  //     try {
-  //       // const formData = new FormData();
-  //       // formData.append('image', file);
-  //       // const response = await axios.post('/api/upload', formData);
-  //       // setFormData(prev => ({ ...prev, imgUrl: response.data.url }));
+      // Here you would typically upload to your server/cloud storage
+      // This is a placeholder for the actual upload logic
+      try {
+        // const formData = new FormData();
+        // formData.append('image', file);
+        // const response = await axios.post('/api/upload', formData);
+        // setFormData(prev => ({ ...prev, imgUrl: response.data.url }));
 
-  //       // Temporary: just store the preview URL
-  //       setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
-  //     } catch (error) {
-  //       setErrors((prev) => ({ ...prev, image: "Failed to upload image" }));
-  //     }
-  //   }
-  // };
+        // Temporary: just store the preview URL
+        setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
+      } catch (error) {
+        setErrors((prev) => ({ ...prev, image: "Failed to upload image" }));
+      }
+    }
+  };
 
   const handleEditorChange = (content) => {
     setFormData((prev) => ({ ...prev, content }));
