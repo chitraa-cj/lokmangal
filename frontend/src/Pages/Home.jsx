@@ -1,5 +1,4 @@
 import { useNewsPosts } from "../hooks/useApi";
-import { Link } from "react-router-dom";
 import HeroArticle from "../components/HeroArticle";
 import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
@@ -34,29 +33,25 @@ const NewsArticlePage = () => {
 
         <div className="rounded-sm border border-gray-300 bg-white px-4 shadow-sm">
           {newsPosts.length > 0 && (
-            <Link to={`/news/${newsPosts[0]._id}`}>
-              <HeroArticle
-                kicker1={newsPosts[0].category}
-                kicker2={newsPosts[0].subCategory}
-                heading={newsPosts[0].title}
-                imgUrl={newsPosts[0].imgUrl}
-                excerpt={newsPosts[0].excerpt}
-              />
-            </Link>
+            <HeroArticle
+              kicker1={newsPosts[0].category}
+              kicker2={newsPosts[0].subCategory}
+              heading={newsPosts[0].title}
+              imgUrl={newsPosts[0].imgUrl}
+              excerpt={newsPosts[0].excerpt}
+            />
           )}
           <Grid redText={"महत्वपूर्ण-2024:"} text={"विशेष कवरेज"} />
 
           {newsPosts.slice(1).map((post) => (
-            <Link to={`/news/${post._id}`} key={post._id}>
-              <HeroArticle
-                key={post._id}
-                kicker1={post.category}
-                kicker2={post.subCategory}
-                imgUrl={post.imgUrl}
-                heading={post.title}
-                excerpt={post.excerpt}
-              />
-            </Link>
+            <HeroArticle
+              key={post._id}
+              kicker1={post.category}
+              kicker2={post.subCategory}
+              imgUrl={post.imgUrl}
+              heading={post.title}
+              excerpt={post.excerpt}
+            />
           ))}
 
           {/* <Grid /> */}

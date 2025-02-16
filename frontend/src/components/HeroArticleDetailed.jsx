@@ -1,13 +1,9 @@
-import { Link } from "react-router-dom";
-
 const HeroArticle = ({
-  id,
   kicker1,
   kicker2,
   kicker3,
   heading,
   imgUrl,
-  excerpt,
   description,
 }) => {
   return (
@@ -21,28 +17,20 @@ const HeroArticle = ({
           <span>|</span>
           <span className="text-gray-600 cursor-pointer">{kicker3}</span>
         </div> */}
-        <Link to={`/news/${id}`} className="no-underline">
-          <h1 className="text-xl font-bold">{heading}</h1>
-        </Link>
+        <h1 className="text-xl font-bold">{heading}</h1>
       </div>
       {/* Main Image / Placeholder */}
       <div className="mb-6">
         {/* <div className="w-full h-96 bg-gray-200 rounded"></div> */}
-        <Link to={`/news/${id}`}>
-          <img src={imgUrl} alt={heading} className="h-96 w-full rounded" />
-        </Link>
+        <img src={imgUrl} alt={heading} className="h-96 w-full rounded" />
       </div>
       {/* Article Content */}
-      <div className="prose m-4 mt-0 max-w-none">
-        <Link to={`/news/${id}`} className="no-underline">
-          <p className="text-base text-gray-700">{excerpt}</p>
-          <span className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
-            Read More
-          </span>
-        </Link>
-      </div>
+      {description && (
+        <div className="prose m-4 mt-0 max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        </div>
+      )}
     </div>
   );
 };
-
 export default HeroArticle;

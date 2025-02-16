@@ -1,4 +1,5 @@
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import {
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,
@@ -15,85 +16,95 @@ const StatCard = ({ title, value, className = "" }) => (
   </div>
 );
 
-const NewsTable = ({ news, onUpdate, onDelete }) => (
-  <div className="mt-8">
-    <div className="mb-4 flex items-center justify-between">
-      <h2 className="text-xl font-semibold">Recent News</h2>
-      {/* <button className="text-blue-600 hover:text-blue-800">View all</button> */}
-    </div>
-    <div className="overflow-x-auto rounded-lg bg-white shadow">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="px-4 py-3 text-left">IMAGE</th>
-            <th className="px-4 py-3 text-left">TITLE</th>
-            <th className="px-4 py-3 text-left">EXCERPT</th>
-            {/* <th className="text-left py-3 px-4">CATEGORY</th> */}
-            {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
-            <th className="px-4 py-3 text-left">DATE</th>
-            {/* <th className="text-left py-3 px-4">STATUS</th> */}
-            <th className="px-4 py-3 text-left">ACTION</th>
-          </tr>
-        </thead>
-        <tbody>
-          {news.map((item, index) => (
-            <tr key={index} className="border-b hover:bg-gray-100">
-              {console.log(item)}
-              <td className="px-4 py-3">
-                <img
-                  src={item.imgUrl}
-                  alt={item.title}
-                  className="w-28 rounded object-cover"
-                />
-              </td>
-              <td className="px-4 py-3">{item.title}</td>
-              <td className="px-4 py-3">{item.excerpt}</td>
-              {/* <td className="py-3 px-4">{item.category}</td> */}
-              {/* <td className="py-3 px-4 max-w-xs truncate">
+const NewsTable = ({ news, onEdit, onDelete }) => {
+  // const navigate = useNavigate();
+  return (
+    <div className="mt-8">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-semibold">Recent News</h2>
+        {/* <button className="text-blue-600 hover:text-blue-800">View all</button> */}
+      </div>
+      <div className="overflow-x-auto rounded-lg bg-white shadow">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b">
+              <th className="px-4 py-3 text-left">IMAGE</th>
+              <th className="px-4 py-3 text-left">TITLE</th>
+              <th className="px-4 py-3 text-left">EXCERPT</th>
+              {/* <th className="text-left py-3 px-4">CATEGORY</th> */}
+              {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
+              <th className="px-4 py-3 text-left">DATE</th>
+              {/* <th className="text-left py-3 px-4">STATUS</th> */}
+              <th className="px-4 py-3 text-left">ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {news.map((item) => (
+              <tr
+                key={item._id}
+                className="order-b hover:bg-gray-100"
+                // onClick={() => navigate(`/news/${item._id}`)}
+              >
+                <td className="px-4 py-3">
+                  <Link to={`/details/${item._id}`}>
+                    <img
+                      src={item.imgUrl}
+                      alt={item.title}
+                      className="w-28 rounded object-cover"
+                    />
+                  </Link>
+                </td>
+                <td className="px-4 py-3">
+                  <Link
+                    to={`/details/${item._id}`}
+                    className="hover:text-blue-800 hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                </td>
+                <td className="px-4 py-3">{item.excerpt}</td>
+                {/* <td className="py-3 px-4">{item.category}</td> */}
+                {/* <td className="py-3 px-4 max-w-xs truncate">
                 {item.description}
               </td> */}
-              <td className="px-4 py-3">
-                {new Date(item.createdAt).toLocaleDateString("en-IN")}
-              </td>
-              <td className="flex gap-2 px-4 py-3">
-                <button
-                  className="rounded-full p-2 text-blue-600 hover:bg-blue-50 hover:text-blue-800"
-                  onClick={() => onUpdate(item)}
-                >
-                  <Edit size={20} />
-                </button>
-                <button
-                  className="rounded-full p-2 text-red-600 hover:bg-red-50 hover:text-red-800"
-                  onClick={() => onDelete(item._id)}
-                >
-                  <Trash2 size={20} />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td className="px-4 py-3">
+                  {new Date(item.createdAt).toLocaleDateString("en-IN")}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit(item);
+                      }}
+                      className="rounded-full p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-800"
+                    >
+                      <Edit size={20} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(item._id);
+                      }}
+                      className="rounded-full p-2 text-red-600 hover:bg-red-100 hover:text-red-800"
+                    >
+                      <Trash size={20} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Dashboard = () => {
   const { data: newsData, isLoading, error } = useNewsPosts();
-  const updateNewsPost = useUpdateNewsPostMutation();
-  const deleteNewsPost = useDeleteNewsPostMutation();
-
-  const handleUpdate = (newsItem) => {
-    const newTitle = prompt("Enter new title", newsItem.title);
-    if (newTitle) {
-      updateNewsPost.mutate({ ...newsItem, title: newTitle });
-    }
-  };
-
-  const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete this news post?")) {
-      deleteNewsPost.mutate(id);
-    }
-  };
+  const navigate = useNavigate();
+  const deleteNewsMutation = useDeleteNewsPostMutation();
 
   const stats = {
     totalNews: newsData?.length || 0,
@@ -102,6 +113,20 @@ const Dashboard = () => {
     activeNews: newsData?.length || 0,
     // deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
+  };
+
+  const handleEdit = (news) => {
+    navigate("/admin/add-new", { state: { news } });
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this article?")) {
+      try {
+        await deleteNewsMutation.mutateAsync(id);
+      } catch (error) {
+        console.error("Error deleting article:", error);
+      }
+    }
   };
 
   if (isLoading) {
@@ -160,7 +185,7 @@ const Dashboard = () => {
 
       <NewsTable
         news={newsData || []}
-        onUpdate={handleUpdate}
+        onEdit={handleEdit}
         onDelete={handleDelete}
       />
     </div>

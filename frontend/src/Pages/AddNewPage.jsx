@@ -1,21 +1,31 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useCreateNewsPostMutation } from "../hooks/useApi";
+import {
+  useCreateNewsPostMutation,
+  useUpdateNewsPostMutation,
+} from "../hooks/useApi";
 
 const AddNewPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const existingNews = location.state?.news;
+
   const createNewsMutation = useCreateNewsPostMutation();
+  const updateNewsMutation = useUpdateNewsPostMutation();
 
   const [formData, setFormData] = useState({
-    title: "",
-    subtitle: "",
-    excerpt: "",
-    imgUrl: "",
-    content: "",
+    title: existingNews ? existingNews.title : "",
+    subtitle: existingNews ? existingNews.subtitle : "",
+    excerpt: existingNews ? existingNews.excerpt : "",
+    imgUrl: existingNews ? existingNews.imgUrl : "",
+    content: existingNews ? existingNews.content : "",
+    id: existingNews ? existingNews.id : undefined,
   });
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(
+    existingNews ? existingNews.imgUrl : null,
+  );
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -78,10 +88,18 @@ const AddNewPage = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        await createNewsMutation.mutateAsync(formData);
+        if (formData.id) {
+          await updateNewsMutation.mutateAsync(formData);
+        } else {
+          await createNewsMutation.mutateAsync(formData);
+        }
         navigate("/admin");
       } catch (error) {
-        setErrors({ submit: "Failed to create news article" });
+        setErrors({
+          submit: formData.id
+            ? "Failed to update news article"
+            : "Failed to create news article",
+        });
       }
     } else {
       setErrors(newErrors);
@@ -90,7 +108,9 @@ const AddNewPage = () => {
 
   return (
     <div className="mx-auto min-h-screen w-full p-8">
-      <h1 className="mb-6 text-2xl font-bold">Create New Article</h1>
+      <h1 className="mb-6 text-2xl font-bold">
+        {formData.id ? "Update Article" : "Create New Article"}
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
@@ -191,17 +211,27 @@ const AddNewPage = () => {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/admin")}
             className="rounded-lg border border-gray-300 px-6 py-2 hover:bg-gray-50"
           >
             Cancel
           </button>
           <button
             type="submit"
-            disabled={createNewsMutation.isPending}
+            disabled={
+              formData.id
+                ? updateNewsMutation.isPending
+                : createNewsMutation.isPending
+            }
             className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:bg-blue-400"
           >
-            {createNewsMutation.isPending ? "Creating..." : "Create Article"}
+            {formData.id
+              ? updateNewsMutation.isPending
+                ? "Updating..."
+                : "Update Article"
+              : createNewsMutation.isPending
+                ? "Creating..."
+                : "Create Article"}
           </button>
         </div>
 

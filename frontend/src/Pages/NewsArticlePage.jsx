@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useNewsPostDetails } from "../hooks/useApi";
-import HeroArticle from "../components/HeroArticle";
+import HeroArticle from "../components/HeroArticleDetailed";
 import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
 
@@ -24,7 +24,7 @@ const NewsArticlePage = () => {
     );
   }
 
-  console.log(newsPost);
+  // console.log(newsPost);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -36,7 +36,6 @@ const NewsArticlePage = () => {
           // kicker3={newsPost.tags.join(", ")}
           imgUrl={newsPost.imgUrl}
           heading={newsPost.title}
-          excerpt={newsPost.excerpt}
           description={newsPost.content}
         />
 

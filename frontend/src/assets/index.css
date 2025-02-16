@@ -2,79 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
-}
-
 textarea {
   resize: none;
 }
 
-@media print {
-  .noPrint {
-    display: none !important;
-    visibility: hidden;
-  }
-
-  .printMargin {
-    margin-top: 1.5rem;
-  }
-
-  .mt0 {
-    margin-top: 0;
-  }
-
-  .white {
-    background-color: #fff !important;
-  }
-
-  .margin0 {
-    margin: 0;
-    padding: 0;
-  }
-
-  .ml2 {
-    margin-left: 1rem;
-  }
-
-  @page {
-    size: auto; /* auto is the initial value */
-    margin: 0mm; /* this affects the margin in the printer settings */
-
-    /* Remove header and footer */
-    @top-center {
-      content: none;
-    }
-    @top-left {
-      content: none;
-    }
-    @top-right {
-      content: none;
-    }
-
-    @bottom-center {
-      content: none;
-    }
-    @bottom-left {
-      content: none;
-    }
-    @bottom-right {
-      content: none;
-    }
-  }
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
