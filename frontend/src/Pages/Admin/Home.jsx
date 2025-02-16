@@ -1,11 +1,6 @@
-import { Eye, Edit, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  useCreateNewsPostMutation,
-  useUpdateNewsPostMutation,
-  useDeleteNewsPostMutation,
-  useNewsPosts,
-} from "../../hooks/useApi";
+import { useDeleteNewsPostMutation, useNewsPosts } from "../../hooks/useApi";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
@@ -46,7 +41,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                 // onClick={() => navigate(`/news/${item._id}`)}
               >
                 <td className="px-4 py-3">
-                  <Link to={`/details/${item._id}`}>
+                  <Link to={`/news/${item._id}`}>
                     <img
                       src={item.imgUrl}
                       alt={item.title}
@@ -56,7 +51,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                 </td>
                 <td className="px-4 py-3">
                   <Link
-                    to={`/details/${item._id}`}
+                    to={`/news/${item._id}`}
                     className="hover:text-blue-800 hover:underline"
                   >
                     {item.title}

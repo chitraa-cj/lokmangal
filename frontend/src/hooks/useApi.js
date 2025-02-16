@@ -38,10 +38,16 @@ export const useCreateNewsPostMutation = () => {
 };
 
 export const useUpdateNewsPostMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async ({ id, data }) => {
+    mutationFn: async (updateData) => {
+      const { id, ...data } = updateData;
       const response = await axios.put(`/api/news/${id}`, data);
       return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["news"] });
     },
   });
 };

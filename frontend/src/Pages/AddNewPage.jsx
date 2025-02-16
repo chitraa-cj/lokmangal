@@ -21,7 +21,7 @@ const AddNewPage = () => {
     excerpt: existingNews ? existingNews.excerpt : "",
     imgUrl: existingNews ? existingNews.imgUrl : "",
     content: existingNews ? existingNews.content : "",
-    id: existingNews ? existingNews.id : undefined,
+    _id: existingNews ? existingNews._id : undefined, // Use _id to match your data
   });
   const [imagePreview, setImagePreview] = useState(
     existingNews ? existingNews.imgUrl : null,
@@ -88,15 +88,25 @@ const AddNewPage = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        if (formData.id) {
-          await updateNewsMutation.mutateAsync(formData);
+        if (formData._id) {
+          // Ensure you're passing the _id correctly
+          await updateNewsMutation.mutateAsync({
+            id: formData._id,
+            data: {
+              title: formData.title,
+              subtitle: formData.subtitle,
+              excerpt: formData.excerpt,
+              imgUrl: formData.imgUrl,
+              content: formData.content,
+            },
+          });
         } else {
           await createNewsMutation.mutateAsync(formData);
         }
         navigate("/admin");
       } catch (error) {
         setErrors({
-          submit: formData.id
+          submit: formData._id
             ? "Failed to update news article"
             : "Failed to create news article",
         });
@@ -109,7 +119,7 @@ const AddNewPage = () => {
   return (
     <div className="mx-auto min-h-screen w-full p-8">
       <h1 className="mb-6 text-2xl font-bold">
-        {formData.id ? "Update Article" : "Create New Article"}
+        {formData._id ? "Update Article" : "Create New Article"}
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -219,13 +229,13 @@ const AddNewPage = () => {
           <button
             type="submit"
             disabled={
-              formData.id
+              formData._id
                 ? updateNewsMutation.isPending
                 : createNewsMutation.isPending
             }
             className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:bg-blue-400"
           >
-            {formData.id
+            {formData._id
               ? updateNewsMutation.isPending
                 ? "Updating..."
                 : "Update Article"
