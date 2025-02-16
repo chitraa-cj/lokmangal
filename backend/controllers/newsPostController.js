@@ -60,11 +60,11 @@ const updateNewsPost = asyncHandler(async (req, res) => {
   const newsPost = await NewsPost.findById(req.params.id);
 
   if (newsPost) {
-    newsPost.title = title || newsPost.title;
-    newsPost.subtitle = subtitle || newsPost.subtitle;
-    newsPost.excerpt = excerpt || newsPost.excerpt;
-    newsPost.imgUrl = imgUrl || newsPost.imgUrl;
-    newsPost.content = content || newsPost.content;
+    newsPost.title = title !== undefined ? title : newsPost.title;
+    newsPost.subtitle = subtitle !== undefined ? subtitle : newsPost.subtitle;
+    newsPost.excerpt = excerpt !== undefined ? excerpt : newsPost.excerpt;
+    newsPost.imgUrl = imgUrl !== undefined ? imgUrl : newsPost.imgUrl;
+    newsPost.content = content !== undefined ? content : newsPost.content;
 
     const updatedNewsPost = await newsPost.save();
     res.json(updatedNewsPost);

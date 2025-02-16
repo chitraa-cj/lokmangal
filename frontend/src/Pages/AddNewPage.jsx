@@ -90,16 +90,13 @@ const AddNewPage = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         if (formData._id) {
-          // Ensure you're passing the _id correctly
           await updateNewsMutation.mutateAsync({
             id: formData._id,
-            data: {
-              title: formData.title,
-              subtitle: formData.subtitle,
-              excerpt: formData.excerpt,
-              imgUrl: formData.imgUrl,
-              content: formData.content,
-            },
+            title: formData.title,
+            subtitle: formData.subtitle,
+            excerpt: formData.excerpt,
+            imgUrl: formData.imgUrl,
+            content: formData.content,
           });
         } else {
           await createNewsMutation.mutateAsync(formData);
