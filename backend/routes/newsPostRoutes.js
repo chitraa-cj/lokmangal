@@ -6,6 +6,7 @@ import {
   updateNewsPost,
   deleteNewsPost,
   getNewsPostsByUser,
+  getNewsPostsByCategory,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -18,5 +19,7 @@ router
   .put(protect, isAdmin, updateNewsPost)
   .delete(protect, isAdmin, deleteNewsPost);
 router.route("/user/:userId").get(protect, getNewsPostsByUser);
+
+router.route("/category/:category").get(getNewsPostsByCategory);
 
 export default router;

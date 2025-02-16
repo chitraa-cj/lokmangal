@@ -8,6 +8,7 @@ const newsPostSchema = mongoose.Schema(
     imgUrl: { type: String, required: true },
     content: { type: String, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    category: { type: [String], required: true }, // Updated to an array of strings
   },
   { timestamps: true }
 );

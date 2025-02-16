@@ -15,12 +15,7 @@ export default function Navbar() {
     const checkAuth = async () => {
       try {
         const { data } = await axios.get("/api/users/verify");
-
-        if (data.isAuthenticated) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
+        setIsAuthenticated(data.isAuthenticated);
       } catch (error) {
         setIsAuthenticated(false);
       }
@@ -28,6 +23,16 @@ export default function Navbar() {
 
     checkAuth();
   }, [navigate]);
+
+  const handleCategoryClick = async (category) => {
+    try {
+      const { data } = await axios.get(`/api/news/category/${category}`);
+      // Assuming you want to navigate to a new page to display the articles
+      navigate(`/category/${category}`, { state: { articles: data } });
+    } catch (error) {
+      console.error("Error fetching articles by category:", error);
+    }
+  };
 
   let LoginOrLogout;
 
@@ -58,23 +63,17 @@ export default function Navbar() {
 
   return (
     <nav className="border-b shadow-sm">
-      {/* Logo Section - No changes needed */}
       <div className="flex items-center justify-center bg-white px-4">
         <div className="py-3">
           <Link to="/">
-            {/* <h1 className="text-2xl md:text-5xl font-bold">लोक मंगल</h1> */}
             <img src="./image.png" alt="logo" className="h-20 w-20" />
           </Link>
         </div>
       </div>
 
-      {/* Main Navigation - Updated structure */}
       <div className="bg-gray-800">
         <div className="mx-auto max-w-6xl text-white">
           <div className="relative flex items-center justify-between">
-            {" "}
-            {/* Added relative positioning */}
-            {/* Mobile Menu Button */}
             <button
               className="p-4 text-white md:hidden"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -82,30 +81,12 @@ export default function Navbar() {
             >
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            {/* Mobile Search/Location - Moved before nav items */}
-            <div className="flex items-center md:hidden">
-              {/* <button className="p-4">
-                <MapPin size={20} />
-              </button> */}
-              <button className="p-4">
-                <Search size={20} />
-              </button>
-            </div>
-            {/* Navigation Items - Updated positioning */}
             <div
               className={`${
                 menuOpen ? "block" : "hidden"
               } absolute left-0 top-full z-10 w-full bg-gray-800 md:static md:block md:w-auto md:bg-transparent`}
             >
               <ul className="items-center md:flex">
-                {/* "Home",
-                  "Country",
-                  "City and state",
-                  "Election",
-                  "Word search",
-                  "Entertainment",
-                  "More...", */}
-                {/* "घर", */}
                 {[
                   "होम",
                   "देश",
@@ -121,6 +102,7 @@ export default function Navbar() {
                   <li
                     key={item}
                     className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
+                    onClick={() => handleCategoryClick(item)}
                   >
                     {item}
                   </li>
@@ -135,19 +117,13 @@ export default function Navbar() {
                   </li>
                 )}
                 <li
-                  key={logoutMutation}
+                  key="logout"
                   className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
                   onClick={handleLogout}
                 >
-                  {LoginOrLogout}
+                  {isAuthenticated ? "Logout" : "Login"}
                 </li>
               </ul>
-            </div>
-            {/* Desktop Search/Location */}
-            <div className="hidden items-center md:flex">
-              <button className="p-4">
-                <Search size={20} />
-              </button>
             </div>
           </div>
         </div>

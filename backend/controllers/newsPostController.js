@@ -109,6 +109,23 @@ const getNewsPostsByUser = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @desc Get all news posts by category
+ * @route GET /api/news/category/:category
+ * @access Public
+ */
+const getNewsPostsByCategory = asyncHandler(async (req, res) => {
+  const { category } = req.params;
+  const newsPosts = await NewsPost.find({ category }).sort({ createdAt: -1 });
+
+  if (newsPosts.length > 0) {
+    res.json(newsPosts);
+  } else {
+    res.status(404);
+    throw new Error("No news posts found for this category");
+  }
+});
+
 export {
   getAllNewsPosts,
   getNewsPostById,
@@ -116,4 +133,5 @@ export {
   updateNewsPost,
   deleteNewsPost,
   getNewsPostsByUser,
+  getNewsPostsByCategory,
 };
