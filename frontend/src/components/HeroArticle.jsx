@@ -34,8 +34,8 @@ const HeroArticle = ({
       </div>
       {/* Article Content */}
       <div className="prose m-4 mt-0 max-w-none">
+        <p className="text-base text-gray-700">{excerpt}</p>
         <Link to={`/news/${id}`} className="no-underline">
-          <p className="text-base text-gray-700">{excerpt}</p>
           <span className="rounded-sm bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
             Read More
           </span>
