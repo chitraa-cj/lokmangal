@@ -1,4 +1,5 @@
 import { useNewsPosts } from "../hooks/useApi";
+import { useLocation } from "react-router-dom";
 import HeroArticle from "../components/HeroArticle";
 import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
@@ -6,17 +7,20 @@ import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
 
 const NewsArticlePage = () => {
-  const { data: newsPosts, isLoading, error } = useNewsPosts();
+  const location = useLocation();
+  const newsPosts = location.state?.articles;
 
-  if (isLoading) {
-    return (
-      <p className="flex min-h-screen items-center justify-center">
-        Loading...
-      </p>
-    );
-  }
+  // console.log(categoryNews);
 
-  if (error) {
+  // if (isLoading) {
+  //   return (
+  //     <p className="flex min-h-screen items-center justify-center">
+  //       Loading...
+  //     </p>
+  //   );
+  // }
+
+  if (!newsPosts) {
     return (
       <p className="flex min-h-screen items-center justify-center">
         Error loading news articles.
@@ -31,7 +35,7 @@ const NewsArticlePage = () => {
           <LeftSideBar />
         </div>
 
-        <div className="space-y-10 px-6">
+        <div className="rounded-sm border border-gray-300 bg-white px-4 shadow-sm">
           {newsPosts.length > 0 && (
             <HeroArticle
               id={newsPosts[0]._id}

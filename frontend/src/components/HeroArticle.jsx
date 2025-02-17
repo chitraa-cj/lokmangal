@@ -11,7 +11,7 @@ const HeroArticle = ({
   description,
 }) => {
   return (
-    <div className="min-w-3xl unselectable my-2">
+    <div className="min-w-3xl unselectable my-2 rounded-sm border border-gray-300 bg-white p-4 px-6 shadow-sm">
       {/* Article Header */}
       <div className="mb-3 pt-2">
         {/* <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">

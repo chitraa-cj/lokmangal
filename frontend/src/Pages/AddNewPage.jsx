@@ -15,13 +15,26 @@ const AddNewPage = () => {
   const createNewsMutation = useCreateNewsPostMutation();
   const updateNewsMutation = useUpdateNewsPostMutation();
 
+  const categories = [
+    "देश",
+    "दुनिया",
+    "प्रदेशक खबरे",
+    "राजनीति",
+    "अप्राध",
+    "खेल",
+    "हमारा शहर",
+    "वीडियो",
+    "मनोरंजन",
+  ];
+
   const [formData, setFormData] = useState({
     title: existingNews ? existingNews.title : "",
     subtitle: existingNews ? existingNews.subtitle : "",
     excerpt: existingNews ? existingNews.excerpt : "",
     imgUrl: existingNews ? existingNews.imgUrl : "",
     content: existingNews ? existingNews.content : "",
-    _id: existingNews ? existingNews._id : undefined, // Use _id to match your data
+    categories: existingNews ? existingNews.categories || [] : [],
+    _id: existingNews ? existingNews._id : undefined,
   });
   const [imagePreview, setImagePreview] = useState(
     existingNews ? existingNews.imgUrl : null,
@@ -30,36 +43,40 @@ const AddNewPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleCategorySelect = (category) => {
+    setFormData((prev) => {
+      const updatedCategories = prev.categories.includes(category)
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category];
+      return {
+        ...prev,
+        categories: updatedCategories,
+      };
+    });
+    if (errors.categories) {
+      setErrors((prev) => ({ ...prev, categories: "" }));
     }
   };
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
 
-      // Here you would typically upload to your server/cloud storage
-      // This is a placeholder for the actual upload logic
       try {
-        // const formData = new FormData();
-        // formData.append('image', file);
-        // const response = await axios.post('/api/upload', formData);
-        // setFormData(prev => ({ ...prev, imgUrl: response.data.url }));
-
-        // Temporary: just store the preview URL
         setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
       } catch (error) {
         setErrors((prev) => ({ ...prev, image: "Failed to upload image" }));
@@ -80,6 +97,8 @@ const AddNewPage = () => {
     if (!formData.excerpt.trim()) newErrors.excerpt = "Excerpt is required";
     if (!formData.imgUrl) newErrors.image = "Image is required";
     if (!formData.content.trim()) newErrors.content = "Content is required";
+    if (formData.categories.length === 0)
+      newErrors.categories = "At least one category is required";
     return newErrors;
   };
 
@@ -92,11 +111,7 @@ const AddNewPage = () => {
         if (formData._id) {
           await updateNewsMutation.mutateAsync({
             id: formData._id,
-            title: formData.title,
-            subtitle: formData.subtitle,
-            excerpt: formData.excerpt,
-            imgUrl: formData.imgUrl,
-            content: formData.content,
+            ...formData,
           });
         } else {
           await createNewsMutation.mutateAsync(formData);
@@ -122,7 +137,7 @@ const AddNewPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
-        <div className="">
+        <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Title *
           </label>
@@ -137,6 +152,44 @@ const AddNewPage = () => {
           />
           {errors.title && (
             <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+          )}
+        </div>
+
+        {/* Categories Multi-Select */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Categories *
+          </label>
+          {/* Selected Categories */}
+          <div className="mb-2 flex flex-wrap gap-2">
+            {formData.categories.map((category) => (
+              <span
+                key={category}
+                onClick={() => handleCategorySelect(category)}
+                className="cursor-pointer rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 hover:bg-blue-200"
+              >
+                {category} ×
+              </span>
+            ))}
+          </div>
+          {/* Categories Selection */}
+          <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-300 bg-white">
+            {categories.map((category) => (
+              <div
+                key={category}
+                onClick={() => handleCategorySelect(category)}
+                className={`cursor-pointer border-b border-gray-200 px-4 py-2 last:border-b-0 hover:bg-gray-50 ${
+                  formData.categories.includes(category)
+                    ? "bg-blue-50 font-medium text-blue-600"
+                    : ""
+                }`}
+              >
+                {category}
+              </div>
+            ))}
+          </div>
+          {errors.categories && (
+            <p className="mt-1 text-sm text-red-500">{errors.categories}</p>
           )}
         </div>
 
@@ -178,7 +231,6 @@ const AddNewPage = () => {
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Featured Image *
           </label>
-          {/* <input type="text" onChange={handleInputChange} className="mb-2" /> */}
           <input
             type="text"
             name="imgUrl"
@@ -190,7 +242,7 @@ const AddNewPage = () => {
             <img
               src={imagePreview}
               alt="Preview"
-              className="max-h-48 w-full rounded-lg object-cover"
+              className="mt-2 max-h-48 w-full rounded-lg object-cover"
             />
           )}
           {errors.image && (
@@ -206,9 +258,7 @@ const AddNewPage = () => {
           <ReactQuill
             value={formData.content}
             onChange={handleEditorChange}
-            className={`h-96 bg-white ${
-              errors.content ? "border-red-500" : ""
-            }`}
+            className={`h-96 bg-white ${errors.content ? "border-red-500" : ""}`}
           />
           {errors.content && (
             <p className="mt-1 text-sm text-red-500">{errors.content}</p>

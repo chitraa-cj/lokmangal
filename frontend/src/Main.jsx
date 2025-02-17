@@ -18,7 +18,8 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 
 import Home from "./Pages/Home.jsx";
-import ArticlePage from "./Pages/ArticlePage.jsx";
+import CategoryHome from "./Pages/CategoryHome.jsx";
+// import ArticlePage from "./Pages/ArticlePage.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/Home.jsx";
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
+      <Route path="/category/:category" element={<CategoryHome />} />
       {/* <Route path="/article" element={<ArticlePage />} /> */}
       <Route path="/news/:id" element={<NewsArticlePage />} />
 

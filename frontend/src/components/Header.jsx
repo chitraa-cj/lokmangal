@@ -26,13 +26,28 @@ export default function Navbar() {
 
   const handleCategoryClick = async (category) => {
     try {
+      if (category === "होम") {
+        navigate("/");
+        return;
+      }
+
       const { data } = await axios.get(`/api/news/category/${category}`);
-      // Assuming you want to navigate to a new page to display the articles
       navigate(`/category/${category}`, { state: { articles: data } });
+      // console.log(data[0]);
     } catch (error) {
       console.error("Error fetching articles by category:", error);
     }
   };
+
+  // const handleCategoryClick = async (category) => {
+  //   try {
+  //     const { data } = await axios.get(`/api/news/category/${category}`);
+  //     // Assuming you want to navigate to a new page to display the articles
+  //     navigate(`/category/${category}`, { state: { articles: data } });
+  //   } catch (error) {
+  //     console.error("Error fetching articles by category:", error);
+  //   }
+  // };
 
   let LoginOrLogout;
 
