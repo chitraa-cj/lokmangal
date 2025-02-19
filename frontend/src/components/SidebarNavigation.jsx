@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Newspaper,
+  Hash,
   UserPlus,
   Users,
   User,
@@ -25,6 +26,11 @@ const Sidebar = () => {
       title: "Add New",
       icon: <Newspaper size={20} />,
       path: "/admin/add-new",
+    },
+    {
+      title: "Add Hashtags",
+      icon: <Hash size={20} />,
+      path: "/admin/add-hashtags",
     },
     {
       title: "Go To News",
