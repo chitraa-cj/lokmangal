@@ -1,6 +1,6 @@
 const VideoCard = () => {
   return (
-    <div className="mb-8">
+    <div className="mb-8 w-full max-w-3xl">
       <h2 className="mb-4 text-xl font-bold">लेटेस्ट वीडियो</h2>
       {/* <div className="w-full h-72 bg-gray-200 rounded mb-4"></div>
       <h3 className="font-semibold">

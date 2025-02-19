@@ -11,7 +11,7 @@ const HeroArticle = ({
   description,
 }) => {
   return (
-    <div className="min-w-3xl unselectable my-2 rounded-sm border border-gray-300 bg-white p-4 px-6 shadow-sm">
+    <div className="min-w-3xl unselectable my-2 max-w-3xl rounded-sm border border-gray-300 bg-white p-4 px-6 shadow-sm">
       {/* Article Header */}
       <div className="mb-3 pt-2">
         {/* <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 mb-4">
@@ -26,10 +26,10 @@ const HeroArticle = ({
         </Link>
       </div>
       {/* Main Image / Placeholder */}
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-center">
         {/* <div className="w-full h-96 bg-gray-200 rounded"></div> */}
         <Link to={`/news/${id}`}>
-          <img src={imgUrl} alt={heading} className="h-96 w-full rounded" />
+          <img src={imgUrl} alt={heading} className="w-2xl h-96 rounded" />
         </Link>
       </div>
       {/* Article Content */}

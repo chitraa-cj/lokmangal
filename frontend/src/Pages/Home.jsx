@@ -31,7 +31,7 @@ const NewsArticlePage = () => {
           <LeftSideBar />
         </div>
 
-        <div className="space-y-10 px-6">
+        <div className="flex flex-col items-center justify-center space-y-10 px-6">
           {newsPosts.length > 0 && (
             <HeroArticle
               id={newsPosts[0]._id}

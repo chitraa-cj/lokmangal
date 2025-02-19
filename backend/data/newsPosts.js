@@ -7,57 +7,55 @@ const newsPosts = [
     subtitle: "राज्यपाल ने गांव को ‘एक्सीलेंस इन आई डोनेशन अवॉर्ड से नवाजा",
     excerpt:
       "हैदराबाद। जहां एक और लोग अपने परिजन की मृत्यु के बाद अंग दान करते हैं तो वहीं कुछ इंसानियत के नाते मृत्यु से पहले अंगदान कर देते हैं इस एक अच्छी पहल इससे कई लोगों को नया जीवन मिल जाता है। वहीं कई लोग अंगदान करने से डरते भी हैं ऐसे लोगों के लिए तेलंगाना एक गांव मिसाल बन गया है जिसकी आजकल खूब चर्चा हो रही है।",
-    imgUrl:
-      "https://www.thelokmangal.com/wp-content/uploads/2025/02/Untitled-1-11-1130x580.jpg",
+    imgUrl: "https://picsum.photos/200/300",
     category: ["देश"],
 
     content:
-      "<p>हैदराबाद। जहां एक और लोग अपने परिजन की मृत्यु के बाद अंग दान करते हैं तो वहीं कुछ इंसानियत के नाते मृत्यु से पहले अंगदान कर देते हैं इस एक अच्छी पहल इससे कई लोगों को नया जीवन मिल जाता है। वहीं कई लोग अंगदान करने से डरते भी हैं ऐसे लोगों के लिए तेलंगाना एक गांव मिसाल बन गया है जिसकी आजकल खूब चर्चा हो रही है।</p> <p>तेलंगाना के हनुमानकोंडा जिले के मुछेरला गांव में करीब 500 लोग रहते हैं। इन सभी लोगों ने मृत्यु के बाद अपनी आंखें दान करने की शपथ ली है। पिछले कुछ साल में करीब 70 ग्रामीण अपनी आंखें दान भी कर चुके हैं। हाल ही में राज्यपाल ने इस गांव को ‘एक्सीलेंस इन आई डोनेशन’ अवॉर्ड दिया, इसके बाद यह गांव चर्चा में आ गया। इसी गांव के रहने वाले मंडाला रविंदर सिंचाई विभाग में डिविजनल इंजीनियर हैं। उन्होंने बताया कि एक दशक पहले उन्होंने अपनी मां की आंखें दान करने का फैसला लिया था।</p> <p>मीडिया रिपोर्ट में रविंदर ने बताया कि उनका मानना है कि मौत के बाद अंग खराब नहीं होने चाहिए। 2019 में उनके पिता के अंग दान किए थे। रविंदर ने भी अंगदान करने की शपथ ली है। उन्होंने कहा कि वह दूसरों को भी इसके लिए प्रेरित करते हैं। उन्हें आशा है कि इससे बहुत से लोगों को मदद मिलेगी और एक सकारात्मक बदलाव आएगा। रविंदर को गांववालों का भी सहयोग मिल रहा है।</p> <p>वहीं गांव के ही मल्ला रेड्डी ने बताया कि अगर परिवार में किसी की मौत हो जाती है तो वह रविंदर को जानकारी देते हैं। इसके बाद वह डॉक्टर से संपर्क करते हैं और डॉक्टर इसके बाद की प्रक्रिया पूरी करते हैं। परिवार वाले इस मामले में पूरी सक्रियता से हिस्सा लेते हैं। यह पहल उन्हें एकजुट भी बना रही है। उन्हें पता है कि मरने के बाद वह किसी को जिंदगी दे रहे हैं। तेलंगाना के इस गांव में नेत्रदान की शुरुआत कई साल पहले हुई थी। तब कुछ गांववालों ने नेत्रदान का संकल्प लिया था। देखते ही देखते यह एक अभियान में तब्दील हो गया।</p> <p>मुछेरला गांव में इस अभियान का असर दूसरे गांवों में भी देखने को मिल रहा है। एलवी प्रसाद आई इंस्टीट्यूट में 20 लोगों ने नेत्रदान करने की इच्छा जताई है। मेडिकल प्रोफेशनल गांवों में जा रहे हैं और लोगों को नेत्रदान के लिए जागरूक कर रहे हैं। मुछेरला में बाकायदा एक सिस्टम तैयार किया गया है। इसमें नेत्रदान की शपथ लेने वालों की पूरी जानकारी रखी जाती है। साथ ही हनुमानकोंडा जिले के अस्पतालों से तालमेल भी बनाया गया है, ताकि जरूरत पड़ने पर रिस्पांस मिले। गांव की महिला बी सुजाता ने कहा कि वह अपनी मां की आंखें दान की हैं और मुझे इस पर गर्व है। उन्होंने कहा कि हमारे समुदाय ने अंगदान का एक मॉडल स्थापित करने की शपथ ली है।</p>",
+      "<p>हैदराबाद । जहां एक और लोग अपने परिजन की मृत्यु के बाद अंग दान करते हैं तो वहीं कुछ इंसानियत के नाते मृत्यु से पहले अंगदान कर देते हैं इस एक अच्छी पहल इससे कई लोगों को नया जीवन मिल जाता है। वहीं कई लोग अंगदान करने से डरते भी हैं ऐसे लोगों के लिए तेलंगाना एक गांव मिसाल बन गया है जिसकी आजकल खूब चर्चा हो रही है।</p> <p>तेलंगाना के हनुमानकोंडा जिले के मुछेरला गांव में करीब 500 लोग रहते हैं। इन सभी लोगों ने मृत्यु के बाद अपनी आंखें दान करने की शपथ ली है। पिछले कुछ साल में करीब 70 ग्रामीण अपनी आंखें दान भी कर चुके हैं। हाल ही में राज्यपाल ने इस गांव को ‘एक्सीलेंस इन आई डोनेशन’ अवॉर्ड दिया, इसके बाद यह गांव चर्चा में आ गया। इसी गांव के रहने वाले मंडाला रविंदर सिंचाई विभाग में डिविजनल इंजीनियर हैं। उन्होंने बताया कि एक दशक पहले उन्होंने अपनी मां की आंखें दान करने का फैसला लिया था।</p> <p>मीडिया रिपोर्ट में रविंदर ने बताया कि उनका मानना है कि मौत के बाद अंग खराब नहीं होने चाहिए। 2019 में उनके पिता के अंग दान किए थे। रविंदर ने भी अंगदान करने की शपथ ली है। उन्होंने कहा कि वह दूसरों को भी इसके लिए प्रेरित करते हैं। उन्हें आशा है कि इससे बहुत से लोगों को मदद मिलेगी और एक सकारात्मक बदलाव आएगा। रविंदर को गांववालों का भी सहयोग मिल रहा है।</p> <p>वहीं गांव के ही मल्ला रेड्डी ने बताया कि अगर परिवार में किसी की मौत हो जाती है तो वह रविंदर को जानकारी देते हैं। इसके बाद वह डॉक्टर से संपर्क करते हैं और डॉक्टर इसके बाद की प्रक्रिया पूरी करते हैं। परिवार वाले इस मामले में पूरी सक्रियता से हिस्सा लेते हैं। यह पहल उन्हें एकजुट भी बना रही है। उन्हें पता है कि मरने के बाद वह किसी को जिंदगी दे रहे हैं। तेलंगाना के इस गांव में नेत्रदान की शुरुआत कई साल पहले हुई थी। तब कुछ गांववालों ने नेत्रदान का संकल्प लिया था। देखते ही देखते यह एक अभियान में तब्दील हो गया।</p> <p>मुछेरला गांव में इस अभियान का असर दूसरे गांवों में भी देखने को मिल रहा है। एलवी प्रसाद आई इंस्टीट्यूट में 20 लोगों ने नेत्रदान करने की इच्छा जताई है। मेडिकल प्रोफेशनल गांवों में जा रहे हैं और लोगों को नेत्रदान के लिए जागरूक कर रहे हैं। मुछेरला में बाकायदा एक सिस्टम तैयार किया गया है। इसमें नेत्रदान की शपथ लेने वालों की पूरी जानकारी रखी जाती है। साथ ही हनुमानकोंडा जिले के अस्पतालों से तालमेल भी बनाया गया है, ताकि जरूरत पड़ने पर रिस्पांस मिले। गांव की महिला बी सुजाता ने कहा कि वह अपनी मां की आंखें दान की हैं और मुझे इस पर गर्व है। उन्होंने कहा कि हमारे समुदाय ने अंगदान का एक मॉडल स्थापित करने की शपथ ली है।</p>",
   },
 
   {
-    title: "🚀 ISRO Successfully Launches Chandrayaan-4 Mission",
-    subtitle: "India takes another giant leap in space exploration.",
+    title: "🚀 इसरो ने चंद्रयान-4 मिशन को सफलतापूर्वक लॉन्च किया",
+    subtitle: "भारत ने अंतरिक्ष अन्वेषण में एक और बड़ी छलांग लगाई।",
     excerpt:
-      "ISRO has launched the Chandrayaan-4 mission, aiming for groundbreaking lunar discoveries. Scientists anticipate new insights into the Moon’s surface, water ice, and potential for future human missions.",
-    imgUrl:
-      "https://www.seaandjob.com/wp-content/uploads/2024/08/isro-1080x675.jpg",
+      "इसरो ने चंद्रयान-4 मिशन लॉन्च किया है, जिसका लक्ष्य चंद्रमा पर अभूतपूर्व खोज करना है। वैज्ञानिकों को चंद्रमा की सतह, पानी की बर्फ और भविष्य के मानव मिशनों की संभावनाओं के बारे में नई जानकारी मिलने की उम्मीद है।",
+    imgUrl: "https://picsum.photos/200/300",
     category: ["दुनिया"],
     content:
-      "The Indian Space Research Organisation (ISRO) has made history with the successful launch of Chandrayaan-4. This ambitious mission aims to explore the moon's uncharted regions, focusing on collecting samples and conducting advanced experiments. Scientists believe that Chandrayaan-4 will help unlock crucial data about lunar water ice and the possibility of sustaining future human missions. Equipped with state-of-the-art technology, the spacecraft carries a lander, a rover, and an orbiter, each designed for specialized research. This marks another major milestone for India's space program, demonstrating its growing expertise in interplanetary exploration and solidifying its position as a key player in global space science.",
+      "भारतीय अंतरिक्ष अनुसंधान संगठन (इसरो) ने चंद्रयान-4 के सफल प्रक्षेपण के साथ इतिहास रच दिया है। इस महत्वाकांक्षी मिशन का उद्देश्य चंद्रमा के अज्ञात क्षेत्रों का पता लगाना है, जिसमें नमूने एकत्र करना और उन्नत प्रयोग करना शामिल है। वैज्ञानिकों का मानना ​​है कि चंद्रयान-4 चंद्रमा की पानी की बर्फ और भविष्य के मानव मिशनों को बनाए रखने की संभावना के बारे में महत्वपूर्ण डेटा को अनलॉक करने में मदद करेगा। अत्याधुनिक तकनीक से लैस इस अंतरिक्ष यान में एक लैंडर, एक रोवर और एक ऑर्बिटर है, जिनमें से प्रत्येक को विशेष शोध के लिए डिज़ाइन किया गया है। यह भारत के अंतरिक्ष कार्यक्रम के लिए एक और प्रमुख मील का पत्थर है, जो अंतरग्रहीय अन्वेषण में अपनी बढ़ती विशेषज्ञता को प्रदर्शित करता है और वैश्विक अंतरिक्ष विज्ञान में एक प्रमुख खिलाड़ी के रूप में अपनी स्थिति को मजबूत करता है।",
   },
   {
-    title: "🏏 India Wins T20 World Cup 2024!",
-    subtitle: "A thrilling victory in the final over against Australia.",
+    title: "🏏 भारत ने टी20 विश्व कप 2024 जीता!",
+    subtitle: "ऑस्ट्रेलिया के खिलाफ अंतिम ओवर में रोमांचक जीत।",
     excerpt:
-      "India secures the T20 World Cup 2024 title after a nail-biting final over against Australia. Fans celebrate as India claims its second T20 championship in cricket history.",
-    imgUrl:
-      "https://www.aljazeera.com/wp-content/uploads/2023/11/AP23327597067425-1700757392.jpg?resize=570%2C380&quality=80",
-    category: ["प्रदेशक खबरे"],
+      "भारत ने ऑस्ट्रेलिया के खिलाफ अंतिम ओवर में रोमांचक जीत के बाद टी20 विश्व कप 2024 का खिताब सुरक्षित कर लिया। क्रिकेट इतिहास में भारत की दूसरी टी20 चैंपियनशिप जीतने पर प्रशंसकों ने जश्न मनाया।",
+    imgUrl: "https://picsum.photos/200/300",
+    category: ["प्रदेश की खबरें"],
     content:
-      "In an electrifying final match, India emerged victorious against Australia to claim the T20 World Cup 2024 title. The game kept fans on the edge of their seats as it went down to the final over, with India needing 12 runs from six balls. Star batsman Virat Kohli and young sensation Shubman Gill delivered a stellar performance, steering India to victory. The bowlers also played a crucial role, restricting Australia to a challenging but achievable target. Celebrations erupted across the country, with millions of fans taking to the streets to commemorate this historic moment in Indian cricket.",
+      "एक रोमांचक फाइनल मैच में, भारत ने ऑस्ट्रेलिया के खिलाफ जीत हासिल कर टी20 विश्व कप 2024 का खिताब अपने नाम किया। खेल ने प्रशंसकों को अपनी सीटों से बांधे रखा क्योंकि यह अंतिम ओवर तक चला गया, जिसमें भारत को छह गेंदों पर 12 रन चाहिए थे। स्टार बल्लेबाज विराट कोहली और युवा खिलाड़ी शुभमन गिल ने शानदार प्रदर्शन करते हुए भारत को जीत दिलाई। गेंदबाजों ने भी अहम भूमिका निभाई और ऑस्ट्रेलिया को चुनौतीपूर्ण लेकिन हासिल करने लायक लक्ष्य तक सीमित रखा। पूरे देश में जश्न मनाया गया और लाखों प्रशंसक भारतीय क्रिकेट के इस ऐतिहासिक पल को मनाने के लिए सड़कों पर उतर आए।",
   },
   {
-    title: "📱 Apple Unveils iPhone 16 with Revolutionary Features",
-    subtitle: "The future of smartphones has arrived.",
+    title: "📱 Apple ने क्रांतिकारी फीचर्स के साथ iPhone 16 पेश किया",
+    subtitle: "स्मार्टफोन का भविष्य आ गया है।",
     excerpt:
-      "Apple introduces the iPhone 16, featuring an AI-powered A18 chip, advanced camera technology, and a sleek redesign. The new iPhone aims to redefine mobile innovation and user experience.",
-    imgUrl:
-      "https://www.editorskeys.com/cdn/shop/articles/the-new-iphone-16-revolutionary-features-for-content-creators-and-filmmakers-637747.png?v=1726000616&width=1000",
+      "Apple ने iPhone 16 पेश किया, जिसमें AI-पावर्ड A18 चिप, एडवांस कैमरा तकनीक और एक शानदार रीडिज़ाइन है। नए iPhone का उद्देश्य मोबाइल इनोवेशन और उपयोगकर्ता अनुभव को फिर से परिभाषित करना है।",
+    imgUrl: "https://picsum.photos/200/300",
     category: ["राजनीति"],
     content:
-      "Apple has officially launched the iPhone 16, setting a new benchmark in smartphone technology. Featuring the powerful A18 chip, the device offers enhanced AI-driven functionalities, including real-time language translation, advanced photography enhancements, and improved battery efficiency. The new model boasts a redesigned titanium frame, making it more durable and lightweight. With an upgraded ProMotion display and a revolutionary under-display front camera, the iPhone 16 delivers an immersive user experience. Apple has also introduced groundbreaking security features, including on-device AI for privacy-focused computing. Tech enthusiasts and Apple fans are eagerly anticipating how these innovations will redefine mobile technology in the coming years.",
+      "Apple ने आधिकारिक तौर पर iPhone 16 लॉन्च किया है, जिसने स्मार्टफोन तकनीक में एक नया बेंचमार्क स्थापित किया है। शक्तिशाली A18 चिप की विशेषता वाला यह डिवाइस वास्तविक समय भाषा अनुवाद, उन्नत फोटोग्राफी संवर्द्धन और बेहतर बैटरी दक्षता सहित उन्नत AI-संचालित कार्यक्षमता प्रदान करता है। नए मॉडल में एक नया डिज़ाइन किया गया टाइटेनियम फ्रेम है, जो इसे अधिक टिकाऊ और हल्का बनाता है। एक उन्नत प्रोमोशन डिस्प्ले और एक क्रांतिकारी अंडर-डिस्प्ले फ्रंट कैमरा के साथ, iPhone 16 एक इमर्सिव उपयोगकर्ता अनुभव प्रदान करता है। एप्पल ने गोपनीयता-केंद्रित कंप्यूटिंग के लिए ऑन-डिवाइस एआई सहित अभूतपूर्व सुरक्षा सुविधाएं भी शुरू की हैं। तकनीक के दीवाने और Apple के प्रशंसक उत्सुकता से इस बात का इंतज़ार कर रहे हैं कि आने वाले सालों में ये नवाचार मोबाइल तकनीक को कैसे फिर से परिभाषित करेंगे।",
   },
+
   {
-    title: "🌍 Climate Summit 2024: Global Leaders Commit to Net Zero",
-    subtitle: "A historic agreement to combat climate change.",
+    title:
+      "🌍 जलवायु शिखर सम्मेलन 2024: वैश्विक नेता नेट ज़ीरो के लिए प्रतिबद्ध",
+
+    subtitle: "जलवायु परिवर्तन से निपटने के लिए एक ऐतिहासिक समझौता।",
     excerpt:
-      "World leaders at the Climate Summit 2024 pledge to achieve net-zero emissions by 2050, focusing on renewable energy, carbon reduction, and sustainable development for a greener future.",
-    imgUrl:
-      "https://auramag.in/wp-content/uploads/2022/05/Climate-Change-Threat-or-Opportunity-@aura-emagazine.jpg",
-    category: ["अप्राध"],
+      "जलवायु शिखर सम्मेलन 2024 में विश्व नेताओं ने 2050 तक शुद्ध-शून्य उत्सर्जन प्राप्त करने की प्रतिज्ञा की, जिसमें हरित भविष्य के लिए नवीकरणीय ऊर्जा, कार्बन कटौती और सतत विकास पर ध्यान केंद्रित किया गया।",
+    imgUrl: "https://picsum.photos/200/300",
+    category: ["अपराध"],
     content:
-      "The Climate Summit 2024 has concluded with a landmark agreement among world leaders to achieve net-zero carbon emissions by 2050. Representatives from over 190 countries participated in discussions focusing on renewable energy, deforestation, and global carbon pricing. Key commitments include a significant reduction in fossil fuel dependence, increased investment in green technologies, and stronger climate policies at the national level. Environmental activists have welcomed these steps but stress the need for swift and decisive action. This agreement marks a critical moment in the fight against climate change, highlighting the collective responsibility of nations to safeguard the planet for future generations.",
+      "जलवायु शिखर सम्मेलन 2024 का समापन विश्व नेताओं के बीच 2050 तक शुद्ध-शून्य कार्बन उत्सर्जन प्राप्त करने के लिए एक ऐतिहासिक समझौते के साथ हुआ है। 190 से अधिक देशों के प्रतिनिधियों ने चर्चा में भाग लिया नवीकरणीय ऊर्जा, वनों की कटाई और वैश्विक कार्बन मूल्य निर्धारण पर ध्यान केंद्रित करना। प्रमुख प्रतिबद्धताओं में जीवाश्म ईंधन पर निर्भरता में उल्लेखनीय कमी, हरित प्रौद्योगिकियों में निवेश में वृद्धि और राष्ट्रीय स्तर पर मजबूत जलवायु नीतियां शामिल हैं। पर्यावरण कार्यकर्ताओं ने इन कदमों का स्वागत किया है, लेकिन त्वरित और निर्णायक कार्रवाई की आवश्यकता पर बल दिया है। यह समझौता जलवायु परिवर्तन के खिलाफ लड़ाई में एक महत्वपूर्ण क्षण को चिह्नित करता है, जो भविष्य की पीढ़ियों के लिए ग्रह की सुरक्षा के लिए राष्ट्रों की सामूहिक जिम्मेदारी को उजागर करता है।",
   },
 ];
 

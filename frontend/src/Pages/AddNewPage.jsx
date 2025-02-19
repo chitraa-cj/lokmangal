@@ -33,9 +33,12 @@ const AddNewPage = () => {
     excerpt: existingNews ? existingNews.excerpt : "",
     imgUrl: existingNews ? existingNews.imgUrl : "",
     content: existingNews ? existingNews.content : "",
-    categories: existingNews ? existingNews.categories || [] : [],
+    categories: existingNews?.categories || [], // Ensure categories is initialized
     _id: existingNews ? existingNews._id : undefined,
   });
+
+  console.log("Initial formData:", formData); // Debug log
+
   const [imagePreview, setImagePreview] = useState(
     existingNews ? existingNews.imgUrl : null,
   );
@@ -54,9 +57,13 @@ const AddNewPage = () => {
 
   const handleCategorySelect = (category) => {
     setFormData((prev) => {
+      // Create a new array with the updated categories
       const updatedCategories = prev.categories.includes(category)
         ? prev.categories.filter((c) => c !== category)
         : [...prev.categories, category];
+
+      console.log("Updated categories:", updatedCategories); // Debug log
+
       return {
         ...prev,
         categories: updatedCategories,
@@ -97,7 +104,7 @@ const AddNewPage = () => {
     if (!formData.excerpt.trim()) newErrors.excerpt = "Excerpt is required";
     if (!formData.imgUrl) newErrors.image = "Image is required";
     if (!formData.content.trim()) newErrors.content = "Content is required";
-    if (formData.categories.length === 0)
+    if (!formData.categories || formData.categories.length === 0)
       newErrors.categories = "At least one category is required";
     return newErrors;
   };
@@ -106,18 +113,33 @@ const AddNewPage = () => {
     e.preventDefault();
     const newErrors = validateForm();
 
+    // Debug log before submission
+    console.log("Submitting formData:", formData);
+
     if (Object.keys(newErrors).length === 0) {
       try {
+        const dataToSubmit = {
+          title: formData.title,
+          subtitle: formData.subtitle,
+          excerpt: formData.excerpt,
+          imgUrl: formData.imgUrl,
+          content: formData.content,
+          categories: formData.categories, // Ensure categories is included
+        };
+
         if (formData._id) {
+          // Update existing post
           await updateNewsMutation.mutateAsync({
             id: formData._id,
-            ...formData,
+            ...dataToSubmit,
           });
         } else {
-          await createNewsMutation.mutateAsync(formData);
+          // Create new post
+          await createNewsMutation.mutateAsync(dataToSubmit);
         }
         navigate("/admin");
       } catch (error) {
+        console.error("Submission error:", error); // Debug log
         setErrors({
           submit: formData._id
             ? "Failed to update news article"
@@ -158,7 +180,7 @@ const AddNewPage = () => {
         {/* Categories Multi-Select */}
         <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
-            Categories *
+            Categories * (Selected: {formData.categories.length})
           </label>
           {/* Selected Categories */}
           <div className="mb-2 flex flex-wrap gap-2">
@@ -193,6 +215,7 @@ const AddNewPage = () => {
           )}
         </div>
 
+        {/* Rest of your form fields... */}
         {/* Subtitle */}
         <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
