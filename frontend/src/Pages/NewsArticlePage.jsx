@@ -27,28 +27,27 @@ const NewsArticlePage = () => {
   // console.log(newsPost);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* Main Content */}
-      <main>
-        <HeroArticle
-          kicker1={newsPost.category}
-          kicker2={newsPost.subCategory}
-          // kicker3={newsPost.tags.join(", ")}
-          imgUrl={newsPost.imgUrl}
-          heading={newsPost.title}
-          description={newsPost.content}
-        />
-
-        <Grid redText={"Breaking News:"} text={"Special Coverage"} />
-
-        <VideoCard />
-
-        {/* Additional News Content */}
-        {/* <HeroArticle
-          heading={"Related News"}
-          // description={"More updates soon..."}
-        /> */}
-      </main>
+    <div className="w-full bg-gray-200">
+      <div className="mx-auto max-w-3xl p-4 pb-8">
+        {/* Main Content */}
+        <main>
+          <HeroArticle
+            kicker1={newsPost.category}
+            kicker2={newsPost.subCategory}
+            // kicker3={newsPost.tags.join(", ")}
+            imgUrl={newsPost.imgUrl}
+            heading={newsPost.title}
+            description={newsPost.content}
+          />
+          <Grid redText={"Breaking News:"} text={"Special Coverage"} />
+          <VideoCard />
+          {/* Additional News Content */}
+          {/* <HeroArticle
+            heading={"Related News"}
+            // description={"More updates soon..."}
+          /> */}
+        </main>
+      </div>
     </div>
   );
 };
