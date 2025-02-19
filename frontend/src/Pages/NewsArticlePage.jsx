@@ -27,8 +27,8 @@ const NewsArticlePage = () => {
   // console.log(newsPost);
 
   return (
-    <div className="w-full bg-gray-200">
-      <div className="mx-auto max-w-3xl p-4 pb-8">
+    <div className="flex w-full flex-col items-center justify-center bg-gray-100">
+      <div className="max-w-3xl">
         {/* Main Content */}
         <main>
           <HeroArticle
@@ -39,8 +39,15 @@ const NewsArticlePage = () => {
             heading={newsPost.title}
             description={newsPost.content}
           />
-          <Grid redText={"Breaking News:"} text={"Special Coverage"} />
-          <VideoCard />
+
+          <div className="pt-5">
+            <Grid redText={"Breaking News:"} text={"Special Coverage"} />
+          </div>
+
+          <div className="pb-8 pt-5">
+            <VideoCard />
+          </div>
+
           {/* Additional News Content */}
           {/* <HeroArticle
             heading={"Related News"}

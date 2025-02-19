@@ -15,7 +15,7 @@ const NewsPage = () => {
 
       {/* Main Image Placeholder */}
       <div className="mb-6 w-full">
-        <div className="mb-2 flex h-[400px] w-full items-center justify-center rounded-lg bg-gray-200">
+        <div className="mb-2 flex h-[400px] w-full items-center justify-center rounded-lg bg-gray-100">
           <span className="text-gray-500">600 x 400</span>
         </div>
         <div className="text-center text-sm text-gray-600">
@@ -119,7 +119,7 @@ const NewsPage = () => {
               className="rounded-lg border p-4 transition-shadow hover:shadow-lg"
             >
               <div className="flex flex-col gap-4 sm:flex-row">
-                <div className="flex h-20 w-full items-center justify-center rounded bg-gray-200 sm:w-32">
+                <div className="flex h-20 w-full items-center justify-center rounded bg-gray-100 sm:w-32">
                   <span className="text-gray-500">120 x 80</span>
                 </div>
                 <div className="flex-1">

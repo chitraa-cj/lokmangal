@@ -145,7 +145,7 @@ export default function Navbar() {
       </div>
 
       {/* Trending Topics - Added mobile padding */}
-      <div className="flex items-center justify-center overflow-x-auto bg-gray-200">
+      <div className="flex items-center justify-center overflow-x-auto bg-gray-100">
         <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
           {[
             "#Delhi Election 2025",

@@ -117,7 +117,7 @@ const footer = () => {
               alt="E-Paper"
               className="mx-auto mb-2 w-28 h-28"
             /> */}
-            <div className="mx-auto mb-4 h-36 w-36 rounded bg-gray-200"></div>
+            <div className="mx-auto mb-4 h-36 w-36 rounded bg-gray-100"></div>
 
             <h3 className="mb-2 font-bold">Lorem ipsum dolor sit amet.!</h3>
             <button className="rounded bg-white px-4 py-2 font-semibold text-red-600">

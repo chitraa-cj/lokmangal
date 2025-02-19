@@ -110,7 +110,7 @@ const HeroArticle = ({
 
       {/* Article Content */}
       {description && (
-        <div className="prose m-4 mt-0 max-w-none">
+        <div className="prose max-w-none">
           <div dangerouslySetInnerHTML={{ __html: description }} />
         </div>
       )}

@@ -10,7 +10,7 @@ const NewsArticlePage = () => {
 
   if (isLoading) {
     return (
-      <p className="flex min-h-screen items-center justify-center bg-gray-200">
+      <p className="flex min-h-screen items-center justify-center bg-gray-100">
         Loading...
       </p>
     );
@@ -18,20 +18,20 @@ const NewsArticlePage = () => {
 
   if (error) {
     return (
-      <p className="flex min-h-screen items-center justify-center bg-gray-200">
+      <p className="flex min-h-screen items-center justify-center bg-gray-100">
         Error loading news articles.
       </p>
     );
   }
 
   return (
-    <div className="min-w-full bg-gray-200 px-4 pb-12">
+    <div className="min-w-full bg-gray-100 px-4 pb-12">
       <main className="relative grid grid-cols-1 gap-x-10 lg:grid-cols-[25%_45%_25%]">
         <div className="hidden flex-col items-end lg:flex">
           <LeftSideBar />
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-10 px-6">
+        <div className="flex flex-col items-center justify-center space-y-8 px-6">
           {newsPosts.length > 0 && (
             <HeroArticle
               id={newsPosts[0]._id}
@@ -42,21 +42,22 @@ const NewsArticlePage = () => {
               excerpt={newsPosts[0].excerpt}
             />
           )}
-          <Grid redText={"महत्वपूर्ण-2024:"} text={"विशेष कवरेज"} />
 
-          {newsPosts.slice(1).map((post) => (
-            <HeroArticle
-              id={post._id}
-              key={post._id}
-              kicker1={post.category}
-              kicker2={post.subCategory}
-              imgUrl={post.imgUrl}
-              heading={post.title}
-              excerpt={post.excerpt}
-            />
+          <Grid />
+
+          {newsPosts.slice(1).map((post, index) => (
+            <div key={post._id}>
+              <HeroArticle
+                id={post._id}
+                kicker1={post.category}
+                kicker2={post.subCategory}
+                imgUrl={post.imgUrl}
+                heading={post.title}
+                excerpt={post.excerpt}
+              />
+              {(index + 1) % 5 === 0 && <Grid />}
+            </div>
           ))}
-
-          {/* <Grid /> */}
 
           <VideoCard />
         </div>

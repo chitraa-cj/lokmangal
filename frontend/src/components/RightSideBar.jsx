@@ -6,7 +6,7 @@ const RightSideBar = () => {
       <div className="h-fit rounded-sm border border-gray-300 bg-white p-4 shadow-sm">
         <div className="border-b pb-4">
           <div className="flex items-center justify-center gap-2">
-            {/* <div className="w-20 h-20 bg-gray-200 rounded flex-shrink-0"></div> */}
+            {/* <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0"></div> */}
             <img
               src="https://staticimg.amarujala.com/assets/images/2025/02/13/gorakhpur-suicide_fac1e1e4474747907fe2ffd6bf8e8f58.jpeg?q=65&w=700"
               className="w-20"
@@ -23,7 +23,7 @@ const RightSideBar = () => {
         </div>
         <div className="border-b pb-4">
           <div className="flex items-center justify-center gap-2">
-            {/* <div className="w-20 h-20 bg-gray-200 rounded flex-shrink-0"></div> */}
+            {/* <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0"></div> */}
             <img
               src="https://staticimg.amarujala.com/assets/images/2024/08/21/ryan-ten-doeschate_a9cb1b650960528e052247412fcac21c.jpeg?w=674&dpr=1.0&q=65"
               className="w-20"
