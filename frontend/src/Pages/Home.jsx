@@ -10,7 +10,7 @@ const NewsArticlePage = () => {
 
   if (isLoading) {
     return (
-      <p className="flex min-h-screen items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center bg-gray-200">
         Loading...
       </p>
     );
@@ -18,14 +18,14 @@ const NewsArticlePage = () => {
 
   if (error) {
     return (
-      <p className="flex min-h-screen items-center justify-center">
+      <p className="flex min-h-screen items-center justify-center bg-gray-200">
         Error loading news articles.
       </p>
     );
   }
 
   return (
-    <div className="min-w-full bg-gray-100 px-4 pb-12">
+    <div className="min-w-full bg-gray-200 px-4 pb-12">
       <main className="relative grid grid-cols-1 gap-x-10 lg:grid-cols-[25%_45%_25%]">
         <div className="hidden flex-col items-end lg:flex">
           <LeftSideBar />
