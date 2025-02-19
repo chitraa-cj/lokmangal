@@ -26,7 +26,7 @@ const NewsArticlePage = () => {
 
   return (
     <div className="min-w-full bg-gray-100 px-4 pb-12">
-      <main className="relative grid grid-cols-1 gap-x-10 lg:grid-cols-[25%_45%_25%]">
+      <main className="relative grid grid-cols-1 gap-x-5 lg:grid-cols-[25%_45%_25%]">
         <div className="hidden flex-col items-end lg:flex">
           <LeftSideBar />
         </div>

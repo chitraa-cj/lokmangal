@@ -22,7 +22,7 @@ import CategoryHome from "./Pages/CategoryHome.jsx";
 // import ArticlePage from "./Pages/ArticlePage.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
-import AdminHome from "./Pages/Admin/Home.jsx";
+import AdminHome from "./Pages/Admin/DashBoard.jsx";
 import AddNewPage from "./Pages/AddNewPage.jsx";
 
 const queryClient = new QueryClient();
