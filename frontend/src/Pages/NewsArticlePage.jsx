@@ -3,6 +3,7 @@ import { useNewsPostDetails } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticleDetailed";
 import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
+import RightSideBar from "../components/RightSideBar";
 
 const NewsArticlePage = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const NewsArticlePage = () => {
   // console.log(newsPost);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-gray-100">
+    <div className="flex w-full items-start justify-evenly bg-gray-100 pb-12">
       <div className="max-w-3xl">
         {/* Main Content */}
         <main>
@@ -44,7 +45,7 @@ const NewsArticlePage = () => {
             <Grid redText={"Breaking News:"} text={"Special Coverage"} />
           </div>
 
-          <div className="pb-8 pt-5">
+          <div className="pt-5">
             <VideoCard />
           </div>
 
@@ -55,6 +56,7 @@ const NewsArticlePage = () => {
           /> */}
         </main>
       </div>
+      <RightSideBar />
     </div>
   );
 };

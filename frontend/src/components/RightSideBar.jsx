@@ -1,6 +1,6 @@
 const RightSideBar = () => {
   return (
-    <div className="sticky top-4 w-80">
+    <div className="top-4 hidden w-80 lg:sticky lg:block">
       <div className="py-2 text-xl font-bold">ट्रेंडिंग</div>
 
       <div className="h-fit rounded-sm border border-gray-300 bg-white p-4 shadow-sm">
