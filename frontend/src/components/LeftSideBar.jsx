@@ -1,4 +1,4 @@
-const LeftSidebar = () => {
+const LeftSidebar = ({ news }) => {
   const newsList = [
     {
       title: "US:",
@@ -28,13 +28,13 @@ const LeftSidebar = () => {
   return (
     <div className="sticky top-4 h-fit w-72 rounded-lg bg-white p-4 shadow-lg">
       <h3 className="mb-3 border-b pb-2 text-lg font-bold">ताजा खबरें</h3>
-      {newsList.map((news, index) => (
-        <div key={index} className="mb-4">
-          <h4 className="font-semibold text-red-600">{news.title}</h4>
-          <p className="text-sm text-gray-700">{news.description}</p>
-          <span className="text-xs text-gray-500">{news.time}</span>
-        </div>
-      ))}
+      {/* {newsList.map((news, index) => ( */}
+      <div key={index} className="mb-4">
+        <h4 className="font-semibold text-red-600">{news.title}</h4>
+        {/* <p className="text-sm text-gray-700">{news.}</p> */}
+        <span className="text-xs text-gray-500">{news.time}</span>
+      </div>
+      {/* ))} */}
     </div>
   );
 };
