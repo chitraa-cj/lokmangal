@@ -29,17 +29,26 @@ const AddNewPage = () => {
     "मनोरंजन",
   ];
 
+  // articleType;
+  // navbarCategories;
+  // hashtags;
+  // footerTags;
+  // user;
+  // title;
+  // conclusion;
+  // imgUrl;
+  // content;
+  // position;
+
   const [formData, setFormData] = useState({
-    title: existingNews ? existingNews.title : "",
-    subtitle: existingNews ? existingNews.subtitle : "",
-    conclusion: existingNews ? existingNews.conclusion : "",
-    imgUrl: existingNews ? existingNews.imgUrl : "",
-    content: existingNews ? existingNews.content : "",
-    categories: existingNews?.categories || [],
     articleType: existingNews ? existingNews.articleType : "main", // Default to "main"
     navbarCategories: existingNews?.navbarCategories || [],
     hashtags: existingNews?.hashtags || [],
     footerTags: existingNews?.footerTags || [],
+    title: existingNews ? existingNews.title : "",
+    conclusion: existingNews ? existingNews.conclusion : "",
+    imgUrl: existingNews ? existingNews.imgUrl : "",
+    content: existingNews ? existingNews.content : "",
     position: existingNews ? existingNews.position : undefined,
     _id: existingNews ? existingNews._id : undefined,
   });
@@ -61,18 +70,19 @@ const AddNewPage = () => {
   };
 
   const handleCategorySelect = (category) => {
+    // console.log("clicked");
     setFormData((prev) => {
-      const updatedCategories = prev.categories.includes(category)
-        ? prev.categories.filter((c) => c !== category)
-        : [...prev.categories, category];
+      const updatedCategories = prev.navbarCategories.includes(category)
+        ? prev.navbarCategories.filter((c) => c !== category)
+        : [...prev.navbarCategories, category];
 
       return {
         ...prev,
-        categories: updatedCategories,
+        navbarCategories: updatedCategories,
       };
     });
-    if (errors.categories) {
-      setErrors((prev) => ({ ...prev, categories: "" }));
+    if (errors.navbarCategories) {
+      setErrors((prev) => ({ ...prev, navbarCategories: "" }));
     }
   };
 
@@ -102,8 +112,8 @@ const AddNewPage = () => {
       newErrors.conclusion = "Conclusion is required";
     if (!formData.imgUrl) newErrors.image = "Image is required";
     if (!formData.content.trim()) newErrors.content = "Content is required";
-    if (!formData.categories || formData.categories.length === 0)
-      newErrors.categories = "At least one category is required";
+    if (!formData.articleType)
+      newErrors.articleType = "Article type is required"; // Validate articleType
     return newErrors;
   };
 
@@ -114,16 +124,14 @@ const AddNewPage = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const dataToSubmit = {
-          title: formData.title,
-          subtitle: formData.subtitle,
-          conclusion: formData.conclusion,
-          imgUrl: formData.imgUrl,
-          content: formData.content,
-          categories: formData.categories,
           articleType: formData.articleType,
           navbarCategories: formData.navbarCategories,
           hashtags: formData.hashtags,
           footerTags: formData.footerTags,
+          title: formData.title,
+          conclusion: formData.conclusion,
+          imgUrl: formData.imgUrl,
+          content: formData.content,
           position: formData.position,
         };
         console.log(dataToSubmit);
@@ -138,11 +146,17 @@ const AddNewPage = () => {
         }
         navigate("/admin");
       } catch (error) {
-        setErrors({
-          submit: formData._id
-            ? "Failed to update news article"
-            : "Failed to create news article",
-        });
+        // Extract specific error messages from the error response
+        const errorMessages = error.response?.data?.errors || {};
+        const formattedErrors = {};
+        for (const key in errorMessages) {
+          formattedErrors[key] = errorMessages[key].message;
+        }
+        setErrors((prev) => ({
+          ...prev,
+          ...formattedErrors,
+          submit: "Failed to create or update article",
+        }));
       }
     } else {
       setErrors(newErrors);
@@ -184,22 +198,27 @@ const AddNewPage = () => {
             name="articleType"
             value={formData.articleType}
             onChange={handleInputChange}
-            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+              errors.articleType ? "border-red-500" : "border-gray-300"
+            }`}
           >
             <option value="main">Main</option>
             <option value="left">Left</option>
             <option value="right">Right</option>
             <option value="grid">Grid</option>
           </select>
+          {errors.articleType && (
+            <p className="mt-1 text-sm text-red-500">{errors.articleType}</p>
+          )}
         </div>
 
         {/* Categories Multi-Select */}
         <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
-            Categories * (Selected: {formData.categories.length})
+            Categories * (Selected: {formData.navbarCategories.length})
           </label>
           <div className="mb-2 flex flex-wrap gap-2">
-            {formData.categories.map((category) => (
+            {formData.navbarCategories.map((category) => (
               <span
                 key={category}
                 onClick={() => handleCategorySelect(category)}
@@ -215,7 +234,7 @@ const AddNewPage = () => {
                 key={category}
                 onClick={() => handleCategorySelect(category)}
                 className={`cursor-pointer border-b border-gray-200 px-4 py-2 last:border-b-0 hover:bg-gray-50 ${
-                  formData.categories.includes(category)
+                  formData.navbarCategories.includes(category)
                     ? "bg-blue-50 font-medium text-blue-600"
                     : ""
                 }`}
@@ -224,8 +243,77 @@ const AddNewPage = () => {
               </div>
             ))}
           </div>
-          {errors.categories && (
-            <p className="mt-1 text-sm text-red-500">{errors.categories}</p>
+          {errors.navbarCategories && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.navbarCategories}
+            </p>
+          )}
+        </div>
+
+        {/* Hashtags */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Hashtags *
+          </label>
+          <input
+            type="text"
+            name="hashtags"
+            value={formData.hashtags.join(", ")} // Join array for display
+            onChange={(e) => {
+              const hashtagsArray = e.target.value
+                .split(",")
+                .map((tag) => tag.trim());
+              setFormData((prev) => ({ ...prev, hashtags: hashtagsArray }));
+            }}
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+              errors.hashtags ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.hashtags && (
+            <p className="mt-1 text-sm text-red-500">{errors.hashtags}</p>
+          )}
+        </div>
+
+        {/* Footer Tags */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Footer Tags *
+          </label>
+          <input
+            type="text"
+            name="footerTags"
+            value={formData.footerTags.join(", ")} // Join array for display
+            onChange={(e) => {
+              const footerTagsArray = e.target.value
+                .split(",")
+                .map((tag) => tag.trim());
+              setFormData((prev) => ({ ...prev, footerTags: footerTagsArray }));
+            }}
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+              errors.footerTags ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.footerTags && (
+            <p className="mt-1 text-sm text-red-500">{errors.footerTags}</p>
+          )}
+        </div>
+
+        {/* Position */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Position
+          </label>
+          <input
+            type="number"
+            name="position"
+            value={formData.position || ""} // Handle undefined
+            onChange={handleInputChange}
+            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+              errors.position ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.position && (
+            <p className="mt-1 text-sm text-red-500">{errors.position}</p>
           )}
         </div>
 

@@ -34,20 +34,44 @@ const getNewsPostById = asyncHandler(async (req, res) => {
  * @access Private/Admin
  */
 const createNewsPost = asyncHandler(async (req, res) => {
-  const { title, subtitle, excerpt, imgUrl, content } = req.body;
+  const {
+    title,
+    conclusion,
+    imgUrl,
+    content,
+    articleType,
+    navbarCategories, // Ensure this is included
+    hashtags,
+    footerTags,
+    position,
+  } = req.body;
 
   const newsPost = new NewsPost({
     title,
-    subtitle,
-    excerpt,
+    conclusion,
     imgUrl,
     content,
+    articleType,
+    navbarCategories, // Pass navbarCategories to the model
+    hashtags,
+    footerTags,
+    position,
     user: req.user._id,
   });
 
   const createdNewsPost = await newsPost.save();
   res.status(201).json(createdNewsPost);
 });
+
+// const createNewsPost = asyncHandler(async (req, res) => {
+//   const newsPost = new NewsPost({
+//     ...req.body, // Spread the request body into the new NewsPost
+//     user: req.user._id, // Ensure the user ID is included
+//   });
+
+//   const createdNewsPost = await newsPost.save();
+//   res.status(201).json(createdNewsPost);
+// });
 
 /**
  * @desc Update a news post
