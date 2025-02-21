@@ -2,13 +2,20 @@ import mongoose from "mongoose";
 
 const newsPostSchema = mongoose.Schema(
   {
+    articleType: {
+      type: String,
+      enum: ["main", "left", "right", "grid"],
+      required: true,
+    },
+    navbarCategories: { type: [String], required: true },
+    hashtags: { type: [String], required: true },
+    footerTags: { type: [String], required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
-    subtitle: { type: String, required: false },
-    excerpt: { type: String, required: true },
+    conclusion: { type: String, required: true },
     imgUrl: { type: String, required: true },
     content: { type: String, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    category: { type: [String], required: true }, // Updated to an array of strings
+    position: { type: Number },
   },
   { timestamps: true }
 );
