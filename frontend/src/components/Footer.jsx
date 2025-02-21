@@ -110,13 +110,13 @@ const footer = () => {
         </div>
 
         {/* Right Column */}
-        <div className="md:col-span-1">
+        {/* <div className="md:col-span-1">
           <div className="rounded bg-red-600 p-4 text-center text-white">
-            {/* <img
+            <img
               // src="/api/placeholder/150/50"
               alt="E-Paper"
               className="mx-auto mb-2 w-28 h-28"
-            /> */}
+            />
             <div className="mx-auto mb-4 h-36 w-36 rounded bg-gray-100"></div>
 
             <h3 className="mb-2 font-bold">Lorem ipsum dolor sit amet.!</h3>
@@ -124,7 +124,7 @@ const footer = () => {
               Read E-Paper
             </button>
           </div>
-        </div>
+        </div>*/}
       </div>
 
       {/* Footer */}
