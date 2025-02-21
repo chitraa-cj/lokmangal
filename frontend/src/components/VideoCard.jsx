@@ -8,7 +8,7 @@ const VideoCard = () => {
         खराब रहेगा?
       </h3> */}
       <iframe
-        className="h-96 w-full rounded"
+        className="h-96 w-full rounded-lg bg-white p-4 shadow-lg"
         src="https://www.youtube.com/embed/CDjD5gQjXQk?si=9oLqbmoIyEGdw3Xd"
         title="YouTube video player"
         frameBorder="0"

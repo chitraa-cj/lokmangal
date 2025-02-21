@@ -3,7 +3,7 @@ const RightSideBar = () => {
     <div className="top-4 hidden w-80 lg:sticky lg:block">
       <div className="py-2 text-xl font-bold">ट्रेंडिंग</div>
 
-      <div className="h-fit rounded-sm border border-gray-300 bg-white p-4 shadow-sm">
+      <div className="h-fit rounded-lg bg-white p-4 shadow-lg">
         <div className="border-b pb-4">
           <div className="flex items-center justify-center gap-2">
             {/* <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0"></div> */}

@@ -3,7 +3,7 @@ import Share from "../components/Share";
 
 const HeroArticle = ({ id, heading, imgUrl, excerpt }) => {
   return (
-    <div className="min-w-3xl unselectable max-w-3xl rounded-sm border border-gray-300 bg-white px-6 py-4 shadow-sm">
+    <div className="min-w-3xl unselectable max-w-3xl rounded-lg bg-white px-6 py-4 shadow-lg">
       <div className="mb-3">
         <Link to={`/news/${id}`} className="no-underline">
           <h1 className="text-xl font-bold">{heading}</h1>
