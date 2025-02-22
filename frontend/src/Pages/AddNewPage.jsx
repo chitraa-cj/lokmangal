@@ -6,6 +6,7 @@ import {
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,
 } from "../hooks/useApi";
+import axios from "axios";
 
 const AddNewPage = () => {
   const navigate = useNavigate();
@@ -102,6 +103,48 @@ const AddNewPage = () => {
     setFormData((prev) => ({ ...prev, content }));
     if (errors.content) {
       setErrors((prev) => ({ ...prev, content: "" }));
+    }
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "LOK_MANGAL");
+    data.append("cloud_name", "drp32fxif");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/drp32fxif/image/upload",
+        {
+          method: "POST",
+          body: data,
+        },
+      );
+
+      const uploadedIMGUrl = await res.json();
+
+      // Add error checking
+      if (!uploadedIMGUrl?.url) {
+        console.error("No URL in response:", uploadedIMGUrl);
+        return;
+      }
+
+      setFormData((prev) => {
+        const newState = { ...prev, imgUrl: uploadedIMGUrl.url };
+        console.log("Updated state:", newState); // Log inside setState callback
+        return newState;
+      });
+
+      // If you need to track changes, use useEffect
+      // Add this hook in your component:
+      // useEffect(() => {
+      //     console.log("formData.imgUrl changed:", formData.imgUrl);
+      // }, [formData.imgUrl]);
+    } catch (error) {
+      console.error("Upload error:", error);
     }
   };
 
@@ -341,19 +384,21 @@ const AddNewPage = () => {
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Featured Image *
           </label>
-          <input
-            type="text"
-            name="imgUrl"
-            value={formData.imgUrl}
-            onChange={handleInputChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="mt-2 max-h-48 w-full rounded-lg object-cover"
+          {!formData.imgUrl ? (
+            <input
+              type="file"
+              name="imgUrl"
+              onChange={handleFileUpload}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
             />
+          ) : (
+            <div className="flex justify-center">
+              <img
+                src={formData.imgUrl}
+                alt="Preview"
+                className="my-4 h-full w-[700px] rounded-lg object-cover"
+              />
+            </div>
           )}
           {errors.image && (
             <p className="mt-1 text-sm text-red-500">{errors.image}</p>

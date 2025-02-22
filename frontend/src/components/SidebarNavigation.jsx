@@ -74,7 +74,9 @@ const Sidebar = () => {
       {/* Logo */}
       <div className="flex items-center justify-center p-4">
         {/* <h1 className="text-2xl font-bold text-red-500">NEWS PORTAL</h1> */}
-        <img src="./image.png" alt="logo" className="h-20 w-20" />
+        <Link to="/admin">
+          <img src="./image.png" alt="logo" className="h-20 w-20" />
+        </Link>
       </div>
 
       {/* Navigation */}
