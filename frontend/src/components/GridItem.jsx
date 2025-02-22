@@ -1,9 +1,4 @@
-const GridItem = ({
-  // title = "Lorem ipsum",
-  title = "Lorem ipsum dolor sit amet consectetur",
-  description = "सेड डू इयुसमॉड टेम्पोर इंसीडिडंट यूट लेबोर एट डोलोर मैग्ना अलिका",
-  imgUrl = "https://picsum.photos/700/384",
-}) => {
+const GridItem = ({ title, conclusion, imgUrl }) => {
   return (
     <div className="flex h-72 w-40 flex-col items-center space-y-2 rounded-lg bg-white shadow-lg">
       <img
@@ -13,7 +8,7 @@ const GridItem = ({
       />
       <div className="flex h-full flex-col items-center justify-around">
         <h3 className="break-normal px-2 text-sm font-semibold">{title}</h3>
-        <p className="break-normal px-2 text-sm">{description}</p>
+        <p className="break-normal px-2 text-sm">{conclusion}</p>
       </div>
     </div>
   );

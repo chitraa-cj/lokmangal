@@ -33,12 +33,9 @@ const NewsArticlePage = () => {
         {/* Main Content */}
         <main>
           <HeroArticle
-            kicker1={newsPost.category}
-            kicker2={newsPost.subCategory}
-            // kicker3={newsPost.tags.join(", ")}
             imgUrl={newsPost.imgUrl}
             heading={newsPost.title}
-            description={newsPost.content}
+            content={newsPost.content}
           />
 
           <div className="pt-5">
@@ -56,7 +53,7 @@ const NewsArticlePage = () => {
           /> */}
         </main>
       </div>
-      <RightSideBar />
+      {/* <RightSideBar /> */}
     </div>
   );
 };
