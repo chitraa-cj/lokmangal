@@ -1,6 +1,6 @@
 const footer = () => {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="flex w-full flex-col items-center justify-center bg-gray-800 px-4 py-8 text-white">
       {/* Header */}
       {/* <header className="mb-6"> */}
       {/* <div className="flex items-center justify-between mb-4"> */}
