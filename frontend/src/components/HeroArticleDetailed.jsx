@@ -19,7 +19,7 @@ const HeroArticle = ({ heading, imgUrl, content }) => {
       <Share />
 
       {/* Article Content */}
-      <div className="prose mt-6 max-w-none">
+      <div className="prose mt-6 max-w-none text-black">
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </div>

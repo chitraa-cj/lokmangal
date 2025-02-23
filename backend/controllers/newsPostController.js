@@ -40,7 +40,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
     imgUrl,
     content,
     articleType,
-    navbarCategories, // Ensure this is included
+    navbarCategories,
     hashtags,
     footerTags,
     position,
@@ -52,7 +52,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
     imgUrl,
     content,
     articleType,
-    navbarCategories, // Pass navbarCategories to the model
+    navbarCategories,
     hashtags,
     footerTags,
     position,
@@ -79,16 +79,36 @@ const createNewsPost = asyncHandler(async (req, res) => {
  * @access Private/Admin
  */
 const updateNewsPost = asyncHandler(async (req, res) => {
-  const { title, subtitle, excerpt, imgUrl, content } = req.body;
+  const {
+    title,
+    conclusion,
+    imgUrl,
+    content,
+    articleType,
+    navbarCategories,
+    hashtags,
+    footerTags,
+    position,
+  } = req.body;
 
   const newsPost = await NewsPost.findById(req.params.id);
 
   if (newsPost) {
     newsPost.title = title !== undefined ? title : newsPost.title;
-    newsPost.subtitle = subtitle !== undefined ? subtitle : newsPost.subtitle;
-    newsPost.excerpt = excerpt !== undefined ? excerpt : newsPost.excerpt;
+    newsPost.conclusion =
+      conclusion !== undefined ? conclusion : newsPost.conclusion;
     newsPost.imgUrl = imgUrl !== undefined ? imgUrl : newsPost.imgUrl;
     newsPost.content = content !== undefined ? content : newsPost.content;
+    newsPost.articleType =
+      articleType !== undefined ? articleType : newsPost.articleType;
+    newsPost.navbarCategories =
+      navbarCategories !== undefined
+        ? navbarCategories
+        : newsPost.navbarCategories;
+    newsPost.hashtags = hashtags !== undefined ? hashtags : newsPost.hashtags;
+    newsPost.footerTags =
+      footerTags !== undefined ? footerTags : newsPost.footerTags;
+    newsPost.position = position !== undefined ? position : newsPost.position;
 
     const updatedNewsPost = await newsPost.save();
     res.json(updatedNewsPost);

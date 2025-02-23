@@ -2,15 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
+
+/* @font-face {
+  font-family: "Helvetica";
+  src: local("Helvetica"), local("Arial"), sans-serif;
+} */
+
+html {
+  font-family: "Noto Sans Devanagari", sans-serif;
+}
+
 textarea {
   resize: none;
 }
 
-.unselectable {
+/* .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
+} */

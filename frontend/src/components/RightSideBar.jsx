@@ -1,18 +1,24 @@
 const RightSideBar = ({ trendingNews }) => {
   return (
-    <div className="top-4 hidden w-80 lg:sticky lg:block">
+    <div className="top-4 hidden w-[300px] lg:sticky lg:block">
       <div className="py-2 text-xl font-bold">ट्रेंडिंग</div>
 
-      <div className="h-fit rounded-lg bg-white p-4 shadow-lg">
+      <div className="flex h-fit flex-col gap-y-4">
         {trendingNews.map((news, index) => (
-          <div key={index} className="border-b pb-4">
-            <div className="flex items-center justify-between gap-2">
-              <img src={news.imgUrl} className="w-20" alt={news.title} />
+          <div key={index} className="rounded-lg bg-white p-2 shadow-lg">
+            <div className="flex gap-2">
               <div>
-                <h4 className="text-sm font-semibold">{news.title}</h4>
-                <p className="mt-1 text-xs text-gray-600">
-                  {new Date(news.createdAt).toLocaleDateString()}
+                <h4 className="text-sm font-medium">{news.title}</h4>
+                <p className="mt-3 text-xs text-gray-600">
+                  {new Date(news.createdAt).toLocaleDateString("en-IN")}
                 </p>
+              </div>
+              <div className="flex h-full w-full items-start justify-start">
+                <img
+                  src={news.imgUrl}
+                  className="h-[61px] w-[110px] rounded-sm object-cover"
+                  alt={news.title}
+                />
               </div>
             </div>
           </div>

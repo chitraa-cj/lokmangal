@@ -33,6 +33,11 @@ const Sidebar = () => {
       path: "/admin/add-hashtags",
     },
     {
+      title: "Add Footer Tags",
+      icon: <Hash size={20} />,
+      path: "/admin/add-hashtags",
+    },
+    {
       title: "Go To News",
       icon: <Home size={20} />,
       path: "/",

@@ -38,20 +38,15 @@ const NewsArticlePage = () => {
   // console.log(mainPosts, leftPosts, rightPosts, gridPosts);
 
   return (
-    <div className="min-w-full bg-gray-100 px-4 pb-12">
-      <main className="relative grid grid-cols-1 gap-x-3 lg:grid-cols-[25%_48%_25%]">
-        <div className="hidden flex-col items-end lg:flex">
+    <div className="min-w-full bg-gray-100 px-4 pb-12 pt-4">
+      <main className="relative grid grid-cols-1 gap-x-3 lg:grid-cols-[35%_28%_35%]">
+        <div className="mr-6 hidden flex-col items-end lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-8 px-6">
+        <div className="flex flex-col items-center justify-center space-y-8">
           {mainPosts.length > 0 && (
-            <HeroArticle
-              id={mainPosts[0]._id}
-              heading={mainPosts[0].title}
-              imgUrl={mainPosts[0].imgUrl}
-              conclusion={mainPosts[0].conclusion}
-            />
+            <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
           <div className="min-w-3xl max-w-3xl">
@@ -71,19 +66,14 @@ const NewsArticlePage = () => {
 
           {mainPosts.slice(1).map((post) => (
             <div key={post._id}>
-              <HeroArticle
-                id={post._id}
-                imgUrl={post.imgUrl}
-                heading={post.title}
-                conclusion={post.conclusion}
-              />
+              <HeroArticle id={post._id} article={post} />
             </div>
           ))}
 
           <VideoCard />
         </div>
 
-        <div className="hidden flex-col items-start lg:flex">
+        <div className="ml-6 hidden flex-col items-start lg:flex">
           {rightPosts.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>

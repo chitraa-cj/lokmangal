@@ -77,7 +77,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="border-b shadow-sm">
+    <nav className="border-b-2 border-gray-300 shadow-sm">
       <div className="flex items-center justify-center bg-white px-4">
         <div className="py-3">
           <Link to="/">
@@ -116,7 +116,7 @@ export default function Navbar() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
+                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
                     onClick={() => handleCategoryClick(item)}
                   >
                     {item}
@@ -125,7 +125,7 @@ export default function Navbar() {
                 {isAuthenticated && (
                   <li
                     key="admin"
-                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
+                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
                     onClick={() => navigate("/admin")}
                   >
                     ADMIN
@@ -133,7 +133,7 @@ export default function Navbar() {
                 )}
                 <li
                   key="logout"
-                  className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-yellow-500 md:w-auto md:border-none"
+                  className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
                   onClick={handleLogout}
                 >
                   {isAuthenticated ? "Logout" : "Login"}

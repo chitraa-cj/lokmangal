@@ -1,13 +1,34 @@
 const LeftSidebar = ({ leftNews }) => {
   return (
-    <div className="sticky top-4 h-fit w-72 rounded-lg bg-white p-4 shadow-lg">
-      <h3 className="mb-3 border-b pb-2 text-lg font-bold">ताजा खबरें</h3>
+    <div className="sticky top-4 h-fit w-[180px] rounded-lg bg-white shadow-lg">
+      <div className="relative">
+        <h3 className="inline-block bg-white p-2 text-lg font-bold">
+          ताजा खबरें
+        </h3>
+        <div className="absolute right-0 top-5 h-[4px] w-20 bg-gray-300"></div>
+      </div>
+
       {leftNews.map((news, index) => (
-        <div key={index} className="mb-4">
-          <h4 className="font-semibold text-red-600">{news.title}</h4>
-          <p className="text-sm text-gray-700">{news.description}</p>
+        <div key={index} className="flex flex-col gap-y-2 p-2">
+          <h4 className="text-sm font-medium">{news.title}</h4>
+          {/* <p className="text-sm text-gray-700">{news.description}</p> */}
           <span className="text-xs text-gray-500">
-            {new Date(news.createdAt).toLocaleDateString()}
+            {(() => {
+              const createdAt = new Date(news.createdAt);
+              const now = new Date();
+              const diffInSeconds = Math.floor((now - createdAt) / 1000);
+
+              if (diffInSeconds < 86400) {
+                const hours = Math.floor(diffInSeconds / 3600);
+                const minutes = Math.floor((diffInSeconds % 3600) / 60);
+
+                if (hours > 0) return `${hours}h ago`;
+                if (minutes > 0) return `${minutes}m ago`;
+                return "Just now";
+              }
+
+              return createdAt.toLocaleDateString("en-IN");
+            })()}
           </span>
         </div>
       ))}

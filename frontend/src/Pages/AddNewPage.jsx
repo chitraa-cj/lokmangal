@@ -384,14 +384,13 @@ const AddNewPage = () => {
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Featured Image *
           </label>
-          {!formData.imgUrl ? (
-            <input
-              type="file"
-              name="imgUrl"
-              onChange={handleFileUpload}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          ) : (
+          <input
+            type="file"
+            name="imgUrl"
+            onChange={handleFileUpload}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formData.imgUrl && (
             <div className="flex justify-center">
               <img
                 src={formData.imgUrl}

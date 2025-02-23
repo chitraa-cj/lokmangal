@@ -23,14 +23,14 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
         <table className="w-full">
           <thead>
             <tr className="border-b">
-              <th className="px-4 py-3 text-left">IMAGE</th>
-              <th className="px-4 py-3 text-left">TITLE</th>
-              <th className="px-4 py-3 text-left">EXCERPT</th>
-              {/* <th className="text-left py-3 px-4">CATEGORY</th> */}
-              {/* <th className="text-left py-3 px-4">DESCRIPTION</th> */}
-              <th className="px-4 py-3 text-left">DATE</th>
-              {/* <th className="text-left py-3 px-4">STATUS</th> */}
-              <th className="px-4 py-3 text-left">ACTION</th>
+              <th className="px-4 py-3 text-left uppercase">IMAGE</th>
+              <th className="px-4 py-3 text-left uppercase">TITLE</th>
+              <th className="px-4 py-3 text-left uppercase">Conclusion</th>
+              <th className="px-4 py-3 text-left uppercase">type</th>
+              {/* <th className="px-4 py-3 text-left uppercase">Category</th> */}
+              <th className="px-4 py-3 text-left uppercase">DATE</th>
+              {/* <th className="px-4 py-3 text-left uppercase">STATUS</th> */}
+              <th className="px-4 py-3 text-left uppercase">ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +57,10 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     {item.title}
                   </Link>
                 </td>
-                <td className="px-4 py-3">{item.excerpt}</td>
+                <td className="px-4 py-3">{item.conclusion}</td>
+                <td className="px-4 py-3 font-semibold uppercase">
+                  {item.articleType}
+                </td>
                 {/* <td className="py-3 px-4">{item.category}</td> */}
                 {/* <td className="py-3 px-4 max-w-xs truncate">
                 {item.description}
