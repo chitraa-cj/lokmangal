@@ -1,5 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import NewsPost from "../models/newsPostModel.js";
+import MainNews from "../models/newsMainModel.js";
+import LeftNews from "../models/newsLeftModel.js";
+import RightNews from "../models/newsRightModel.js";
+import GridNews from "../models/newsGridModel.js";
 import mongoose from "mongoose";
 
 /**
@@ -8,8 +11,14 @@ import mongoose from "mongoose";
  * @access Public
  */
 const getAllNewsPosts = asyncHandler(async (req, res) => {
-  const newsPosts = await NewsPost.find().sort({ createdAt: -1 });
-  res.json(newsPosts);
+  const [hero, left, right, grid] = await Promise.all([
+    MainNews.find().sort({ createdAt: -1 }).limit(10),
+    LeftNews.find().sort({ createdAt: -1 }).limit(6),
+    RightNews.find().sort({ createdAt: -1 }).limit(6),
+    GridNews.find().sort({ createdAt: -1 }).limit(6),
+  ]);
+
+  res.json({ hero, left, right, grid });
 });
 
 /**
@@ -18,8 +27,20 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
  * @access Public
  */
 const getNewsPostById = asyncHandler(async (req, res) => {
-  const newsPost = await NewsPost.findById(req.params.id);
+  const { type, id } = req.params;
+  const models = {
+    main: MainNews,
+    left: LeftNews,
+    right: RightNews,
+    grid: GridNews,
+  };
 
+  if (!models[type]) {
+    res.status(400);
+    throw new Error("Invalid news type");
+  }
+
+  const newsPost = await models[type].findById(id);
   if (newsPost) {
     res.json(newsPost);
   } else {
@@ -35,22 +56,33 @@ const getNewsPostById = asyncHandler(async (req, res) => {
  */
 const createNewsPost = asyncHandler(async (req, res) => {
   const {
+    type,
     title,
     conclusion,
     imgUrl,
     content,
-    articleType,
     navbarCategories,
     hashtags,
     footerTags,
   } = req.body;
 
-  const newsPost = new NewsPost({
+  const models = {
+    main: MainNews,
+    left: LeftNews,
+    right: RightNews,
+    grid: GridNews,
+  };
+
+  if (!models[type]) {
+    res.status(400);
+    throw new Error("Invalid news type");
+  }
+
+  const newsPost = new models[type]({
     title,
     conclusion,
     imgUrl,
     content,
-    articleType,
     navbarCategories,
     hashtags,
     footerTags,
@@ -77,35 +109,22 @@ const createNewsPost = asyncHandler(async (req, res) => {
  * @access Private/Admin
  */
 const updateNewsPost = asyncHandler(async (req, res) => {
-  const {
-    title,
-    conclusion,
-    imgUrl,
-    content,
-    articleType,
-    navbarCategories,
-    hashtags,
-    footerTags,
-  } = req.body;
+  const { type, id } = req.params;
+  const models = {
+    main: MainNews,
+    left: LeftNews,
+    right: RightNews,
+    grid: GridNews,
+  };
 
-  const newsPost = await NewsPost.findById(req.params.id);
+  if (!models[type]) {
+    res.status(400);
+    throw new Error("Invalid news type");
+  }
 
+  const newsPost = await models[type].findById(id);
   if (newsPost) {
-    newsPost.title = title !== undefined ? title : newsPost.title;
-    newsPost.conclusion =
-      conclusion !== undefined ? conclusion : newsPost.conclusion;
-    newsPost.imgUrl = imgUrl !== undefined ? imgUrl : newsPost.imgUrl;
-    newsPost.content = content !== undefined ? content : newsPost.content;
-    newsPost.articleType =
-      articleType !== undefined ? articleType : newsPost.articleType;
-    newsPost.navbarCategories =
-      navbarCategories !== undefined
-        ? navbarCategories
-        : newsPost.navbarCategories;
-    newsPost.hashtags = hashtags !== undefined ? hashtags : newsPost.hashtags;
-    newsPost.footerTags =
-      footerTags !== undefined ? footerTags : newsPost.footerTags;
-
+    Object.assign(newsPost, req.body);
     const updatedNewsPost = await newsPost.save();
     res.json(updatedNewsPost);
   } else {
@@ -113,17 +132,28 @@ const updateNewsPost = asyncHandler(async (req, res) => {
     throw new Error("News post not found");
   }
 });
-
 /**
  * @desc Delete a news post
  * @route DELETE /api/news/:id
  * @access Private/Admin
  */
 const deleteNewsPost = asyncHandler(async (req, res) => {
-  const newsPost = await NewsPost.findById(req.params.id);
+  const { type, id } = req.params;
+  const models = {
+    main: MainNews,
+    left: LeftNews,
+    right: RightNews,
+    grid: GridNews,
+  };
 
+  if (!models[type]) {
+    res.status(400);
+    throw new Error("Invalid news type");
+  }
+
+  const newsPost = await models[type].findById(id);
   if (newsPost) {
-    await NewsPost.deleteOne({ _id: newsPost._id });
+    await models[type].deleteOne({ _id: id });
     res.status(200).json({ message: "News post deleted successfully" });
   } else {
     res.status(404);
@@ -137,7 +167,7 @@ const deleteNewsPost = asyncHandler(async (req, res) => {
  * @access Private
  */
 const getNewsPostsByUser = asyncHandler(async (req, res) => {
-  const newsPosts = await NewsPost.find({ user: req.params.userId }).sort({
+  const newsPosts = await MainNews.find({ user: req.params.userId }).sort({
     createdAt: -1,
   });
 
@@ -156,9 +186,8 @@ const getNewsPostsByUser = asyncHandler(async (req, res) => {
  */
 const getNewsPostsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
-  const newsPosts = await NewsPost.find({
+  const newsPosts = await MainNews.find({
     navbarCategories: category,
-    articleType: "main",
   }).sort({
     createdAt: -1,
   });

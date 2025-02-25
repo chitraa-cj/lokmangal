@@ -173,7 +173,7 @@ const AddNewPage = () => {
           imgUrl: formData.imgUrl,
           content: formData.content,
         };
-        console.log(dataToSubmit);
+        // console.log(dataToSubmit);
 
         if (formData._id) {
           await updateNewsMutation.mutateAsync({

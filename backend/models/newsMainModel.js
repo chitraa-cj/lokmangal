@@ -1,12 +1,7 @@
 import mongoose from "mongoose";
 
-const newsPostSchema = mongoose.Schema(
+const mainNewsSchema = mongoose.Schema(
   {
-    articleType: {
-      type: String,
-      enum: ["main", "left", "right", "grid"],
-      required: true,
-    },
     navbarCategories: { type: [String], required: true },
     hashtags: { type: [String], required: true },
     footerTags: { type: [String], required: true },
@@ -19,6 +14,6 @@ const newsPostSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const NewsPost = mongoose.model("NewsPost", newsPostSchema);
+const MainNews = mongoose.model("MainNews", mainNewsSchema);
 
-export default NewsPost;
+export default MainNews;
