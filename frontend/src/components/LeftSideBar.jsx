@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LeftSidebar = ({ leftNews }) => {
+  const navigate = useNavigate();
+
+  const onClickNavigate = (article) => {
+    navigate(`/news/${article._id}`, { state: { article } });
+  };
+
   return (
     <div className="sticky top-4 h-fit w-[180px] rounded-lg bg-white shadow-lg">
       <div className="relative">
@@ -10,15 +16,17 @@ const LeftSidebar = ({ leftNews }) => {
         <div className="absolute right-0 top-5 h-[4px] w-20 bg-gray-300"></div>
       </div>
 
-      {leftNews.map((news, index) => (
+      {leftNews.map((article, index) => (
         <div key={index} className="flex flex-col gap-y-2 p-2">
-          <Link to={`/news/${news._id}`} className="no-underline">
-            <h4 className="text-sm font-medium">{news.title}</h4>
-          </Link>
-          {/* <p className="text-sm text-gray-700">{news.description}</p> */}
+          <h4
+            className="cursor-pointer text-sm font-medium"
+            onClick={() => onClickNavigate(article)}
+          >
+            {article.title}
+          </h4>
           <span className="text-xs text-gray-500">
             {(() => {
-              const createdAt = new Date(news.createdAt);
+              const createdAt = new Date(article.createdAt);
               const now = new Date();
               const diffInSeconds = Math.floor((now - createdAt) / 1000);
 

@@ -1,31 +1,39 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RightSideBar = ({ trendingNews }) => {
+  const navigate = useNavigate();
+
+  const onClickNavigate = (article) => {
+    navigate(`/news/${article._id}`, { state: { article } });
+  };
+
   return (
     <div className="top-4 hidden w-[300px] lg:sticky lg:block">
       <div className="py-2 text-xl font-bold">ट्रेंडिंग</div>
 
       <div className="flex h-fit flex-col gap-y-4">
-        {trendingNews.map((news, index) => (
+        {trendingNews.map((article, index) => (
           <div key={index} className="rounded-lg bg-white p-2 shadow-lg">
             <div className="flex gap-2">
               <div>
-                <Link to={`/news/${news._id}`} className="no-underline">
-                  <h4 className="text-sm font-medium">{news.title}</h4>
-                </Link>
+                <h4
+                  onClick={() => onClickNavigate(article)}
+                  className="cursor-pointer text-sm font-medium"
+                >
+                  {article.title}
+                </h4>
                 <p className="mt-3 text-xs text-gray-600">
-                  {new Date(news.createdAt).toLocaleDateString("en-IN")}
+                  {new Date(article.createdAt).toLocaleDateString("en-IN")}
                 </p>
               </div>
-              <Link to={`/news/${news._id}`}>
-                <div className="flex h-full w-full items-start justify-start">
-                  <img
-                    src={news.imgUrl}
-                    className="h-[61px] w-[110px] rounded-sm object-cover"
-                    alt={news.title}
-                  />
-                </div>
-              </Link>
+              <div className="flex h-full w-full items-start justify-start">
+                <img
+                  src={article.imgUrl}
+                  className="h-[61px] w-[110px] cursor-pointer rounded-sm object-cover"
+                  alt={article.title}
+                  onClick={() => onClickNavigate(article)}
+                />
+              </div>
             </div>
           </div>
         ))}
@@ -33,4 +41,5 @@ const RightSideBar = ({ trendingNews }) => {
     </div>
   );
 };
+
 export default RightSideBar;
