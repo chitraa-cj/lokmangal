@@ -15,7 +15,6 @@ const newsPostSchema = mongoose.Schema(
     conclusion: { type: String, required: true },
     imgUrl: { type: String, required: true },
     content: { type: String, required: true },
-    position: { type: Number },
   },
   { timestamps: true }
 );

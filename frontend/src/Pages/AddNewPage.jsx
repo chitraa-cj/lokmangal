@@ -39,7 +39,6 @@ const AddNewPage = () => {
   // conclusion;
   // imgUrl;
   // content;
-  // position;
 
   const [formData, setFormData] = useState({
     articleType: existingNews ? existingNews.articleType : "main", // Default to "main"
@@ -50,7 +49,6 @@ const AddNewPage = () => {
     conclusion: existingNews ? existingNews.conclusion : "",
     imgUrl: existingNews ? existingNews.imgUrl : "",
     content: existingNews ? existingNews.content : "",
-    position: existingNews ? existingNews.position : undefined,
     _id: existingNews ? existingNews._id : undefined,
   });
 
@@ -175,7 +173,6 @@ const AddNewPage = () => {
           conclusion: formData.conclusion,
           imgUrl: formData.imgUrl,
           content: formData.content,
-          position: formData.position,
         };
         console.log(dataToSubmit);
 
@@ -338,25 +335,6 @@ const AddNewPage = () => {
           />
           {errors.footerTags && (
             <p className="mt-1 text-sm text-red-500">{errors.footerTags}</p>
-          )}
-        </div>
-
-        {/* Position */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Position
-          </label>
-          <input
-            type="number"
-            name="position"
-            value={formData.position || ""} // Handle undefined
-            onChange={handleInputChange}
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.position ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.position && (
-            <p className="mt-1 text-sm text-red-500">{errors.position}</p>
           )}
         </div>
 

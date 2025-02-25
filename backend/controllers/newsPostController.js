@@ -43,7 +43,6 @@ const createNewsPost = asyncHandler(async (req, res) => {
     navbarCategories,
     hashtags,
     footerTags,
-    position,
   } = req.body;
 
   const newsPost = new NewsPost({
@@ -55,7 +54,6 @@ const createNewsPost = asyncHandler(async (req, res) => {
     navbarCategories,
     hashtags,
     footerTags,
-    position,
     user: req.user._id,
   });
 
@@ -88,7 +86,6 @@ const updateNewsPost = asyncHandler(async (req, res) => {
     navbarCategories,
     hashtags,
     footerTags,
-    position,
   } = req.body;
 
   const newsPost = await NewsPost.findById(req.params.id);
@@ -108,7 +105,6 @@ const updateNewsPost = asyncHandler(async (req, res) => {
     newsPost.hashtags = hashtags !== undefined ? hashtags : newsPost.hashtags;
     newsPost.footerTags =
       footerTags !== undefined ? footerTags : newsPost.footerTags;
-    newsPost.position = position !== undefined ? position : newsPost.position;
 
     const updatedNewsPost = await newsPost.save();
     res.json(updatedNewsPost);
