@@ -19,15 +19,3 @@ const GridItem = ({ article }) => {
   );
 };
 export default GridItem;
-
-// const GridItem = ({ title, imgUrl }) => {
-//   return (
-//     <div className="flex w-60 flex-col items-center justify-center space-y-2 bg-white p-3">
-//       <img src={imgUrl} alt="" className="h-40 w-full rounded object-cover" />
-//       <p className="line-clamp-2 w-full text-center text-sm font-semibold">
-//         {title}
-//       </p>
-//     </div>
-//   );
-// };
-// export default GridItem;

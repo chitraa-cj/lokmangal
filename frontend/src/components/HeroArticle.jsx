@@ -1,13 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Share from "../components/Share";
 
 const HeroArticle = ({ article }) => {
+  const navigate = useNavigate();
+
+  const onClickNavigate = (article) => {
+    navigate(`/news/${article._id}`, { state: { article } });
+  };
+
   return (
     <div className="w-[434px] rounded-lg bg-white pt-4 shadow-lg">
       <div className="mb-3">
-        <Link to={`/news/${article._id}`} className="no-underline">
-          <h1 className="px-4 text-xl font-bold">{article.title}</h1>
-        </Link>
+        {/* <Link to={`/news/${article._id}`} className="no-underline"> */}
+        <h1
+          className="cursor-pointer px-4 text-xl font-bold"
+          // onClick={onClickNavigate(article)}
+          onClick={() => {
+            onClickNavigate(article);
+          }}
+        >
+          {article.title}
+        </h1>
+        {/* </Link> */}
       </div>
 
       <div className="mb-2 px-4 text-sky-400">{article.hashtags}</div>

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
+import { toast } from "react-toastify";
 
 //cspell:disable
 
@@ -35,38 +36,8 @@ export default function Navbar() {
       // Fetch only the specific category data we need
       const { data } = await axios.get(`/api/news/category/${category}`);
 
-      // Get existing news data from the cache (if available)
-      const cachedNewsPosts = queryClient.getQueryData(["news"]);
-
-      // console.log("cachedNewsPosts:", cachedNewsPosts);
-      // if (cachedNewsPosts) {
-      // Filter cached data to get the sidebar and grid items we can reuse
-      const leftPosts = cachedNewsPosts.filter(
-        (post) => post.articleType === "left",
-      );
-      const rightPosts = cachedNewsPosts.filter(
-        (post) => post.articleType === "right",
-      );
-      const gridPosts = cachedNewsPosts.filter(
-        (post) => post.articleType === "grid",
-      );
-
-      // // Merge with the newly fetched category-specific data
-      // const mainPostsFromCategory = data.filter(
-      //   (post) => post.articleType === "main",
-      // );
-
-      // Create a merged dataset
-      const mergedPosts = [
-        // ...mainPostsFromCategory,
-        ...data,
-        ...leftPosts,
-        ...rightPosts,
-        ...gridPosts,
-      ];
-
       // Navigate to the category page with the merged data
-      navigate(`/category/${category}`, { state: { articles: mergedPosts } });
+      navigate(`/category/${category}`, { state: { mainPosts: data } });
       // console.log(mergedPosts);
       // } else {
       //   console.log("No cached data found, fetching from server");
@@ -74,7 +45,11 @@ export default function Navbar() {
       //   navigate(`/category/${category}`, { state: { articles: data } });
       // }
     } catch (error) {
-      console.error("Error fetching articles by category:", error);
+      if (error.response && error.response.status === 404) {
+        toast.warn("No News Posts Found for this Category");
+      } else {
+        toast.error("An error occurred while fetching news");
+      }
     }
   };
 

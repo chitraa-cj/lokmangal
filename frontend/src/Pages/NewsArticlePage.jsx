@@ -1,15 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useNewsPostDetails } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticleDetailed";
-import Grid from "../components/Grid";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
 
 const NewsArticlePage = () => {
   const { id } = useParams();
-  const { data: newsPost, isLoading, error } = useNewsPostDetails(id);
+  const location = useLocation();
 
-  // console.log(id);
+  // Get the article from the location state if available
+  const articleFromState = location.state?.article;
+
+  const {
+    data: newsPost,
+    isLoading,
+    error,
+  } = useNewsPostDetails(id, articleFromState);
 
   if (isLoading) {
     return (
@@ -19,10 +25,10 @@ const NewsArticlePage = () => {
     );
   }
 
-  if (error) {
+  if (error || !newsPost) {
     return (
       <p className="flex min-h-screen items-center justify-center">
-        Error loading news articles.
+        Error loading news article. Please try again later.
       </p>
     );
   }
@@ -36,19 +42,9 @@ const NewsArticlePage = () => {
         <main>
           <HeroArticle article={newsPost} />
 
-          {/* <div className="pt-5">
-            <Grid redText={"Breaking News:"} text={"Special Coverage"} />
-          </div> */}
-
           <div className="pt-5">
             <VideoCard />
           </div>
-
-          {/* Additional News Content */}
-          {/* <HeroArticle
-            heading={"Related News"}
-            // description={"More updates soon..."}
-          /> */}
         </main>
       </div>
       {/* <RightSideBar /> */}

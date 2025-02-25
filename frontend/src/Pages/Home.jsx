@@ -1,3 +1,4 @@
+import { useLocation, useParams } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
 import ScrollableGrid from "../components/ScrollableGrid";
@@ -6,7 +7,13 @@ import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
 
 const NewsArticlePage = () => {
+  const { category } = useParams();
+  const location = useLocation();
+  const categoryNewsPosts = location.state?.mainPosts;
+
   const { data: newsPosts, isLoading, error } = useNewsPosts();
+
+  // console.log(newsPosts);
 
   if (isLoading) {
     return (
@@ -23,13 +30,32 @@ const NewsArticlePage = () => {
       </p>
     );
   }
+  let mp;
+
+  if (category) {
+    if (!categoryNewsPosts) {
+      return (
+        <p className="flex min-h-screen items-center justify-center bg-gray-100">
+          Error loading news articles.
+        </p>
+      );
+    }
+    // console.log(category);
+    // console.log(categoryNewsPosts);
+  }
 
   // // Sort posts based on position
   // const sortedPosts = newsPosts.sort(
   //   (a, b) => (a.position || 0) - (b.position || 0),
   // );
 
-  const mainPosts = newsPosts.filter((post) => post.articleType === "main");
+  let mainPosts;
+  if (category) {
+    mainPosts = categoryNewsPosts;
+  } else {
+    mainPosts = newsPosts.filter((post) => post.articleType === "main");
+  }
+
   const leftPosts = newsPosts.filter((post) => post.articleType === "left");
   const rightPosts = newsPosts.filter((post) => post.articleType === "right");
   const gridPosts = newsPosts.filter((post) => post.articleType === "grid");

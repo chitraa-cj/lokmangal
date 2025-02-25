@@ -5,8 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import {
   useCreateNewsPostMutation,
   useUpdateNewsPostMutation,
-} from "../hooks/useApi";
-import axios from "axios";
+} from "../../hooks/useApi";
 
 const AddNewPage = () => {
   const navigate = useNavigate();

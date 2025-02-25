@@ -12,13 +12,15 @@ export const useNewsPosts = () => {
   });
 };
 
-export const useNewsPostDetails = (newsId, isAdminPath) => {
+export const useNewsPostDetails = (newsId, initialData) => {
   return useQuery({
     queryKey: ["news", newsId],
     queryFn: async () => {
       const { data } = await axios.get(`/api/news/${newsId}`);
       return data;
     },
+    initialData,
+    enabled: newsId && !initialData,
   });
 };
 

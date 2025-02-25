@@ -18,12 +18,10 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 
 import Home from "./Pages/Home.jsx";
-import CategoryHome from "./Pages/CategoryHome.jsx";
-// import ArticlePage from "./Pages/ArticlePage.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/DashBoard.jsx";
-import AddNewPage from "./Pages/AddNewPage.jsx";
+import AddNewPage from "./Pages/Admin/AddNewPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +30,8 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
-      <Route path="/category/:category" element={<CategoryHome />} />
-      {/* <Route path="/article" element={<ArticlePage />} /> */}
+      <Route path="/category/:category" element={<Home />} />
+      {/* <Route path="/category/:category" element={<CategoryHome />} /> */}
       <Route path="/news/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}
