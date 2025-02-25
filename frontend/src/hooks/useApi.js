@@ -65,3 +65,14 @@ export const useDeleteNewsPostMutation = () => {
     },
   });
 };
+
+export const useNewsPostsByCategory = (category) => {
+  return useQuery({
+    queryKey: ["news", category],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/news/category/${category}`);
+      return data;
+    },
+    enabled: !!category, // Only run if category is provided
+  });
+};

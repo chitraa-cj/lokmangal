@@ -26,27 +26,27 @@ const footer = () => {
           <h3 className="mb-4 font-semibold">News From Indian States</h3>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-gray-400 hover:text-gray-100">
                 Madhya Pradesh News
               </a>
             </li>
             <li>
-              <a href="#" className="text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-gray-400 hover:text-gray-100">
                 Uttar Pradesh News
               </a>
             </li>
             <li>
-              <a href="#" className="text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-gray-400 hover:text-gray-100">
                 Rajasthan News
               </a>
             </li>
             <li>
-              <a href="#" className="text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-gray-400 hover:text-gray-100">
                 Haryana News
               </a>
             </li>
             <li>
-              <a href="#" className="text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-gray-400 hover:text-gray-100">
                 Bihar News
               </a>
             </li>
@@ -60,22 +60,22 @@ const footer = () => {
               <h3 className="mb-4 font-semibold">Lifestyle</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Health News
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Fitness News
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Fashion News
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Spirituality
                   </a>
                 </li>
@@ -85,22 +85,22 @@ const footer = () => {
               <h3 className="mb-4 font-semibold">Entertainment News</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Bollywood News
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     TV Serials
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Hollywood News
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <a href="#" className="text-gray-400 hover:text-gray-100">
                     Movie Reviews
                   </a>
                 </li>
@@ -133,15 +133,15 @@ const footer = () => {
           <div>
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <div className="flex flex-wrap gap-2">
-              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
                 About Us
               </a>
               <span className="text-gray-300">|</span>
-              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
                 Careers
               </a>
               <span className="text-gray-300">|</span>
-              <a href="#" className="text-sm text-gray-600 hover:text-gray-900">
+              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
                 Contact Us
               </a>
             </div>
@@ -160,7 +160,7 @@ const footer = () => {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-400">
               © 2024-25 Lok Mangal Limited
             </p>
           </div>
