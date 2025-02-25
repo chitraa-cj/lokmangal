@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
-import GridItem from "../components/GridItem";
+import ScrollableGrid from "../components/ScrollableGrid";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
@@ -49,20 +48,20 @@ const NewsArticlePage = () => {
             <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
-          <div className="min-w-3xl max-w-3xl">
-            <Link to="/" className="block">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {gridPosts.map((post) => (
-                  <GridItem
-                    key={post._id}
-                    title={post.title}
-                    imgUrl={post.imgUrl}
-                    conclusion={post.conclusion}
-                  />
-                ))}
-              </div>
-            </Link>
-          </div>
+          {/* <div className="min-w-3xl max-w-3xl"> */}
+          {/* <div className="w-[434px]">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {gridPosts.map((post) => (
+                <GridItem key={post._id} article={post} />
+              ))}
+            </div>
+          </div> */}
+
+          {gridPosts.length > 0 && (
+            <div className="">
+              <ScrollableGrid gridPosts={gridPosts} />
+            </div>
+          )}
 
           {mainPosts.slice(1).map((post) => (
             <div key={post._id}>

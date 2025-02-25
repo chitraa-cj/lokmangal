@@ -7,7 +7,9 @@ import RightSideBar from "../components/RightSideBar";
 
 const NewsArticlePage = () => {
   const { id } = useParams();
-  const { data: newsPost, isLoading, error } = useNewsPostDetails(id, false);
+  const { data: newsPost, isLoading, error } = useNewsPostDetails(id);
+
+  // console.log(id);
 
   if (isLoading) {
     return (
@@ -32,15 +34,11 @@ const NewsArticlePage = () => {
       <div className="max-w-3xl">
         {/* Main Content */}
         <main>
-          <HeroArticle
-            imgUrl={newsPost.imgUrl}
-            heading={newsPost.title}
-            content={newsPost.content}
-          />
+          <HeroArticle article={newsPost} />
 
-          <div className="pt-5">
+          {/* <div className="pt-5">
             <Grid redText={"Breaking News:"} text={"Special Coverage"} />
-          </div>
+          </div> */}
 
           <div className="pt-5">
             <VideoCard />

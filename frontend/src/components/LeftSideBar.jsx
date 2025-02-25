@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const LeftSidebar = ({ leftNews }) => {
   return (
     <div className="sticky top-4 h-fit w-[180px] rounded-lg bg-white shadow-lg">
@@ -10,7 +12,9 @@ const LeftSidebar = ({ leftNews }) => {
 
       {leftNews.map((news, index) => (
         <div key={index} className="flex flex-col gap-y-2 p-2">
-          <h4 className="text-sm font-medium">{news.title}</h4>
+          <Link to={`/news/${news._id}`} className="no-underline">
+            <h4 className="text-sm font-medium">{news.title}</h4>
+          </Link>
           {/* <p className="text-sm text-gray-700">{news.description}</p> */}
           <span className="text-xs text-gray-500">
             {(() => {

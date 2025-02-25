@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const RightSideBar = ({ trendingNews }) => {
   return (
     <div className="top-4 hidden w-[300px] lg:sticky lg:block">
@@ -8,18 +10,22 @@ const RightSideBar = ({ trendingNews }) => {
           <div key={index} className="rounded-lg bg-white p-2 shadow-lg">
             <div className="flex gap-2">
               <div>
-                <h4 className="text-sm font-medium">{news.title}</h4>
+                <Link to={`/news/${news._id}`} className="no-underline">
+                  <h4 className="text-sm font-medium">{news.title}</h4>
+                </Link>
                 <p className="mt-3 text-xs text-gray-600">
                   {new Date(news.createdAt).toLocaleDateString("en-IN")}
                 </p>
               </div>
-              <div className="flex h-full w-full items-start justify-start">
-                <img
-                  src={news.imgUrl}
-                  className="h-[61px] w-[110px] rounded-sm object-cover"
-                  alt={news.title}
-                />
-              </div>
+              <Link to={`/news/${news._id}`}>
+                <div className="flex h-full w-full items-start justify-start">
+                  <img
+                    src={news.imgUrl}
+                    className="h-[61px] w-[110px] rounded-sm object-cover"
+                    alt={news.title}
+                  />
+                </div>
+              </Link>
             </div>
           </div>
         ))}

@@ -12,7 +12,7 @@ const HeroArticle = ({ article }) => {
 
       <div className="mb-2 px-4 text-sky-400">{article.hashtags}</div>
 
-      <Link to={`/news/${article.id}`} className="h-full w-full">
+      <Link to={`/news/${article._id}`} className="h-full w-full">
         <img
           src={article.imgUrl}
           alt={article.heading}
