@@ -10,7 +10,7 @@ const AdminRoute = () => {
     retry: false,
   });
 
-  if (isLoading) {
+  if (true) {
     return <Loader text="Checking admin access..." />;
   }
 
