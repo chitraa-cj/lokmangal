@@ -11,9 +11,24 @@ const NewsArticlePage = () => {
   const location = useLocation();
   const categoryNewsPosts = location.state?.mainPosts;
 
-  const { data: newsPosts, isLoading, error } = useNewsPosts();
+  const { data, isLoading, error } = useNewsPosts();
 
-  // console.log(newsPosts);
+  console.log(data);
+
+  // Check if data is defined before destructuring
+  let mainPosts = [],
+    leftPosts = [],
+    rightPosts = [],
+    gridPosts = [];
+
+  if (data) {
+    ({
+      main: mainPosts,
+      left: leftPosts,
+      right: rightPosts,
+      grid: gridPosts,
+    } = data);
+  }
 
   if (isLoading) {
     return (
@@ -30,7 +45,6 @@ const NewsArticlePage = () => {
       </p>
     );
   }
-  let mp;
 
   if (category) {
     if (!categoryNewsPosts) {
@@ -40,32 +54,12 @@ const NewsArticlePage = () => {
         </p>
       );
     }
-    // console.log(category);
-    // console.log(categoryNewsPosts);
   }
-
-  // // Sort posts based on position
-  // const sortedPosts = newsPosts.sort(
-  //   (a, b) => (a.position || 0) - (b.position || 0),
-  // );
-
-  let mainPosts;
-  if (category) {
-    mainPosts = categoryNewsPosts;
-  } else {
-    mainPosts = newsPosts.filter((post) => post.articleType === "main");
-  }
-
-  const leftPosts = newsPosts.filter((post) => post.articleType === "left");
-  const rightPosts = newsPosts.filter((post) => post.articleType === "right");
-  const gridPosts = newsPosts.filter((post) => post.articleType === "grid");
-
-  // console.log(mainPosts, leftPosts, rightPosts, gridPosts);
 
   return (
     <div className="min-w-full bg-gray-100 px-4 pb-12 pt-4">
-      <main className="relative grid grid-cols-1 gap-x-3 lg:grid-cols-[35%_28%_35%]">
-        <div className="mr-6 hidden flex-col items-end lg:flex">
+      <main className="relative grid grid-cols-1 gap-x-8 lg:grid-cols-[35%_28%_35%]">
+        <div className="hidden flex-col items-end lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
 
@@ -75,7 +69,7 @@ const NewsArticlePage = () => {
           )}
 
           {gridPosts.length > 0 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(0, 3)} />
+            <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
           )}
 
           {mainPosts.slice(1, 2).map((post) => (
@@ -84,8 +78,8 @@ const NewsArticlePage = () => {
             </div>
           ))}
 
-          {gridPosts.length > 3 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(3)} />
+          {gridPosts.length > 6 && (
+            <ScrollableGrid gridPosts={gridPosts.slice(6)} />
           )}
 
           {mainPosts.slice(2).map((post) => (
@@ -97,7 +91,7 @@ const NewsArticlePage = () => {
           <VideoCard />
         </div>
 
-        <div className="ml-6 hidden flex-col items-start lg:flex">
+        <div className="hidden flex-col items-start lg:flex">
           {rightPosts.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>

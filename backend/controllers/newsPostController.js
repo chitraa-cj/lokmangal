@@ -11,14 +11,14 @@ import mongoose from "mongoose";
  * @access Public
  */
 const getAllNewsPosts = asyncHandler(async (req, res) => {
-  const [hero, left, right, grid] = await Promise.all([
+  const [main, left, right, grid] = await Promise.all([
     MainNews.find().sort({ createdAt: -1 }).limit(10),
     LeftNews.find().sort({ createdAt: -1 }).limit(6),
     RightNews.find().sort({ createdAt: -1 }).limit(6),
-    GridNews.find().sort({ createdAt: -1 }).limit(6),
+    GridNews.find().sort({ createdAt: -1 }).limit(10),
   ]);
 
-  res.json({ hero, left, right, grid });
+  res.json({ main, left, right, grid });
 });
 
 /**

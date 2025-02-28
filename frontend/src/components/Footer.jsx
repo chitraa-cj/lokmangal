@@ -1,149 +1,241 @@
-const footer = () => {
+// const footer = () => {
+//   return (
+//     <div className="flex w-full flex-col items-center justify-center bg-gray-800 px-4 py-8 text-white">
+//       {/* Header */}
+//       {/* <header className="mb-6"> */}
+//       {/* <div className="flex items-center justify-between mb-4"> */}
+//       {/* <h1 className="text-4xl font-bold">लोक मंगल</h1> */}
+//       {/* </div> */}
+//       {/* </header> */}
+
+//       {/* Latest News Banner */}
+//       {/* <div className="bg-gray-100 p-4 mb-8 rounded">
+//         <h2 className="font-semibold mb-2">Latest News in Hindi</h2>
+//         <p className="text-sm text-gray-700 leading-relaxed">
+//           US Indians Deportation: सी-17 वैन्य विमान में भारतीयों को अमेरिका से
+//           वापस भेजे जाने की खबर; ट्रंप प्रशासन सख्त; Delhi Elections :
+//           मुख्यमंत्री आवासीय के दफ्तर में काम करने वाले कर्मचारी से 5 लाख कैश
+//           बरामद, पुलिस एक्शन में;
+//         </p>
+//       </div> */}
+
+//       {/* Main Content Grid */}
+//       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+//         {/* Left Column */}
+//         <div className="md:col-span-1">
+//           <h3 className="mb-4 font-semibold">News From Indian States</h3>
+//           <ul className="space-y-2">
+//             <li>
+//               <a href="#" className="text-gray-400 hover:text-gray-100">
+//                 Madhya Pradesh News
+//               </a>
+//             </li>
+//             <li>
+//               <a href="#" className="text-gray-400 hover:text-gray-100">
+//                 Uttar Pradesh News
+//               </a>
+//             </li>
+//             <li>
+//               <a href="#" className="text-gray-400 hover:text-gray-100">
+//                 Rajasthan News
+//               </a>
+//             </li>
+//             <li>
+//               <a href="#" className="text-gray-400 hover:text-gray-100">
+//                 Haryana News
+//               </a>
+//             </li>
+//             <li>
+//               <a href="#" className="text-gray-400 hover:text-gray-100">
+//                 Bihar News
+//               </a>
+//             </li>
+//           </ul>
+//         </div>
+
+//         {/* Center Columns */}
+//         <div className="md:col-span-2">
+//           <div className="grid grid-cols-2 gap-8">
+//             <div>
+//               <h3 className="mb-4 font-semibold">Lifestyle</h3>
+//               <ul className="space-y-2">
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Health News
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Fitness News
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Fashion News
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Spirituality
+//                   </a>
+//                 </li>
+//               </ul>
+//             </div>
+//             <div>
+//               <h3 className="mb-4 font-semibold">Entertainment News</h3>
+//               <ul className="space-y-2">
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Bollywood News
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     TV Serials
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Hollywood News
+//                   </a>
+//                 </li>
+//                 <li>
+//                   <a href="#" className="text-gray-400 hover:text-gray-100">
+//                     Movie Reviews
+//                   </a>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Right Column */}
+//         {/* <div className="md:col-span-1">
+//           <div className="rounded bg-red-600 p-4 text-center text-white">
+//             <img
+//               // src="/api/placeholder/150/50"
+//               alt="E-Paper"
+//               className="mx-auto mb-2 w-28 h-28"
+//             />
+//             <div className="mx-auto mb-4 h-36 w-36 rounded bg-gray-100"></div>
+
+//             <h3 className="mb-2 font-bold">Lorem ipsum dolor sit amet.!</h3>
+//             <button className="rounded bg-white px-4 py-2 font-semibold text-red-600">
+//               Read E-Paper
+//             </button>
+//           </div>
+//         </div>*/}
+//       </div>
+
+//       {/* Footer */}
+//       <footer className="mt-12 border-t border-gray-200 pt-8">
+//         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+//           <div>
+//             <h4 className="mb-4 font-semibold">Quick Links</h4>
+//             <div className="flex flex-wrap gap-2">
+//               <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
+//                 About Us
+//               </a>
+//               <span className="text-gray-300">|</span>
+//               <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
+//                 Careers
+//               </a>
+//               <span className="text-gray-300">|</span>
+//               <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
+//                 Contact Us
+//               </a>
+//             </div>
+//           </div>
+//           <div>
+//             <h4 className="mb-4 font-semibold">Subscribe</h4>
+//             <div className="flex">
+//               <input
+//                 type="email"
+//                 placeholder="Enter your email"
+//                 className="flex-1 rounded-l border border-gray-300 px-4 py-2"
+//               />
+//               <button className="rounded-r bg-red-600 px-6 py-2 text-white">
+//                 Subscribe
+//               </button>
+//             </div>
+//           </div>
+//           <div className="text-right">
+//             <p className="text-sm text-gray-400">
+//               © 2024-25 Lok Mangal Limited
+//             </p>
+//           </div>
+//         </div>
+//       </footer>
+//     </div>
+//   );
+// };
+
+// export default footer;
+
+const Footer = () => {
+  const newsCategories = [
+    {
+      title: "News From Indian States",
+      links: [
+        "Madhya Pradesh News",
+        "Uttar Pradesh News",
+        "Rajasthan News",
+        "Haryana News",
+        "Bihar News",
+      ],
+    },
+    {
+      title: "Lifestyle",
+      links: ["Health News", "Fitness News", "Fashion News", "Spirituality"],
+    },
+    {
+      title: "Entertainment News",
+      links: [
+        "Bollywood News",
+        "TV Serials",
+        "Hollywood News",
+        "Movie Reviews",
+      ],
+    },
+  ];
+
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="flex w-full flex-col items-center justify-center bg-gray-800 px-4 py-8 text-white">
-      {/* Header */}
-      {/* <header className="mb-6"> */}
-      {/* <div className="flex items-center justify-between mb-4"> */}
-      {/* <h1 className="text-4xl font-bold">लोक मंगल</h1> */}
-      {/* </div> */}
-      {/* </header> */}
-
-      {/* Latest News Banner */}
-      {/* <div className="bg-gray-100 p-4 mb-8 rounded">
-        <h2 className="font-semibold mb-2">Latest News in Hindi</h2>
-        <p className="text-sm text-gray-700 leading-relaxed">
-          US Indians Deportation: सी-17 वैन्य विमान में भारतीयों को अमेरिका से
-          वापस भेजे जाने की खबर; ट्रंप प्रशासन सख्त; Delhi Elections :
-          मुख्यमंत्री आवासीय के दफ्तर में काम करने वाले कर्मचारी से 5 लाख कैश
-          बरामद, पुलिस एक्शन में;
-        </p>
-      </div> */}
-
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-        {/* Left Column */}
-        <div className="md:col-span-1">
-          <h3 className="mb-4 font-semibold">News From Indian States</h3>
-          <ul className="space-y-2">
-            <li>
-              <a href="#" className="text-gray-400 hover:text-gray-100">
-                Madhya Pradesh News
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-gray-100">
-                Uttar Pradesh News
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-gray-100">
-                Rajasthan News
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-gray-100">
-                Haryana News
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-gray-100">
-                Bihar News
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Center Columns */}
-        <div className="md:col-span-2">
-          <div className="grid grid-cols-2 gap-8">
-            <div>
-              <h3 className="mb-4 font-semibold">Lifestyle</h3>
-              <ul className="space-y-2">
-                <li>
+        {newsCategories.map((category, index) => (
+          <div key={index} className="md:col-span-1">
+            <h3 className="mb-4 font-semibold">{category.title}</h3>
+            <ul className="space-y-2">
+              {category.links.map((link, i) => (
+                <li key={i}>
                   <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Health News
+                    {link}
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Fitness News
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Fashion News
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Spirituality
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-4 font-semibold">Entertainment News</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Bollywood News
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    TV Serials
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Hollywood News
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-gray-100">
-                    Movie Reviews
-                  </a>
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ul>
           </div>
-        </div>
-
-        {/* Right Column */}
-        {/* <div className="md:col-span-1">
-          <div className="rounded bg-red-600 p-4 text-center text-white">
-            <img
-              // src="/api/placeholder/150/50"
-              alt="E-Paper"
-              className="mx-auto mb-2 w-28 h-28"
-            />
-            <div className="mx-auto mb-4 h-36 w-36 rounded bg-gray-100"></div>
-
-            <h3 className="mb-2 font-bold">Lorem ipsum dolor sit amet.!</h3>
-            <button className="rounded bg-white px-4 py-2 font-semibold text-red-600">
-              Read E-Paper
-            </button>
-          </div>
-        </div>*/}
+        ))}
       </div>
-
-      {/* Footer */}
       <footer className="mt-12 border-t border-gray-200 pt-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <div className="flex flex-wrap gap-2">
-              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
-                About Us
-              </a>
-              <span className="text-gray-300">|</span>
-              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
-                Careers
-              </a>
-              <span className="text-gray-300">|</span>
-              <a href="#" className="text-sm text-gray-400 hover:text-gray-100">
-                Contact Us
-              </a>
+              {["About Us", "Careers", "Contact Us"].map((link, index) => (
+                <>
+                  <a
+                    key={index}
+                    href="#"
+                    className="text-sm text-gray-400 hover:text-gray-100"
+                  >
+                    {link}
+                  </a>
+                  {index < 2 && <span className="text-gray-300">|</span>}
+                </>
+              ))}
             </div>
           </div>
           <div>
@@ -161,7 +253,7 @@ const footer = () => {
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-400">
-              © 2024-25 Lok Mangal Limited
+              © {currentYear}-25 Lok Mangal Limited
             </p>
           </div>
         </div>
@@ -170,4 +262,4 @@ const footer = () => {
   );
 };
 
-export default footer;
+export default Footer;
