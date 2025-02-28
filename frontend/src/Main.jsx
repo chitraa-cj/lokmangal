@@ -32,7 +32,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/category/:category" element={<Home />} />
       {/* <Route path="/category/:category" element={<CategoryHome />} /> */}
-      <Route path="/news/:id" element={<NewsArticlePage />} />
+      <Route path="/:type/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}
       <Route element={<AdminRoute />} errorElement={<ErrorPage />}>

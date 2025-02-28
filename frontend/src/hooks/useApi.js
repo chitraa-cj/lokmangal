@@ -12,11 +12,11 @@ export const useNewsPosts = () => {
   });
 };
 
-export const useNewsPostDetails = (newsId, initialData) => {
+export const useNewsPostDetails = (type, newsId, initialData) => {
   return useQuery({
     queryKey: ["news", newsId],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/news/${newsId}`);
+      const { data } = await axios.get(`/api/news/${type}/${newsId}`);
       return data;
     },
     initialData,

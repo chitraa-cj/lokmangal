@@ -15,10 +15,12 @@ const router = express.Router();
 router.route("/").get(getAllNewsPosts).post(protect, isAdmin, createNewsPost);
 router
   .route("/:id")
-  .get(getNewsPostById)
   .put(protect, isAdmin, updateNewsPost)
   .delete(protect, isAdmin, deleteNewsPost);
+
 router.route("/user/:userId").get(protect, getNewsPostsByUser);
+
+router.route("/:type/:id").get(getNewsPostById);
 
 router.route("/category/:category").get(getNewsPostsByCategory);
 

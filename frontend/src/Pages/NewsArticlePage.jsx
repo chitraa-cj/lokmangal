@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 const NewsArticlePage = () => {
-  const { id } = useParams();
+  const { type, id } = useParams();
   const location = useLocation();
 
   // Get the article from the location state if available
@@ -17,7 +17,8 @@ const NewsArticlePage = () => {
     data: newsPost,
     isLoading,
     error,
-  } = useNewsPostDetails(id, articleFromState);
+  } = useNewsPostDetails(type, id, articleFromState);
+  console.log(newsPost);
 
   if (isLoading) {
     return <Loader />;
