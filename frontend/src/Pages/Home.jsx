@@ -58,7 +58,7 @@ const NewsArticlePage = () => {
 
   return (
     <div className="min-w-full bg-gray-100 px-4 pb-12 pt-4">
-      <main className="relative grid grid-cols-1 gap-x-8 lg:grid-cols-[35%_28%_35%]">
+      <main className="relative grid grid-cols-1 gap-x-8 lg:grid-cols-[34%_28%_34%]">
         <div className="hidden flex-col items-end lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>

@@ -35,7 +35,7 @@ const HeroArticle = ({ article }) => {
       </>
 
       <div className="mb-4 flex max-w-none flex-col">
-        <p className="line-clamp-3 overflow-hidden text-ellipsis px-4 text-base text-black">
+        <p className="line-clamp-3 overflow-hidden text-ellipsis px-4 text-black">
           {article.conclusion}
         </p>
       </div>
