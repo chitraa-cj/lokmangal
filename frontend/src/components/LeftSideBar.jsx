@@ -4,7 +4,7 @@ const LeftSidebar = ({ leftNews }) => {
   const navigate = useNavigate();
 
   const onClickNavigate = (article) => {
-    navigate(`/news/${article._id}`, { state: { article } });
+    navigate(`/${article.type}/${article._id}`, { state: { article } });
   };
 
   return (
