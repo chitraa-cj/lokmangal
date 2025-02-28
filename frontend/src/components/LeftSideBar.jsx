@@ -8,7 +8,7 @@ const LeftSidebar = ({ leftNews }) => {
   };
 
   return (
-    <div className="sticky top-4 h-fit w-[180px] rounded-lg bg-white shadow-lg">
+    <div className="h-fit w-[180px] rounded-lg bg-white shadow-lg">
       <div className="relative">
         <h3 className="inline-block bg-white p-2 text-lg font-bold">
           ताजा खबरें

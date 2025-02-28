@@ -63,7 +63,7 @@ const generateMainNewsData = (count) => {
     imgUrl: imgUrl, // Static image URL
     content: content[index % content.length], // Rotating through content
     navbarCategories: getRandomItems(navbarCategories, 3), // Random 3 categories
-    hashtags: getRandomItems(hashtags, 2), // Random 2 hashtags
+    hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1),
     footerTags: getRandomItems(footerTags, 3), // Random 3 footer tags
   }));
 };

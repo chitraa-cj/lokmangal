@@ -3,6 +3,8 @@ import { useNewsPostDetails } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticleDetailed";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 const NewsArticlePage = () => {
   const { id } = useParams();
@@ -18,19 +20,11 @@ const NewsArticlePage = () => {
   } = useNewsPostDetails(id, articleFromState);
 
   if (isLoading) {
-    return (
-      <p className="flex min-h-screen items-center justify-center">
-        Loading...
-      </p>
-    );
+    return <Loader />;
   }
 
   if (error || !newsPost) {
-    return (
-      <p className="flex min-h-screen items-center justify-center">
-        Error loading news article. Please try again later.
-      </p>
-    );
+    return <Error />;
   }
 
   // console.log(newsPost);

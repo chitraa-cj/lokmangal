@@ -8,7 +8,7 @@ const RightSideBar = ({ trendingNews }) => {
   };
 
   return (
-    <div className="top-4 hidden w-[300px] lg:sticky lg:block">
+    <div className="hidden w-[300px] lg:block">
       <div className="py-2 text-xl font-bold">ट्रेंडिंग</div>
 
       <div className="flex h-fit flex-col gap-y-4">

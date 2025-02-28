@@ -5,6 +5,8 @@ import ScrollableGrid from "../components/ScrollableGrid";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 const NewsArticlePage = () => {
   const { category } = useParams();
@@ -13,7 +15,7 @@ const NewsArticlePage = () => {
 
   const { data, isLoading, error } = useNewsPosts();
 
-  console.log(data);
+  // console.log(data);
 
   // Check if data is defined before destructuring
   let mainPosts = [],
@@ -31,19 +33,11 @@ const NewsArticlePage = () => {
   }
 
   if (isLoading) {
-    return (
-      <p className="flex min-h-screen items-center justify-center bg-gray-100">
-        Loading...
-      </p>
-    );
+    return <Loader />;
   }
 
   if (error) {
-    return (
-      <p className="flex min-h-screen items-center justify-center bg-gray-100">
-        Error loading news articles.
-      </p>
-    );
+    return <Error />;
   }
 
   if (category) {
@@ -58,8 +52,8 @@ const NewsArticlePage = () => {
 
   return (
     <div className="min-w-full bg-gray-100 px-4 pb-12 pt-4">
-      <main className="relative grid grid-cols-1 gap-x-8 lg:grid-cols-[34%_28%_34%]">
-        <div className="hidden flex-col items-end lg:flex">
+      <main className="relative flex items-start justify-center space-x-6">
+        <div className="sticky top-4 hidden flex-col items-end lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
 
@@ -91,7 +85,7 @@ const NewsArticlePage = () => {
           <VideoCard />
         </div>
 
-        <div className="hidden flex-col items-start lg:flex">
+        <div className="sticky top-4 hidden flex-col items-start lg:flex">
           {rightPosts.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>
