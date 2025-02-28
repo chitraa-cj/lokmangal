@@ -1,6 +1,8 @@
 import { Edit, Trash } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDeleteNewsPostMutation, useNewsPosts } from "../../hooks/useApi";
+import Loader from "../../components/Loader";
+import Error from "../../components/Error";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
@@ -104,12 +106,25 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const deleteNewsMutation = useDeleteNewsPostMutation();
 
+  let transformedNewsData;
+
+  if (newsData) {
+    transformedNewsData = [
+      ...newsData.main,
+      ...newsData.left,
+      ...newsData.right,
+      ...newsData.grid,
+    ];
+  }
+
+  // console.log(transformedNewsData);
+
   const stats = {
-    totalNews: newsData?.length || 0,
-    // pendingNews: newsData?.filter((n) => n.status === "pending").length || 0,
-    // activeNews: newsData?.filter((n) => n.status === "active").length || 0,
-    activeNews: newsData?.length || 0,
-    // deActiveNews: newsData?.filter((n) => n.status === "inactive").length || 0,
+    totalNews: transformedNewsData?.length || 0,
+    // pendingNews: transformedNewsData?.filter((n) => n.status === "pending").length || 0,
+    // activeNews: transformedNewsData?.filter((n) => n.status === "active").length || 0,
+    activeNews: transformedNewsData?.length || 0,
+    // deActiveNews: transformedNewsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
 
@@ -128,19 +143,11 @@ const Dashboard = () => {
   };
 
   if (isLoading) {
-    return (
-      <p className="flex min-h-screen items-center justify-center">
-        Loading...
-      </p>
-    );
+    return <Loader />;
   }
 
   if (error) {
-    return (
-      <p className="flex min-h-screen items-center justify-center">
-        Error loading news articles.
-      </p>
-    );
+    return <Error />;
   }
 
   return (
@@ -182,7 +189,7 @@ const Dashboard = () => {
       </div>
 
       <NewsTable
-        news={newsData || []}
+        news={transformedNewsData || []}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

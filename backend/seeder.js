@@ -27,7 +27,7 @@ const importData = async () => {
     const adminUser = createdUsers[0]._id; // Assuming first user is an admin
 
     console.log(colors.green("Importing NewsPost"));
-    const sampleLeftNewsPosts = generateMainNewsData(12).map((news) => {
+    const sampleLeftNewsPosts = generateMainNewsData(18).map((news) => {
       return {
         user: adminUser,
         ...news,

@@ -21,7 +21,13 @@ const HeroArticle = ({ article }) => {
         </h1>
       </div>
 
-      <div className="mb-2 px-4 text-sky-400">{article.hashtags}</div>
+      <div className="mb-2 px-4 text-sky-400">
+        {article.hashtags.map((tag, index) => (
+          <span key={index} className="mr-3">
+            {tag}
+          </span>
+        ))}
+      </div>
 
       <>
         <img
@@ -33,13 +39,11 @@ const HeroArticle = ({ article }) => {
           }}
         />
       </>
-
       <div className="mb-4 flex max-w-none flex-col">
         <p className="line-clamp-3 overflow-hidden text-ellipsis px-4 text-black">
           {article.conclusion}
         </p>
       </div>
-
       <div className="flex items-center justify-between border-y-2 p-3">
         <p
           className="cursor-pointer rounded-sm bg-blue-500 p-2 text-center text-xs text-white hover:bg-blue-700"
@@ -69,7 +73,6 @@ const HeroArticle = ({ article }) => {
           })()}
         </span>
       </div>
-
       <div className="px-4">
         <Share />
       </div>

@@ -35,7 +35,7 @@ const Sidebar = () => {
     {
       title: "Add Footer Tags",
       icon: <Hash size={20} />,
-      path: "/admin/add-hashtags",
+      path: "/admin/add-footer-hashtags",
     },
     {
       title: "Go To News",

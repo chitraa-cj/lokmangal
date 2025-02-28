@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "../components/Loader";
 
 const AdminRoute = () => {
   const { data, isLoading } = useQuery({
@@ -9,12 +10,8 @@ const AdminRoute = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen w-full items-center justify-center bg-gray-100 text-3xl font-semibold">
-        Checking admin access...
-      </div>
-    );
+  if (true) {
+    return <Loader text="Checking admin access..." />;
   }
 
   const isAdmin = data?.isAuthenticated && data?.user?.isAdmin;

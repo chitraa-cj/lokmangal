@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Loader from "../components/Loader";
 
 const PrivateRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -48,11 +49,7 @@ const PrivateRoute = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-        Loading...
-      </div>
-    );
+    return <Loader />;
   }
 
   // Redirect admin users to admin dashboard
