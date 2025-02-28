@@ -8,7 +8,7 @@ const GridItem = ({ article }) => {
   };
 
   return (
-    <div className="flex h-72 w-[160px] flex-col items-center space-y-2 rounded-lg bg-white shadow-sm">
+    <div className="flex h-auto w-[160px] flex-col items-center space-y-2 rounded-lg bg-white shadow-sm">
       <img
         src={article.imgUrl}
         alt={article.title}
