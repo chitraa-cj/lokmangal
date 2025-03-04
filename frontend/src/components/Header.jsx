@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
@@ -11,7 +11,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const navigate = useNavigate();
-  const queryClient = useQueryClient(); // Get the queryClient instance
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -85,64 +84,58 @@ export default function Navbar() {
       <div className="flex items-center justify-center bg-white px-4">
         <div className="py-3">
           <Link to="/">
-            <img src="./image.png" alt="logo" className="h-20 w-20" />
+            <img src="./lokmangallogo_00.png" alt="logo" className="" />
           </Link>
         </div>
       </div>
 
       <div className="bg-gray-800">
         <div className="mx-auto max-w-6xl text-white">
-          <div className="relative flex items-center justify-between lg:justify-center">
-            <button
-              className="p-4 text-white md:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-            <div
-              className={`${
-                menuOpen ? "block" : "hidden"
-              } absolute left-0 top-full z-10 w-full bg-gray-800 md:static md:block md:w-auto md:bg-transparent`}
-            >
-              <ul className="items-center md:flex">
-                {[
-                  "होम",
-                  "देश",
-                  "दुनियाँ",
-                  "प्रदेशक ख़बरें",
-                  "राजनीति",
-                  "अपराध",
-                  "खेल",
-                  "हमारा शहर",
-                  "वीडियो",
-                  "मनोरंजन",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
-                    onClick={() => handleCategoryClick(item)}
-                  >
-                    {item}
-                  </li>
-                ))}
-                {isAuthenticated && (
-                  <li
-                    key="admin"
-                    className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
-                    onClick={() => navigate("/admin")}
-                  >
-                    ADMIN
-                  </li>
-                )}
-                <li
-                  key="logout"
-                  className="w-full cursor-pointer border-b p-4 font-semibold uppercase hover:bg-red-600 md:w-auto md:border-none"
-                  onClick={handleLogout}
+          <div className="flex items-center justify-between overflow-x-auto">
+            <>
+              <Link to="/">
+                <img src="./FinalLogo.png" alt="logo" className="w-16" />
+              </Link>
+            </>
+            <div className="flex items-center justify-center">
+              {[
+                "होम",
+                "देश",
+                "दुनियाँ",
+                "प्रदेशक ख़बरें",
+                "राजनीति",
+                "अपराध",
+                "खेल",
+                "हमारा शहर",
+                "वीडियो",
+                "मनोरंजन",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                  onClick={() => handleCategoryClick(item)}
                 >
-                  {isAuthenticated ? "Logout" : "Login"}
-                </li>
-              </ul>
+                  {item}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-center">
+              {isAuthenticated && (
+                <div
+                  key="admin"
+                  className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                  onClick={() => navigate("/admin")}
+                >
+                  ADMIN
+                </div>
+              )}
+              <div
+                key="logout"
+                className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                onClick={handleLogout}
+              >
+                {isAuthenticated ? "Logout" : "Login"}
+              </div>
             </div>
           </div>
         </div>
