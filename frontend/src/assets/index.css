@@ -25,3 +25,26 @@ textarea {
   -ms-user-select: none;
   user-select: none;
 } */
+
+/* Ensure content is visible on smaller devices */
+/* @media (max-width: 640px) {
+  .flex {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+} */
+
+::-webkit-scrollbar {
+  width: 4px; /* Very thin scrollbar */
+  height: 4px; /* Horizontal scrollbar height */
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

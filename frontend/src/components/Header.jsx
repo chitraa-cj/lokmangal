@@ -90,13 +90,15 @@ export default function Navbar() {
       </div>
 
       <div className="bg-gray-800">
-        <div className="mx-auto max-w-6xl text-white">
+        <div className="relative mx-auto max-w-6xl text-white">
           <div className="flex items-center justify-between overflow-x-auto">
-            <>
+            <div className="absolute left-0 top-[-25px] hidden lg:block">
               <Link to="/">
-                <img src="./FinalLogo.png" alt="logo" className="w-16" />
+                <img src="./image.png" alt="logo" className="w-20" />
               </Link>
-            </>
+            </div>
+            <div></div>
+
             <div className="flex items-center justify-center">
               {[
                 "होम",
@@ -142,7 +144,7 @@ export default function Navbar() {
       </div>
 
       {/* Trending Topics - Added mobile padding */}
-      <div className="flex items-center justify-center overflow-x-auto bg-gray-100">
+      <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
         <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
           {[
             "#Delhi Election 2025",
