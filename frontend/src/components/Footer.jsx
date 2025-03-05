@@ -28,7 +28,7 @@ const Footer = () => {
 
   return (
     <div className="flex w-full flex-col items-start justify-center bg-gray-800 px-4 py-8 text-white lg:items-center">
-      <div className="ml-7 flex w-full items-center justify-evenly md:ml-0">
+      <div className="ml-7 flex w-full flex-col items-start justify-evenly md:ml-0 md:flex-row md:items-center">
         {newsCategories.map((category, index) => (
           <div key={`category-${index}`} className="md:col-span-1 md:ml-10">
             <h3 className="mb-3 mt-4 text-lg font-semibold">
