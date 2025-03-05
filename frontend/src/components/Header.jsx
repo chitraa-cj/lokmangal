@@ -93,7 +93,7 @@ export default function Navbar() {
             <div className="absolute left-0 top-[-25px] hidden lg:block">
               <Link to="/">
                 {/* <img src="./image.png" alt="logo" className="w-20" /> */}
-                <img src="./FinalLogo.png" alt="logo" className="w-20" />
+                <img src="./logo.png" alt="logo" className="w-20" />
               </Link>
             </div>
             <div></div>
