@@ -63,9 +63,6 @@ export default function Navbar() {
   const logoutMutation = useMutation({
     mutationFn: () =>
       axios.post("/api/users/logout", {}, { withCredentials: true }),
-    onSuccess: () => {
-      navigate("/");
-    },
     onError: (error) => {
       console.error("An error occurred during logout:", error);
     },
@@ -74,6 +71,7 @@ export default function Navbar() {
   const handleLogout = () => {
     if (isAuthenticated) {
       logoutMutation.mutate();
+      window.location.reload();
     } else {
       navigate("/login");
     }
@@ -90,16 +88,19 @@ export default function Navbar() {
       </div>
 
       <div className="bg-gray-800">
-        <div className="relative mx-auto max-w-6xl text-white">
+        <div className="relative mx-0 max-w-full text-white md:mx-12">
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute left-0 top-[-25px] hidden lg:block">
               <Link to="/">
-                <img src="./image.png" alt="logo" className="w-20" />
+                {/* <img src="./image.png" alt="logo" className="w-20" /> */}
+                <img src="./FinalLogo.png" alt="logo" className="w-20" />
               </Link>
             </div>
             <div></div>
 
-            <div className="flex items-center justify-center">
+            <div
+              className={`ml-0 flex items-center justify-center ${isAuthenticated ? "lg:ml-28" : "lg:ml-16"}`}
+            >
               {[
                 "होम",
                 "देश",
@@ -114,7 +115,7 @@ export default function Navbar() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                  className="flex cursor-pointer items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
                   onClick={() => handleCategoryClick(item)}
                 >
                   {item}
@@ -125,15 +126,15 @@ export default function Navbar() {
               {isAuthenticated && (
                 <div
                   key="admin"
-                  className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                  className="mx-auto flex cursor-pointer items-center whitespace-nowrap p-2 text-sm font-semibold"
                   onClick={() => navigate("/admin")}
                 >
-                  ADMIN
+                  Admin
                 </div>
               )}
               <div
                 key="logout"
-                className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                className="mx-auto flex cursor-pointer items-center whitespace-nowrap py-2 text-sm font-semibold"
                 onClick={handleLogout}
               >
                 {isAuthenticated ? "Logout" : "Login"}
