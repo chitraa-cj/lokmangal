@@ -10,7 +10,7 @@ const mainNewsSchema = mongoose.Schema(
     conclusion: { type: String, required: true },
     imgUrl: { type: String, required: true },
     content: { type: String, required: true },
-    type: { type: String, required: true, default: "main" },
+    // type: { type: String, required: true, default: "main" },
   },
   { timestamps: true }
 );

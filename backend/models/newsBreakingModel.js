@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
-const newsLeftSchema = mongoose.Schema(
+const newsGridSchema = mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
     conclusion: { type: String, required: true },
     imgUrl: { type: String, required: true },
     content: { type: String, required: true },
-    // type: { type: String, required: true, default: "left" },
+    // type: { type: String, required: true, default: "breaking" },
   },
   { timestamps: true }
 );
 
-const LeftNews = mongoose.model("LeftNews", newsLeftSchema);
+const GridNews = mongoose.model("GridNews", newsGridSchema);
 
-export default LeftNews;
+export default GridNews;
