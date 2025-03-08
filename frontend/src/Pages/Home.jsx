@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
+import { X } from "lucide-react";
 import HeroArticle from "../components/HeroArticle";
 import ScrollableGrid from "../components/ScrollableGrid";
 import VideoCard from "../components/VideoCard";
@@ -51,8 +52,15 @@ const NewsArticlePage = () => {
   }
 
   return (
-    <div className="min-w-full bg-gray-100 px-4 pb-12 pt-4">
-      <main className="relative flex items-start justify-center space-x-6">
+    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-4 pb-12 pt-4">
+      <div className="mb-6 flex w-full max-w-3xl items-center justify-between space-x-4 rounded-md bg-red-600 px-2 py-1 text-white shadow-md lg:rounded-full lg:px-4">
+        <span className="font-bold">BREAKING NEWS</span>
+        <span className="flex-1 items-center justify-center border-l pl-4 lg:truncate">
+          JK: कठुआ जिले के बिलावर इलाके में मिले 3 लापता नागरिकों के शव - सूत्र
+        </span>
+      </div>
+
+      <main className="relative flex items-start justify-center md:space-x-6">
         <div className="sticky top-4 hidden flex-col items-end lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
@@ -62,9 +70,9 @@ const NewsArticlePage = () => {
             <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
-          {gridPosts.length > 0 && (
+          {/* {gridPosts.length > 0 && (
             <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-          )}
+          )} */}
 
           {mainPosts.slice(1, 2).map((post) => (
             <div key={post._id}>
@@ -72,9 +80,9 @@ const NewsArticlePage = () => {
             </div>
           ))}
 
-          {gridPosts.length > 6 && (
+          {/* {gridPosts.length > 6 && (
             <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-          )}
+          )} */}
 
           {mainPosts.slice(2).map((post) => (
             <div key={post._id}>
