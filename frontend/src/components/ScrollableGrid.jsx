@@ -19,25 +19,25 @@ const ScrollableGrid = ({ gridPosts }) => {
   };
 
   return (
-    <div className="relative w-full sm:max-w-[434px]">
+    <div className="relative w-4/5 sm:w-full sm:max-w-[434px]">
       {/* Scroll Buttons */}
       <button
         onClick={() => scroll("left")}
-        className="absolute -left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1"
+        className="absolute -left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1 hover:bg-opacity-70"
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-4 w-4 text-white sm:h-6 sm:w-6" />
       </button>
       <button
         onClick={() => scroll("right")}
-        className="absolute -right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1"
+        className="absolute -right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1 hover:bg-opacity-70"
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-4 w-4 text-white sm:h-6 sm:w-6" />
       </button>
 
       {/* Scrollable Container with Modern Thin Scrollbar */}
       <div
         ref={scrollContainerRef}
-        className="thin-scrollbar flex w-full gap-4 overflow-x-auto"
+        className="thin-scrollbar flex w-full gap-2 overflow-x-auto px-1 sm:gap-4"
         style={{
           /* Modern scrollbar styling with inline styles for cross-browser support */
           scrollbarWidth: "thin" /* Firefox */,

@@ -9,10 +9,10 @@ const HeroArticle = ({ article }) => {
   };
 
   return (
-    <div className="mx-auto w-full rounded-lg bg-white pt-4 shadow-lg sm:max-w-[434px]">
+    <div className="mx-auto w-full rounded-lg bg-white pt-2 shadow-lg sm:max-w-[434px] sm:pt-4">
       <div className="mb-2 sm:mb-3">
         <h1
-          className="cursor-pointer px-3 text-lg font-bold sm:text-xl md:px-4"
+          className="cursor-pointer px-3 text-base font-bold sm:px-3 sm:text-lg md:px-4 md:text-xl"
           onClick={() => {
             onClickNavigate(article);
           }}
@@ -21,7 +21,7 @@ const HeroArticle = ({ article }) => {
         </h1>
       </div>
 
-      <div className="mb-2 px-3 text-sm text-sky-400 sm:text-base md:px-4">
+      <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
         {article.hashtags.map((tag, index) => (
           <span key={index} className="mr-2 sm:mr-3">
             {tag}
@@ -33,21 +33,21 @@ const HeroArticle = ({ article }) => {
         <img
           src={article.imgUrl}
           alt={article.heading}
-          className="mb-3 h-48 w-full cursor-pointer object-cover sm:h-80"
+          className="mb-3 w-full cursor-pointer object-cover lg:h-80"
           onClick={() => {
             onClickNavigate(article);
           }}
         />
       </>
 
-      <div className="mb-3 flex flex-col sm:mb-4">
-        <p className="line-clamp-3 overflow-hidden text-ellipsis px-3 text-sm text-black sm:text-base md:px-4">
+      <div className="mb-2 flex flex-col sm:mb-4">
+        <p className="line-clamp-3 overflow-hidden text-ellipsis px-3 text-xs text-black sm:text-sm md:px-4 md:text-base">
           {article.conclusion}
         </p>
       </div>
       <div className="flex items-center justify-between border-y-2 p-3">
         <p
-          className="cursor-pointer rounded-sm bg-blue-500 p-2 text-center text-xs text-white hover:bg-blue-700"
+          className="cursor-pointer rounded-sm bg-blue-500 px-2 py-1 text-center text-xs text-white hover:bg-blue-700 sm:p-2 sm:text-sm"
           onClick={() => {
             onClickNavigate(article);
           }}
@@ -74,7 +74,7 @@ const HeroArticle = ({ article }) => {
           })()}
         </span>
       </div>
-      <div className="px-4">
+      <div className="p-2 sm:p-4">
         <Share />
       </div>
     </div>
