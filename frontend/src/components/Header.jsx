@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 //cspell:disable
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const navigate = useNavigate();
 

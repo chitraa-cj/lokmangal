@@ -9,11 +9,10 @@ const HeroArticle = ({ article }) => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-white pt-4 shadow-lg lg:max-w-[434px]">
-      {/*  <div className="w-full rounded-lg bg-white pt-4 shadow-lg"> */}
-      <div className="mb-3">
+    <div className="mx-auto w-full rounded-lg bg-white pt-4 shadow-lg sm:max-w-[434px]">
+      <div className="mb-2 sm:mb-3">
         <h1
-          className="cursor-pointer px-2 text-xl font-bold md:px-4"
+          className="cursor-pointer px-3 text-lg font-bold sm:text-xl md:px-4"
           onClick={() => {
             onClickNavigate(article);
           }}
@@ -22,27 +21,27 @@ const HeroArticle = ({ article }) => {
         </h1>
       </div>
 
-      <div className="mb-2 px-2 text-sky-400 md:px-4">
+      <div className="mb-2 px-3 text-sm text-sky-400 sm:text-base md:px-4">
         {article.hashtags.map((tag, index) => (
-          <span key={index} className="mr-3">
+          <span key={index} className="mr-2 sm:mr-3">
             {tag}
           </span>
         ))}
       </div>
 
-      {/* <>
+      <>
         <img
           src={article.imgUrl}
           alt={article.heading}
-          // className="mb-3 w-full max-w-[700px] cursor-pointer object-contain"
-          className="object-fit mb-3 max-w-full cursor-pointer"
+          className="mb-3 h-48 w-full cursor-pointer object-cover sm:h-80"
           onClick={() => {
             onClickNavigate(article);
           }}
         />
-      </> */}
-      <div className="mb-4 flex flex-col">
-        <p className="line-clamp-3 overflow-hidden text-ellipsis px-2 text-black md:px-4">
+      </>
+
+      <div className="mb-3 flex flex-col sm:mb-4">
+        <p className="line-clamp-3 overflow-hidden text-ellipsis px-3 text-sm text-black sm:text-base md:px-4">
           {article.conclusion}
         </p>
       </div>

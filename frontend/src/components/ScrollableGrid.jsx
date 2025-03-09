@@ -19,25 +19,25 @@ const ScrollableGrid = ({ gridPosts }) => {
   };
 
   return (
-    <div className="relative w-full max-w-[434px]">
+    <div className="relative w-full max-w-full px-4 sm:max-w-[434px] sm:px-0">
       {/* Scroll Buttons */}
       <button
         onClick={() => scroll("left")}
-        className="absolute -left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1"
+        className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1 sm:-left-0"
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-4 w-4 text-white sm:h-6 sm:w-6" />
       </button>
       <button
         onClick={() => scroll("right")}
-        className="absolute -right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1"
+        className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-black bg-opacity-50 p-1 sm:-right-0"
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-4 w-4 text-white sm:h-6 sm:w-6" />
       </button>
 
       {/* Scrollable Container with Modern Thin Scrollbar */}
       <div
         ref={scrollContainerRef}
-        className="thin-scrollbar flex w-full gap-4 overflow-x-auto"
+        className="thin-scrollbar flex w-full gap-2 overflow-x-auto sm:gap-4"
         style={{
           /* Modern scrollbar styling with inline styles for cross-browser support */
           scrollbarWidth: "thin" /* Firefox */,
@@ -45,7 +45,8 @@ const ScrollableGrid = ({ gridPosts }) => {
           paddingBottom: "8px" /* Space for the scrollbar */,
         }}
       >
-        <style jsx>{`
+        <style>
+          {`
           /* Custom scrollbar for Webkit browsers (Chrome, Safari, newer Edge) */
           .thin-scrollbar::-webkit-scrollbar {
             height: 4px;
@@ -57,7 +58,8 @@ const ScrollableGrid = ({ gridPosts }) => {
             background-color: rgba(155, 155, 155, 0.5);
             border-radius: 20px;
           }
-        `}</style>
+        `}
+        </style>
 
         {gridPosts.map((post) => (
           <div key={post._id} className="flex-none">
