@@ -53,9 +53,9 @@ const NewsArticlePage = () => {
 
   return (
     <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-4 pb-12 pt-4">
-      <div className="mb-6 flex w-full max-w-3xl items-center justify-between space-x-4 rounded-md bg-red-600 px-2 py-1 text-white shadow-md lg:rounded-full lg:px-4">
+      <div className="mb-4 flex w-full max-w-3xl items-center justify-between space-x-2 rounded-md bg-red-600 px-2 py-1 text-sm text-white shadow-md sm:mb-6 sm:space-x-4 sm:text-base lg:rounded-full lg:px-4">
         <span className="font-bold">BREAKING NEWS</span>
-        <span className="flex-1 items-center justify-center border-l pl-4 lg:truncate">
+        <span className="flex-1 items-center justify-center border-l pl-2 sm:pl-4 lg:truncate">
           JK: कठुआ जिले के बिलावर इलाके में मिले 3 लापता नागरिकों के शव - सूत्र
         </span>
       </div>
@@ -65,14 +65,16 @@ const NewsArticlePage = () => {
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-8">
+        <div className="flex w-full flex-col items-center justify-center space-y-4 sm:space-y-8">
           {mainPosts.length > 0 && (
             <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
-          {/* {gridPosts.length > 0 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-          )} */}
+          <div className="">
+            {gridPosts.length > 0 && (
+              <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
+            )}
+          </div>
 
           {mainPosts.slice(1, 2).map((post) => (
             <div key={post._id}>
