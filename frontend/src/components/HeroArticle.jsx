@@ -74,7 +74,7 @@ const HeroArticle = ({ article }) => {
           })()}
         </span>
       </div>
-      <div className="p-2 sm:p-4">
+      <div className="px-4">
         <Share />
       </div>
     </div>

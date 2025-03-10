@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
 import { X } from "lucide-react";
 import HeroArticle from "../components/HeroArticle";
@@ -62,7 +62,7 @@ const NewsArticlePage = () => {
       </div>
 
       <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
-        <div className="sticky top-4 hidden flex-col items-end lg:flex">
+        <div className="sticky top-4 hidden flex-col items-end gap-y-6 lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
         </div>
 
@@ -71,9 +71,9 @@ const NewsArticlePage = () => {
             <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
-          {gridPosts.length > 0 && (
+          {/* {gridPosts.length > 0 && (
             <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-          )}
+          )} */}
 
           {mainPosts.slice(1, 2).map((post) => (
             <div key={post._id}>
@@ -81,9 +81,9 @@ const NewsArticlePage = () => {
             </div>
           ))}
 
-          {gridPosts.length > 6 && (
+          {/* {gridPosts.length > 6 && (
             <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-          )}
+          )} */}
 
           {mainPosts.slice(2).map((post) => (
             <div key={post._id}>
