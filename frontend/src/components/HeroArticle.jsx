@@ -12,7 +12,7 @@ const HeroArticle = ({ article }) => {
     <div className="mx-auto w-full rounded-lg bg-white pt-2 shadow-lg sm:max-w-[434px] sm:pt-4">
       <div className="mb-2 sm:mb-3">
         <h1
-          className="cursor-pointer px-3 text-base font-bold sm:px-3 sm:text-lg md:px-4 md:text-xl"
+          className="w-full cursor-pointer px-3 text-base font-bold text-black sm:px-3 sm:text-lg md:px-4 md:text-xl"
           onClick={() => {
             onClickNavigate(article);
           }}

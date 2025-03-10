@@ -71,9 +71,9 @@ const NewsArticlePage = () => {
             <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
           )}
 
-          {/* {gridPosts.length > 0 && (
+          {gridPosts.length > 0 && (
             <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-          )} */}
+          )}
 
           {mainPosts.slice(1, 2).map((post) => (
             <div key={post._id}>
