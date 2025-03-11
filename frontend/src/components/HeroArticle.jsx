@@ -10,16 +10,14 @@ const HeroArticle = ({ article }) => {
 
   return (
     <div className="mx-auto w-full rounded-lg bg-white pt-2 shadow-lg sm:max-w-[434px] sm:pt-4">
-      <div className="mb-2 sm:mb-3">
-        <h1
-          className="w-full cursor-pointer px-3 text-base font-bold text-black sm:px-3 sm:text-lg md:px-4 md:text-xl"
-          onClick={() => {
-            onClickNavigate(article);
-          }}
-        >
-          {article.title}
-        </h1>
-      </div>
+      <h1
+        className="mb-2 min-w-full cursor-pointer px-3 text-base font-bold text-black sm:mb-3 sm:px-3 sm:text-lg md:px-4 md:text-xl"
+        onClick={() => {
+          onClickNavigate(article);
+        }}
+      >
+        {article.title}
+      </h1>
 
       <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
         {article.hashtags.map((tag, index) => (

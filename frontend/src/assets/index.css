@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
 @import "https://unpkg.com/open-props";
-@import "https://unpkg.com/open-props/normalize.min.css";
+/* @import "https://unpkg.com/open-props/normalize.min.css"; */
 
 @tailwind base;
 @tailwind components;
@@ -36,27 +36,10 @@ textarea {
   }
 } */
 
-::-webkit-scrollbar {
-  width: 4px; /* Very thin scrollbar */
-  height: 4px; /* Horizontal scrollbar height */
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
+/*
 img {
   max-inline-size: 100%;
-}
-
-@import "https://unpkg.com/open-props";
-@import "https://unpkg.com/open-props/normalize.min.css";
+} */
 
 .media-scroller {
   --_spacer: var(--size-3);
@@ -65,7 +48,8 @@ img {
   grid-auto-flow: column;
   grid-auto-columns: 36%;
 
-  padding: 0 var(--_spacer) var(--_spacer);
+  /* padding: 0 var(--_spacer) var(--_spacer); */
+  padding-bottom: var(--_spacer);
 
   overflow-x: auto;
   overscroll-behavior-inline: contain;
@@ -86,7 +70,9 @@ img {
   grid-template-rows: min-content;
   gap: var(--_spacer);
   padding: var(--_spacer);
-  background: var(--surface-2);
+  background: white;
+  color: black;
+  height: 260px;
   border-radius: var(--radius-2);
   box-shadow: var(--shadow-2);
 }
@@ -108,6 +94,7 @@ img {
 
 /* general styling */
 
+/*
 .container {
   inline-size: min(100% - 4rem, 70rem);
   margin-inline: auto;
@@ -137,4 +124,25 @@ img {
 .section-title {
   padding-inline-start: var(--size-6);
   margin-block: var(--size-9) var(--size-3);
+} */
+
+@media (min-width: 434px) {
+  .media-scroller {
+    padding: 0 var(--_spacer) var(--_spacer);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

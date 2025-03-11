@@ -8,6 +8,9 @@ import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import CricketScore from "../components/CricketScore";
+import Weather from "../components/Weather";
+import FollowUs from "../components/FollowUs";
 
 const NewsArticlePage = () => {
   const { category } = useParams();
@@ -64,37 +67,53 @@ const NewsArticlePage = () => {
       <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
         <div className="sticky top-4 hidden flex-col items-end gap-y-6 lg:flex">
           {leftPosts.length > 0 && <LeftSideBar leftNews={leftPosts} />}
+          <FollowUs />
         </div>
 
         <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
-          {mainPosts.length > 0 && (
-            <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
-          )}
-
-          {gridPosts.length > 0 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-          )}
-
-          {mainPosts.slice(1, 2).map((post) => (
-            <div key={post._id}>
-              <HeroArticle id={post._id} article={post} />
+          <div className="mx-4 md:mx-0">
+            <CricketScore />
+            <div className="block md:hidden">
+              <Weather />
             </div>
-          ))}
+            {mainPosts.length > 0 && (
+              <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+            )}
+          </div>
 
-          {/* {gridPosts.length > 6 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-          )} */}
+          <div className="hidden md:block">
+            {gridPosts.length > 0 && (
+              <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
+            )}
+          </div>
 
-          {mainPosts.slice(2).map((post) => (
-            <div key={post._id}>
-              <HeroArticle id={post._id} article={post} />
-            </div>
-          ))}
+          <div className="mx-4 md:mx-0">
+            {mainPosts.slice(1, 2).map((post) => (
+              <div key={post._id}>
+                <HeroArticle id={post._id} article={post} />
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden md:block">
+            {gridPosts.length > 6 && (
+              <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+            )}
+          </div>
+
+          <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
+            {mainPosts.slice(2).map((post) => (
+              <div key={post._id}>
+                <HeroArticle id={post._id} article={post} />
+              </div>
+            ))}
+          </div>
 
           <VideoCard />
         </div>
 
         <div className="sticky top-4 hidden flex-col items-start lg:flex">
+          <Weather />
           {rightPosts.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>

@@ -25,13 +25,13 @@ const GridItem = ({ article }) => {
          </h3>
        </div>
      </div> */}
-      <div class="media-element">
+      <div className="media-element">
         <img
           src={article.imgUrl}
           alt={article.title}
           onClick={() => onClickNavigate(article)}
         />
-        <h3 onClick={() => onClickNavigate(article)} class="title">
+        <h3 onClick={() => onClickNavigate(article)} className="title">
           {article.title}
         </h3>
       </div>

@@ -18,7 +18,7 @@ const RightSideBar = ({ trendingNews }) => {
               <div>
                 <h4
                   onClick={() => onClickNavigate(article)}
-                  className="cursor-pointer text-sm font-medium"
+                  className="cursor-pointer text-sm font-medium text-black"
                 >
                   {article.title}
                 </h4>
