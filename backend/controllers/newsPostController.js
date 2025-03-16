@@ -1,4 +1,5 @@
 import asyncHandler from "../middleware/asyncHandler.js";
+import BreakingNews from "../models/BreakingNewsModel.js";
 import MainNews from "../models/newsMainModel.js";
 import LeftNews from "../models/newsLeftModel.js";
 import RightNews from "../models/newsRightModel.js";
@@ -11,14 +12,15 @@ import mongoose from "mongoose";
  * @access Public
  */
 const getAllNewsPosts = asyncHandler(async (req, res) => {
-  const [main, left, right, grid] = await Promise.all([
+  const [breakingNews, main, left, right, grid] = await Promise.all([
+    BreakingNews.find().sort({ createdAt: -1 }).limit(1),
     MainNews.find().sort({ createdAt: -1 }).limit(10),
     LeftNews.find().sort({ createdAt: -1 }).limit(4),
     RightNews.find().sort({ createdAt: -1 }).limit(4),
     GridNews.find().sort({ createdAt: -1 }).limit(10),
   ]);
 
-  res.json({ main, left, right, grid });
+  res.json({ breakingNews, main, left, right, grid });
 });
 
 /**

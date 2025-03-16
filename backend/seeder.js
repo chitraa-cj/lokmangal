@@ -6,6 +6,7 @@ import users from "./data/users.js";
 // import newsPosts from "./data/newsPosts.js";
 import generateMainNewsData from "./data/generateData.js";
 import User from "./models/userModel.js";
+import BreakingNews from "./models/BreakingNews.js";
 import LeftNews from "./models/newsLeftModel.js";
 import RightNews from "./models/newsRightModel.js";
 import GridNews from "./models/newsGridModel.js";
@@ -18,6 +19,7 @@ connectDB();
 const importData = async () => {
   try {
     await User.deleteMany();
+    await BreakingNews.deleteMany();
     await LeftNews.deleteMany();
     await RightNews.deleteMany();
     await GridNews.deleteMany();
@@ -27,13 +29,19 @@ const importData = async () => {
     const adminUser = createdUsers[0]._id; // Assuming first user is an admin
 
     console.log(colors.green("Importing NewsPost"));
+    const sampleBreakingNews = generateMainNewsData(2).map((news) => {
+      return {
+        user: adminUser,
+        ...news,
+      };
+    });
     const sampleLeftNewsPosts = generateMainNewsData(18).map((news) => {
       return {
         user: adminUser,
         ...news,
       };
     });
-    const sampleRigthNewsPosts = generateMainNewsData(12).map((news) => {
+    const sampleRightNewsPosts = generateMainNewsData(12).map((news) => {
       return {
         user: adminUser,
         ...news,
@@ -52,8 +60,9 @@ const importData = async () => {
       };
     });
 
+    await BreakingNews.insertMany(sampleBreakingNews);
     await LeftNews.insertMany(sampleLeftNewsPosts);
-    await RightNews.insertMany(sampleRigthNewsPosts);
+    await RightNews.insertMany(sampleRightNewsPosts);
     await GridNews.insertMany(sampleGridNewsPosts);
     await MainNews.insertMany(sampleMainNewsPosts);
 
