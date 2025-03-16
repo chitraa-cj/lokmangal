@@ -6,7 +6,7 @@ import users from "./data/users.js";
 // import newsPosts from "./data/newsPosts.js";
 import generateMainNewsData from "./data/generateData.js";
 import User from "./models/userModel.js";
-import BreakingNews from "./models/BreakingNews.js";
+import BreakingNews from "./models/BreakingNewsModel.js";
 import LeftNews from "./models/newsLeftModel.js";
 import RightNews from "./models/newsRightModel.js";
 import GridNews from "./models/newsGridModel.js";

@@ -42,7 +42,7 @@ img {
 } */
 
 .media-scroller {
-  --_spacer: var(--size-3);
+  --_spacer: var(--size-3, 1.125rem);
   display: grid;
   gap: var(--_spacer);
   grid-auto-flow: column;
@@ -70,11 +70,13 @@ img {
   grid-template-rows: min-content;
   gap: var(--_spacer);
   padding: var(--_spacer);
+  padding: 1rem 0.5rem;
   background: white;
   color: black;
-  height: 260px;
+  /* height: 260px; */
   border-radius: var(--radius-2);
   box-shadow: var(--shadow-2);
+  border-radius: 0.5rem;
 }
 
 .media-element > img {
@@ -90,6 +92,28 @@ img {
 
 .snaps-inline > * {
   scroll-snap-align: start;
+}
+
+@media (min-width: 434px) {
+  .media-scroller {
+    /* padding: 0 var(--_spacer) var(--_spacer); */
+    padding-bottom: var(--_spacer);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* general styling */
@@ -126,23 +150,13 @@ img {
   margin-block: var(--size-9) var(--size-3);
 } */
 
-@media (min-width: 434px) {
-  .media-scroller {
-    padding: 0 var(--_spacer) var(--_spacer);
+@media (min-width: 1280px) {
+  .containerXL {
+    max-width: 1280px;
   }
 }
-
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+/* @media (min-width: 1600px) {
+  .containerXL {
+    max-width: 1600px;
+  }
+} */
