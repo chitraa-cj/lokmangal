@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import ReactCountryFlag from "react-country-flag";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -62,6 +63,25 @@ const Weather = () => {
     staleTime: 600000, // 10 minutes
   });
 
+  const getUVIndexStatus = (uv) => {
+    if (uv < 0) {
+      return { text: "Invalid", color: "bg-gray-500", range: "N/A" };
+    } else if (uv === 0) {
+      return { text: "Night / No UV", color: "bg-gray-700", range: "0" }; // Gray for night
+    } else if (uv <= 2) {
+      return { text: "Low", color: "bg-green-500", range: "0-2" };
+    } else if (uv <= 5) {
+      return { text: "Moderate", color: "bg-yellow-500", range: "3-5" };
+    } else if (uv <= 7) {
+      return { text: "High", color: "bg-orange-500", range: "6-7" };
+    } else if (uv <= 10) {
+      return { text: "Very High", color: "bg-red-500", range: "8-10" };
+    } else {
+      return { text: "Extreme", color: "bg-purple-600", range: "11+" };
+    }
+  };
+
+  // Existing getAirQualityStatus function (unchanged)
   const getAirQualityStatus = (index) => {
     const statuses = {
       1: { text: "Good", color: "text-green-600" },
@@ -76,8 +96,8 @@ const Weather = () => {
 
   if (isLoading || !location) {
     return (
-      <div className="mx-auto mb-3 w-full rounded-lg bg-white p-4 shadow-lg">
-        <div className="flex h-32 items-center justify-center">
+      <div className="mx-auto mb-4 flex min-h-60 w-full flex-col justify-center rounded-lg bg-white p-4 shadow-lg">
+        <div className="flex items-center justify-center">
           <p className="text-gray-500">Loading weather data...</p>
         </div>
       </div>
@@ -86,8 +106,8 @@ const Weather = () => {
 
   if (!weatherData) {
     return (
-      <div className="mx-auto mb-3 w-full rounded-lg bg-white p-4 shadow-lg">
-        <div className="flex h-32 items-center justify-center">
+      <div className="mx-auto mb-4 flex min-h-60 w-full flex-col justify-center rounded-lg bg-white p-4 shadow-lg">
+        <div className="flex items-center justify-center">
           <p className="text-red-500">
             {error || "Unable to fetch weather data"}
           </p>
@@ -100,7 +120,7 @@ const Weather = () => {
   const airQualityStatus = getAirQualityStatus(air_quality.usEpaIndex);
 
   return (
-    <div className="mx-auto w-full rounded-lg bg-white p-4 shadow-lg">
+    <div className="mx-auto mb-4 flex min-h-60 w-full flex-col justify-center rounded-lg bg-white p-4 shadow-lg">
       {error && (
         <div className="mb-2 rounded-md bg-yellow-50 p-2">
           <p className="text-xs text-yellow-700">{error}</p>
@@ -112,15 +132,21 @@ const Weather = () => {
           <h2 className="text-lg font-bold">
             {loc.name}, {loc.country}
           </h2>
-          <img
-            src={`https://flagcdn.com/w20/${loc.countryCode?.toLowerCase()}.png`}
+          {/* <img
+            src={`https://flagcdn.com/w80/${loc.countryCode?.toLowerCase()}.png`}
+            // src={`https://flagcdn.com/16x12/${loc.countryCode?.toLowerCase()}.webp`}
             alt={loc.country}
             className="h-4 w-6"
+            /> */}
+          <ReactCountryFlag
+            countryCode={loc.countryCode}
+            svg
+            style={{ width: "24px", height: "24px" }}
+            title={loc.countryCode}
           />
         </div>
         <p className="text-xs text-gray-500">{loc.localtime}</p>
       </div>
-
       {/* Main weather info */}
       <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
         <div className="flex items-center">
@@ -130,7 +156,7 @@ const Weather = () => {
             className="h-16 w-16"
           />
           <div className="ml-2">
-            <p className="text-3xl font-bold">{current.temp_c}°C</p>
+            <p className="text-xl font-bold">{current.temp_c}°C</p>
             <p className="text-sm text-gray-600">{current.condition}</p>
           </div>
         </div>
@@ -142,7 +168,6 @@ const Weather = () => {
           <p className="text-sm">Humidity: {current.humidity}%</p>
         </div>
       </div>
-
       {/* Air quality section */}
       <div className="flex items-center justify-between">
         <div>
@@ -158,27 +183,30 @@ const Weather = () => {
           <p className="text-sm">PM10: {Math.round(air_quality.pm10)} μg/m³</p>
         </div>
       </div>
-
       {/* UV index */}
-      <div className="mt-2 flex items-center">
-        <span className="mr-2 text-sm font-medium">UV Index:</span>
-        <div className="flex h-2 w-24 overflow-hidden rounded-full bg-gray-200">
-          <div
-            className={`h-full ${
-              current.uv <= 2
-                ? "bg-green-500"
-                : current.uv <= 5
-                  ? "bg-yellow-500"
-                  : current.uv <= 7
-                    ? "bg-orange-500"
-                    : current.uv <= 10
-                      ? "bg-red-500"
-                      : "bg-purple-600"
-            }`}
-            style={{ width: `${Math.min(current.uv * 10, 100)}%` }}
-          ></div>
+      <div className="mt-2 flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="mr-2 text-sm font-medium">UV Index:</span>
+          {current.uv === 0 ? (
+            <div className="flex h-2 w-24 items-center justify-center rounded-full bg-gray-200">
+              <span className="text-xs text-gray-600">Night</span>
+            </div>
+          ) : (
+            <div className="flex h-2 w-24 overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full ${getUVIndexStatus(current.uv).color}`}
+                style={{
+                  width: `${Math.min((current.uv / 12) * 100, 100)}%`, // Scale UV to 12 max for the bar
+                }}
+              ></div>
+            </div>
+          )}
         </div>
-        <span className="ml-2 text-xs">{current.uv}</span>
+        <div className="text-right">
+          <p className="text-xs">
+            {current.uv} ({getUVIndexStatus(current.uv).text})
+          </p>
+        </div>
       </div>
     </div>
   );

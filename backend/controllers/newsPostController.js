@@ -29,15 +29,11 @@ export const getWeather = async (req, res) => {
     const { lat, lon, ip } = req.query;
     let weatherUrl;
 
-    //  console.log("lat====================", lat);
-    //  console.log("lon====================", lon);
-
     if (lat && lon) {
       weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${lat},${lon}&aqi=yes`;
     } else if (ip) {
-      // Use IP-based lookup as fallback
       const locationRes = await axios.get(`http://ip-api.com/json/${ip}`);
-      const { lat: ipLat, lon: ipLon, countryCode } = locationRes.data;
+      const { lat: ipLat, lon: ipLon } = locationRes.data;
       weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${ipLat},${ipLon}&aqi=yes`;
     } else {
       return res.status(400).json({ error: "Location data required" });
@@ -46,12 +42,24 @@ export const getWeather = async (req, res) => {
     const weatherResponse = await axios.get(weatherUrl);
     const weatherData = weatherResponse.data;
 
+    // Get country code from country name using restcountries API
+    let countryCode;
+    try {
+      const countryRes = await axios.get(
+        `https://restcountries.com/v3.1/name/${weatherData.location.country}?fields=cca2`
+      );
+      countryCode = countryRes.data[0]?.cca2 || "US"; // Default to 'US' if lookup fails
+    } catch (error) {
+      console.error("Error fetching country code:", error);
+      countryCode = "US"; // Fallback
+    }
+
     const processedData = {
       location: {
         name: weatherData.location.name,
         region: weatherData.location.region,
         country: weatherData.location.country,
-        countryCode: weatherData.location.country_code, // WeatherAPI provides this
+        countryCode: countryCode, // Use the fetched country code
         localtime: weatherData.location.localtime,
       },
       current: {
@@ -64,6 +72,7 @@ export const getWeather = async (req, res) => {
         wind_dir: weatherData.current.wind_dir,
         feelslike_c: weatherData.current.feelslike_c,
         uv: weatherData.current.uv,
+        // uv: 5,
       },
       air_quality: {
         usEpaIndex: weatherData.current.air_quality["us-epa-index"],
@@ -79,6 +88,62 @@ export const getWeather = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch weather data" });
   }
 };
+
+// export const getWeather = async (req, res) => {
+//   try {
+//     const { lat, lon, ip } = req.query;
+//     let weatherUrl;
+
+//     //  console.log("lat====================", lat);
+//     //  console.log("lon====================", lon);
+
+//     if (lat && lon) {
+//       weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${lat},${lon}&aqi=yes`;
+//     } else if (ip) {
+//       // Use IP-based lookup as fallback
+//       const locationRes = await axios.get(`http://ip-api.com/json/${ip}`);
+//       const { lat: ipLat, lon: ipLon, countryCode } = locationRes.data;
+//       weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${ipLat},${ipLon}&aqi=yes`;
+//     } else {
+//       return res.status(400).json({ error: "Location data required" });
+//     }
+
+//     const weatherResponse = await axios.get(weatherUrl);
+//     const weatherData = weatherResponse.data;
+
+//     const processedData = {
+//       location: {
+//         name: weatherData.location.name,
+//         region: weatherData.location.region,
+//         country: weatherData.location.country,
+//         countryCode: weatherData.location.country_code, // WeatherAPI provides this
+//         localtime: weatherData.location.localtime,
+//       },
+//       current: {
+//         temp_c: weatherData.current.temp_c,
+//         temp_f: weatherData.current.temp_f,
+//         condition: weatherData.current.condition.text,
+//         icon: weatherData.current.condition.icon,
+//         humidity: weatherData.current.humidity,
+//         wind_kph: weatherData.current.wind_kph,
+//         wind_dir: weatherData.current.wind_dir,
+//         feelslike_c: weatherData.current.feelslike_c,
+//         uv: weatherData.current.uv,
+//       },
+//       air_quality: {
+//         usEpaIndex: weatherData.current.air_quality["us-epa-index"],
+//         pm2_5: weatherData.current.air_quality.pm2_5,
+//         pm10: weatherData.current.air_quality.pm10,
+//       },
+//     };
+
+//     console.log(processedData);
+//     res.status(200).json(processedData);
+//   } catch (error) {
+//     console.error("Weather API Error:", error);
+//     res.status(500).json({ error: "Failed to fetch weather data" });
+//   }
+// };
 
 // export const getWeather = async (req, res) => {
 //   try {
