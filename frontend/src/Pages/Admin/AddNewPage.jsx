@@ -150,7 +150,7 @@ const AddNewPage = () => {
     if (!formData.title.trim()) newErrors.title = "Title is required";
     if (!formData.conclusion.trim())
       newErrors.conclusion = "Conclusion is required";
-    if (!formData.imgUrl) newErrors.image = "Image is required";
+    // if (!formData.imgUrl) newErrors.image = "Image is required";
     if (!formData.content.trim()) newErrors.content = "Content is required";
     if (!formData.articleType)
       newErrors.articleType = "Article type is required"; // Validate articleType
@@ -173,7 +173,7 @@ const AddNewPage = () => {
           imgUrl: formData.imgUrl,
           content: formData.content,
         };
-        // console.log(dataToSubmit);
+        console.log(dataToSubmit);
 
         if (formData._id) {
           await updateNewsMutation.mutateAsync({
@@ -241,6 +241,7 @@ const AddNewPage = () => {
               errors.articleType ? "border-red-500" : "border-gray-300"
             }`}
           >
+            <option value="breakingNews">BreakingNews</option>
             <option value="main">Main</option>
             <option value="left">Left</option>
             <option value="right">Right</option>

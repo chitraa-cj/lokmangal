@@ -69,15 +69,24 @@ const createNewsPost = asyncHandler(async (req, res) => {
   } = req.body;
 
   const models = {
+    breakingNews: BreakingNews,
     main: MainNews,
     left: LeftNews,
     right: RightNews,
     grid: GridNews,
   };
 
-  if (!models[type]) {
-    res.status(400);
-    throw new Error("Invalid news type");
+  // if (!models[type]) {
+  //   res.status(400);
+  //   throw new Error("Invalid news type");
+  // }
+
+  switch (key) {
+    case value:
+      break;
+
+    default:
+      break;
   }
 
   const newsPost = new models[type]({
