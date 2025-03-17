@@ -1,20 +1,6 @@
 import { Link } from "react-router-dom";
 
 const FollowUs = () => {
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Lok Mangal",
-          text: "निष्पक्ष • निर्भीक • निरंतर",
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    }
-  };
-
   const shareToFacebook = () => {
     window.location.href = "https://www.facebook.com/lokmangalnews/";
   };
@@ -24,7 +10,7 @@ const FollowUs = () => {
   };
 
   return (
-    <div className="h-fit w-[180px] space-y-6 rounded-xl bg-gradient-to-b from-gray-50 to-white p-3 text-center shadow-xl transition-all hover:shadow-2xl">
+    <div className="h-fit w-[180px] space-y-3 rounded-xl bg-white p-3 text-center shadow-lg">
       {/* Logo Section */}
       <div className="py-2">
         <Link to="/">

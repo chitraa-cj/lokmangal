@@ -12,6 +12,7 @@ import Error from "../components/Error";
 import CricketScore from "../components/CricketScore";
 import Weather from "../components/Weather";
 import FollowUs from "../components/FollowUs";
+import YouTube from "react-youtube"; // Import the YouTube component
 
 const NewsArticlePage = () => {
   const { category } = useParams();
@@ -56,6 +57,15 @@ const NewsArticlePage = () => {
       );
     }
   }
+
+  // Options for the YouTube player
+  const youtubeOptions = {
+    // height: "390",
+    // width: "640",
+    playerVars: {
+      autoplay: 0, // Set to 1 to autoplay
+    },
+  };
 
   return (
     <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
@@ -114,6 +124,21 @@ const NewsArticlePage = () => {
           {rightPosts.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>
+      {/* Add YouTube player here */}
+      <div className="fixed bottom-8 right-3">
+        {/* <YouTube
+          videoId="dQw4w9WgXcQ" // Replace with your desired YouTube video ID
+          opts={youtubeOptions}
+          onReady={(event) => event.target.pauseVideo()} // Optional: Pause video on load
+        /> */}
+        <iframe
+          className="h-40 w-40 rounded-lg shadow-lg"
+          src="https://www.youtube.com/embed/CDjD5gQjXQk?si=9oLqbmoIyEGdw3Xd"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        ></iframe>
+      </div>
     </div>
   );
 };
