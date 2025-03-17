@@ -69,7 +69,7 @@ const NewsArticlePage = () => {
 
         <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
           <div className="mx-4 md:mx-0">
-            <CricketScore />
+            {/* <CricketScore /> */}
             <div className="block md:hidden">
               <Weather />
             </div>

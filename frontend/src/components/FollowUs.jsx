@@ -16,12 +16,11 @@ const FollowUs = () => {
   };
 
   const shareToFacebook = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-    window.open(url, "_blank", "width=600,height=400");
+    window.location.href = "https://www.facebook.com/lokmangalnews/";
   };
 
   const shareToInstagram = () => {
-    alert("Instagram does not support direct web sharing. Share manually.");
+    window.location.href = "https://www.instagram.com/lokmangalnews/";
   };
 
   return (
@@ -47,10 +46,10 @@ const FollowUs = () => {
       {/* Social Media Section */}
       <div className="space-y-4">
         {/* Social Media Icons */}
-        <div className="flex flex-col items-center justify-center space-y-6">
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 text-xs text-gray-500">
-              QR Space
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <div className="flex h-20 w-20 items-center justify-center">
+              <img src="/instagramQR.png" alt="instagramQR" />
             </div>
             <button
               onClick={shareToFacebook}
@@ -80,9 +79,9 @@ const FollowUs = () => {
             </button>
           </div>
 
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 text-xs text-gray-500">
-              QR Space
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <div className="flex h-20 w-20 items-center justify-center">
+              <img src="/instagramQR.png" alt="instagramQR" />
             </div>
             <button
               onClick={shareToInstagram}
