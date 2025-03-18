@@ -150,13 +150,32 @@ img {
   margin-block: var(--size-9) var(--size-3);
 } */
 
+.containerXL {
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .containerXL {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+  .containerXL {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .containerXL {
+    max-width: 1024px;
+  }
+}
 @media (min-width: 1280px) {
   .containerXL {
     max-width: 1280px;
   }
 }
-/* @media (min-width: 1600px) {
+
+@media (min-width: 1536px) {
   .containerXL {
-    max-width: 1600px;
+    max-width: 1280px;
   }
-} */
+}

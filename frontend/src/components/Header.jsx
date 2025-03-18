@@ -87,16 +87,18 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center justify-center bg-gray-800">
-        {/* <div className="containerXL w-full"> */}
-        <div className="relative mx-0 w-full text-white xl:px-56">
+        <div className="containerXL relative px-0 text-white md:px-4">
           <div className="flex items-center justify-between overflow-x-auto">
-            <div className="absolute left-0 top-[-25px] hidden lg:block xl:px-48">
+            <div className="absolute hidden lg:block">
               <Link to="/">
                 {/* <img src="./image.png" alt="logo" className="w-20" /> */}
                 <img src="./logo.png" alt="logo" className="w-20" />
+                {/* <img src="./lokmangal logo from YouTube channels4_profile.jpg" alt="logo" className="w-20" /> */}
               </Link>
             </div>
+
             <div></div>
+
             <div
               className={`ml-0 flex items-center justify-center`}
               // className={`ml-0 flex items-center justify-center ${isAuthenticated ? "lg:ml-28" : "lg:ml-16"}`}
@@ -143,7 +145,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {/* </div> */}
 
       {/* Trending Topics - Added mobile padding */}
       <div className="flex items-center justify-between overflow-x-auto bg-gray-100">

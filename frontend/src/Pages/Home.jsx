@@ -88,7 +88,8 @@ const NewsArticlePage = () => {
             )}
           </div>
 
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block"> */}
+          <div className="">
             {gridPosts.length > 0 && (
               <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
             )}
@@ -102,7 +103,8 @@ const NewsArticlePage = () => {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block"> */}
+          <div className="">
             {gridPosts.length > 6 && (
               <ScrollableGrid gridPosts={gridPosts.slice(6)} />
             )}
