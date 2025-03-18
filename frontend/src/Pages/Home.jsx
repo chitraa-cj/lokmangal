@@ -118,7 +118,13 @@ const NewsArticlePage = () => {
             ))}
           </div>
 
-          <VideoCard />
+          {/* <div className="mx-3 md:mx-0"> */}
+          {/* <div className=""> */}
+          {/* <VideoCard /> */}
+          {/* </div> */}
+          <>
+            <VideoCard />
+          </>
         </div>
 
         <div className="sticky top-4 hidden flex-col items-start lg:flex">

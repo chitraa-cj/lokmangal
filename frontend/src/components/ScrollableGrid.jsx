@@ -77,7 +77,7 @@ import GridItem from "./GridItem";
 
 const ScrollableGrid = ({ gridPosts }) => {
   return (
-    <div className="media-scroller snaps-inline max-w-[434px]">
+    <div className="media-scroller snaps-inline girdMaxWidth">
       {gridPosts.map((post) => (
         <div key={post._id}>
           <GridItem article={post} />

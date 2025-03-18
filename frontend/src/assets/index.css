@@ -150,24 +150,50 @@ img {
   margin-block: var(--size-9) var(--size-3);
 } */
 
+.girdMaxWidth {
+  max-width: 420px;
+}
+
+@media (max-width: 434px) {
+  .girdMaxWidth {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 375px) {
+  .girdMaxWidth {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 325px) {
+  .girdMaxWidth {
+    max-width: 250px;
+  }
+}
+
 .containerXL {
   width: 100%;
 }
+
 @media (min-width: 640px) {
   .containerXL {
     max-width: 640px;
   }
 }
+
 @media (min-width: 768px) {
   .containerXL {
     max-width: 768px;
   }
 }
+
 @media (min-width: 1024px) {
   .containerXL {
     max-width: 1024px;
   }
 }
+
 @media (min-width: 1280px) {
   .containerXL {
     max-width: 1280px;

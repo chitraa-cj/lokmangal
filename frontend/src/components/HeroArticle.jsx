@@ -9,7 +9,7 @@ const HeroArticle = ({ article }) => {
   };
 
   return (
-    <div className="mx-auto w-full rounded-lg bg-white pt-2 shadow-lg sm:max-w-[434px] sm:pt-4">
+    <div className="mx-auto max-w-[434px] rounded-lg bg-white pt-2 shadow-lg sm:pt-4">
       <h1
         className="mb-2 min-w-full cursor-pointer px-3 text-base font-bold text-black sm:mb-3 sm:px-3 sm:text-lg md:px-4 md:text-xl"
         onClick={() => {
