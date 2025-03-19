@@ -33,7 +33,7 @@ const FollowUs = () => {
       <div className="space-y-4">
         {/* Social Media Icons */}
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="flex flex-col items-center justify-center space-y-3">
+          {/* <div className="flex flex-col items-center justify-center space-y-3">
             <div className="flex h-20 w-20 items-center justify-center">
               <img src="/instagramQR.png" alt="instagramQR" />
             </div>
@@ -63,7 +63,7 @@ const FollowUs = () => {
               </svg>
               <span className="text-[#1976D2]">Facebook</span>
             </button>
-          </div>
+          </div> */}
 
           <div className="flex flex-col items-center justify-center space-y-3">
             <div className="flex h-20 w-20 items-center justify-center">

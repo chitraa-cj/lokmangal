@@ -7,12 +7,20 @@ const VideoCard = () => {
         Delhi Election 2024: सत्ता का किला में दिल्ली में क्या खूब रहेगा, क्या
         खराब रहेगा?
       </h3> */}
+      {/* <iframe
+        className="h-64 w-full rounded-lg bg-white shadow-lg"
+        src="https://www.youtube.com/embed/CDjD5gQjXQk?autoplay=1&loop=1&playlist=CDjD5gQjXQk"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      ></iframe> */}
       <iframe
         className="h-64 w-full rounded-lg bg-white shadow-lg"
-        src="https://www.youtube.com/embed/CDjD5gQjXQk?si=9oLqbmoIyEGdw3Xd"
+        src="https://www.youtube.com/embed/CDjD5gQjXQk?autoplay=1&mute=1&loop=1&playlist=CDjD5gQjXQk"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
       ></iframe>
     </div>
   );

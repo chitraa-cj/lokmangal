@@ -139,12 +139,20 @@ const NewsArticlePage = () => {
           opts={youtubeOptions}
           onReady={(event) => event.target.pauseVideo()} // Optional: Pause video on load
         /> */}
-        <iframe
+        {/* <iframe
           className="h-40 w-40 rounded-lg shadow-lg"
           src="https://www.youtube.com/embed/CDjD5gQjXQk?si=9oLqbmoIyEGdw3Xd"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        ></iframe> */}
+        <iframe
+          className="h-40 w-40 rounded-lg shadow-lg"
+          src="https://www.youtube.com/embed/CDjD5gQjXQk?autoplay=1&mute=1&loop=1&playlist=CDjD5gQjXQk"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
         ></iframe>
       </div>
     </div>
