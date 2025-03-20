@@ -8,7 +8,7 @@ const BreakingNewsSchema = mongoose.Schema(
     // imgUrl: { type: String, required: true },
     imgUrl: { type: String },
     content: { type: String, required: true },
-    // type: { type: String, required: true, default: "breakingNews" },
+    type: { type: String, required: true, default: "breakingNews" },
   },
   { timestamps: true }
 );

@@ -62,7 +62,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                 </td>
                 <td className="px-4 py-3">{item.conclusion}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
-                  {item.type}
+                  {item.articleType}
                 </td>
                 {/* <td className="py-3 px-4">{item.category}</td> */}
                 {/* <td className="py-3 px-4 max-w-xs truncate">

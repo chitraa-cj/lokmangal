@@ -11,7 +11,7 @@ const mainNewsSchema = mongoose.Schema(
     imgUrl: { type: String },
     // imgUrl: { type: String, required: true },
     content: { type: String, required: true },
-    // type: { type: String, required: true, default: "main" },
+    type: { type: String, required: true, default: "main" },
   },
   { timestamps: true }
 );
