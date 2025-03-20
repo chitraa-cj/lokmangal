@@ -9,6 +9,21 @@ export const useNewsPosts = () => {
       const { data } = await axios.get("/api/news/");
       return data;
     },
+    // Remove staleTime and cacheTime to keep data until explicitly invalidated
+  });
+};
+
+export const useAdminNewsPosts = ({ page = 1, limit } = {}) => {
+  return useQuery({
+    queryKey: ["newsPosts", page],
+    queryFn: async () => {
+      const params = { page };
+      if (limit) params.limit = limit;
+
+      const response = await axios.get("/api/news/all", { params });
+      return response.data;
+    },
+    keepPreviousData: true, // Still useful for pagination
   });
 };
 
@@ -25,6 +40,27 @@ export const useNewsPostDetails = (type, newsId, initialData) => {
 };
 
 // Mutations
+// export const useCreateNewsPostMutation = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: async (data) => {
+//       const response = await axios.post("/api/news", data);
+//       return response.data;
+//     },
+//     onSuccess: () => {
+//       // Invalidate all relevant queries
+//       queryClient.invalidateQueries({ queryKey: ["news"] });
+//       queryClient.invalidateQueries({ queryKey: ["newsPosts"] });
+//     },
+//   });
+// };
+
+// 1. Optimistic Updates
+// Instead of invalidating and refetching, you could update the cache directly with the new data in the onSuccess callback. This avoids extra network requests:
+
+// https://grok.com/chat/c9dc16a3-e312-4a6e-b96d-27396a494041
+
 export const useCreateNewsPostMutation = () => {
   const queryClient = useQueryClient();
 
@@ -33,8 +69,10 @@ export const useCreateNewsPostMutation = () => {
       const response = await axios.post("/api/news", data);
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["news"] });
+    onSuccess: (newPost) => {
+      // Update the cache directly
+      queryClient.setQueryData(["news"], (oldData) => [...oldData, newPost]);
+      queryClient.invalidateQueries({ queryKey: ["newsPosts"] }); // Still invalidate admin list
     },
   });
 };
@@ -48,8 +86,11 @@ export const useUpdateNewsPostMutation = () => {
       const response = await axios.put(`/api/news/${id}`, data);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Invalidate all relevant queries
       queryClient.invalidateQueries({ queryKey: ["news"] });
+      queryClient.invalidateQueries({ queryKey: ["newsPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["news", data.id] }); // Invalidate specific post
     },
   });
 };
@@ -63,7 +104,9 @@ export const useDeleteNewsPostMutation = () => {
       return response.data;
     },
     onSuccess: () => {
+      // Invalidate all relevant queries
       queryClient.invalidateQueries({ queryKey: ["news"] });
+      queryClient.invalidateQueries({ queryKey: ["newsPosts"] });
     },
   });
 };
@@ -75,6 +118,6 @@ export const useNewsPostsByCategory = (category) => {
       const { data } = await axios.get(`/api/news/category/${category}`);
       return data;
     },
-    enabled: !!category, // Only run if category is provided
+    enabled: !!category,
   });
 };

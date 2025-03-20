@@ -24,6 +24,63 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
   res.json({ breakingNews, main, left, right, grid });
 });
 
+/**
+ * @desc Get all news posts
+ * @route GET /api/news
+ * @access Public
+ */
+const getAllNewsPostsAdmin = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit =
+    parseInt(req.query.limit) || process.env.PAGINATION_LIMIT || 100;
+  const skip = (page - 1) * limit;
+
+  try {
+    const [breakingNews, main, left, right, grid, counts] = await Promise.all([
+      BreakingNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      MainNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      LeftNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      RightNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      GridNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Promise.all([
+        BreakingNews.countDocuments(),
+        MainNews.countDocuments(),
+        LeftNews.countDocuments(),
+        RightNews.countDocuments(),
+        GridNews.countDocuments(),
+      ]),
+    ]);
+
+    const totalCounts = {
+      breakingNews: counts[0],
+      main: counts[1],
+      left: counts[2],
+      right: counts[3],
+      grid: counts[4],
+      total: counts.reduce((sum, count) => sum + count, 0),
+    };
+
+    const pagination = {
+      currentPage: page,
+      limit: limit,
+      totalPages: Math.ceil(totalCounts.total / limit),
+      totalItems: totalCounts.total,
+    };
+
+    res.json({
+      breakingNews,
+      main,
+      left,
+      right,
+      grid,
+      pagination,
+      totalCounts,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
 const getWeather = async (req, res) => {
   try {
     const { lat, lon, ip } = req.query;
@@ -166,6 +223,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
 
   // Create new news post with the appropriate model
   const newsPost = new models[articleType]({
+    articleType,
     title,
     conclusion,
     imgUrl,
@@ -180,36 +238,32 @@ const createNewsPost = asyncHandler(async (req, res) => {
   res.status(201).json(createdNewsPost);
 });
 
-// const createNewsPost = asyncHandler(async (req, res) => {
-//   const newsPost = new NewsPost({
-//     ...req.body, // Spread the request body into the new NewsPost
-//     user: req.user._id, // Ensure the user ID is included
-//   });
-
-//   const createdNewsPost = await newsPost.save();
-//   res.status(201).json(createdNewsPost);
-// });
-
 /**
  * @desc Update a news post
  * @route PUT /api/news/:id
  * @access Private/Admin
  */
 const updateNewsPost = asyncHandler(async (req, res) => {
-  const { type, id } = req.params;
+  const { id } = req.params;
+  const { articleType } = req.body;
   const models = {
+    breakingNews: BreakingNews,
     main: MainNews,
     left: LeftNews,
     right: RightNews,
     grid: GridNews,
   };
 
-  if (!models[type]) {
+  console.log(req.body);
+  console.log(req.params);
+  console.log(models[articleType]);
+
+  if (!models[articleType]) {
     res.status(400);
-    throw new Error("Invalid news type");
+    throw new Error("Invalid news Article Type");
   }
 
-  const newsPost = await models[type].findById(id);
+  const newsPost = await models[articleType].findById(id);
   if (newsPost) {
     Object.assign(newsPost, req.body);
     const updatedNewsPost = await newsPost.save();
@@ -219,6 +273,7 @@ const updateNewsPost = asyncHandler(async (req, res) => {
     throw new Error("News post not found");
   }
 });
+
 /**
  * @desc Delete a news post
  * @route DELETE /api/news/:id
@@ -297,4 +352,5 @@ export {
   getNewsPostsByUser,
   getNewsPostsByCategory,
   getWeather,
+  getAllNewsPostsAdmin,
 };

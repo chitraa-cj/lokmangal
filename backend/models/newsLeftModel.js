@@ -8,7 +8,7 @@ const newsLeftSchema = mongoose.Schema(
     // imgUrl: { type: String, required: true },
     imgUrl: { type: String },
     content: { type: String, required: true },
-    // type: { type: String, required: true, default: "left" },
+    articleType: { type: String, required: true, default: "left" },
   },
   { timestamps: true }
 );

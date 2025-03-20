@@ -8,6 +8,7 @@ import {
   getNewsPostsByUser,
   getNewsPostsByCategory,
   getWeather,
+  getAllNewsPostsAdmin,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -16,6 +17,8 @@ const router = express.Router();
 router.route("/").get(getAllNewsPosts).post(protect, isAdmin, createNewsPost);
 
 router.route("/weather").get(getWeather);
+
+router.route("/all").get(getAllNewsPostsAdmin);
 
 router
   .route("/:id")

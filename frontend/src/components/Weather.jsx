@@ -86,7 +86,7 @@ const Weather = () => {
     const statuses = {
       1: { text: "Good", color: "text-green-600" },
       2: { text: "Moderate", color: "text-yellow-500" },
-      3: { text: "Unhealthy Sensitive groups", color: "text-orange-500" },
+      3: { text: "Risk for Sensitive People", color: "text-orange-500" },
       4: { text: "Unhealthy", color: "text-red-500" },
       5: { text: "Very Unhealthy", color: "text-purple-600" },
       6: { text: "Hazardous", color: "text-red-800" },
@@ -120,7 +120,7 @@ const Weather = () => {
   const airQualityStatus = getAirQualityStatus(air_quality.usEpaIndex);
 
   return (
-    <div className="mx-auto mb-4 flex min-h-60 w-full flex-col justify-center rounded-lg bg-white p-4 shadow-lg">
+    <div className="mx-auto mb-4 flex min-h-60 w-[300px] flex-col justify-center rounded-lg bg-white p-3 shadow-lg">
       {error && (
         <div className="mb-2 rounded-md bg-yellow-50 p-2">
           <p className="text-xs text-yellow-700">{error}</p>

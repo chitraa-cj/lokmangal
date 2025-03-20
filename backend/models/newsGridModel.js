@@ -8,7 +8,7 @@ const newsGridSchema = mongoose.Schema(
     // imgUrl: { type: String, required: true },
     imgUrl: { type: String },
     content: { type: String, required: true },
-    // type: { type: String, required: true, default: "grid" },
+    articleType: { type: String, required: true, default: "grid" },
   },
   { timestamps: true }
 );

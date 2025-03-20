@@ -29,31 +29,31 @@ const importData = async () => {
     const adminUser = createdUsers[0]._id; // Assuming first user is an admin
 
     console.log(colors.green("Importing NewsPost"));
-    const sampleBreakingNews = generateMainNewsData(2).map((news) => {
+    const sampleBreakingNews = generateMainNewsData(200).map((news) => {
       return {
         user: adminUser,
         ...news,
       };
     });
-    const sampleLeftNewsPosts = generateMainNewsData(18).map((news) => {
+    const sampleLeftNewsPosts = generateMainNewsData(180).map((news) => {
       return {
         user: adminUser,
         ...news,
       };
     });
-    const sampleRightNewsPosts = generateMainNewsData(12).map((news) => {
+    const sampleRightNewsPosts = generateMainNewsData(120).map((news) => {
       return {
         user: adminUser,
         ...news,
       };
     });
-    const sampleGridNewsPosts = generateMainNewsData(24).map((news) => {
+    const sampleGridNewsPosts = generateMainNewsData(240).map((news) => {
       return {
         user: adminUser,
         ...news,
       };
     });
-    const sampleMainNewsPosts = generateMainNewsData(20).map((news) => {
+    const sampleMainNewsPosts = generateMainNewsData(200).map((news) => {
       return {
         user: adminUser,
         ...news,

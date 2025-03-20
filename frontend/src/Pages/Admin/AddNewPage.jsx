@@ -12,6 +12,8 @@ const AddNewPage = () => {
   const location = useLocation();
   const existingNews = location.state?.news;
 
+  console.log(existingNews);
+
   const createNewsMutation = useCreateNewsPostMutation();
   const updateNewsMutation = useUpdateNewsPostMutation();
 
@@ -40,7 +42,7 @@ const AddNewPage = () => {
   // content;
 
   const [formData, setFormData] = useState({
-    articleType: existingNews ? existingNews.articleType : "main", // Default to "main"
+    articleType: existingNews ? existingNews?.articleType : "",
     navbarCategories: existingNews?.navbarCategories || [],
     hashtags: existingNews?.hashtags || [],
     footerTags: existingNews?.footerTags || [],
