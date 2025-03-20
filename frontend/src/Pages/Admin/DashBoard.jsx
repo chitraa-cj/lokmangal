@@ -7,12 +7,15 @@ import {
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import { useState } from "react";
+import { convert } from "html-to-text";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
     <div className="flex flex-col items-center justify-center">
       <h3 className="mb-2 text-3xl font-bold">{value}</h3>
-      <p className="text-gray-600">{title}</p>
+      <p className="text-gray-600">
+        <div dangerouslySetInnerHTML={{ __html: title }} />
+      </p>
     </div>
   </div>
 );
@@ -44,6 +47,11 @@ const Pagination = ({ pagination, onPageChange }) => {
 };
 
 const NewsTable = ({ news, onEdit, onDelete }) => {
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
   // const navigate = useNavigate();
   return (
     <div className="mt-8">
@@ -77,7 +85,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                   <Link to={`/${item.type}/${item._id}`}>
                     <img
                       src={item.imgUrl}
-                      alt={item.title}
+                      alt={stripHtml(item.title)}
                       className="w-28 rounded object-cover"
                     />
                   </Link>
@@ -87,7 +95,8 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     to={`/${item.type}/${item._id}`}
                     className="hover:text-blue-800 hover:underline"
                   >
-                    {item.title}
+                    <div dangerouslySetInnerHTML={{ __html: item.title }} />
+                    {/* {item.title} */}
                   </Link>
                 </td>
                 <td className="px-4 py-3">{item.conclusion}</td>
@@ -145,10 +154,13 @@ const Dashboard = () => {
     refetch,
   } = useAdminNewsPosts({ page });
 
+  // console.log(newsData);
+
   let transformedNewsData = [];
 
   if (newsData) {
     transformedNewsData = [
+      ...(newsData.breakingNews || []),
       ...(newsData.main || []),
       ...(newsData.left || []),
       ...(newsData.right || []),

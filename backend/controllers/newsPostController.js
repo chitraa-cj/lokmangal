@@ -1,10 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import BreakingNews from "../models/BreakingNewsModel.js";
-import MainNews from "../models/newsMainModel.js";
-import LeftNews from "../models/newsLeftModel.js";
-import RightNews from "../models/newsRightModel.js";
-import GridNews from "../models/newsGridModel.js";
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
+import News from "../models/NewsSchema.js";
 import axios from "axios";
 
 /**
@@ -14,11 +10,11 @@ import axios from "axios";
  */
 const getAllNewsPosts = asyncHandler(async (req, res) => {
   const [breakingNews, main, left, right, grid] = await Promise.all([
-    BreakingNews.find().sort({ createdAt: -1 }).limit(1),
-    MainNews.find().sort({ createdAt: -1 }).limit(10),
-    LeftNews.find().sort({ createdAt: -1 }).limit(5),
-    RightNews.find().sort({ createdAt: -1 }).limit(4),
-    GridNews.find().sort({ createdAt: -1 }).limit(10),
+    News.find({ articleType: "breakingNews" }).sort({ createdAt: -1 }).limit(1),
+    News.find({ articleType: "main" }).sort({ createdAt: -1 }).limit(10),
+    News.find({ articleType: "left" }).sort({ createdAt: -1 }).limit(5),
+    News.find({ articleType: "right" }).sort({ createdAt: -1 }).limit(4),
+    News.find({ articleType: "grid" }).sort({ createdAt: -1 }).limit(10),
   ]);
 
   res.json({ breakingNews, main, left, right, grid });
@@ -35,50 +31,40 @@ const getAllNewsPostsAdmin = asyncHandler(async (req, res) => {
     parseInt(req.query.limit) || process.env.PAGINATION_LIMIT || 100;
   const skip = (page - 1) * limit;
 
-  try {
-    const [breakingNews, main, left, right, grid, counts] = await Promise.all([
-      BreakingNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      MainNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      LeftNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      RightNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      GridNews.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      Promise.all([
-        BreakingNews.countDocuments(),
-        MainNews.countDocuments(),
-        LeftNews.countDocuments(),
-        RightNews.countDocuments(),
-        GridNews.countDocuments(),
-      ]),
-    ]);
+  const [news, total] = await Promise.all([
+    News.find().sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+    News.countDocuments(),
+  ]);
 
-    const totalCounts = {
-      breakingNews: counts[0],
-      main: counts[1],
-      left: counts[2],
-      right: counts[3],
-      grid: counts[4],
-      total: counts.reduce((sum, count) => sum + count, 0),
-    };
+  // Group by articleType for response
+  const responseData = {
+    breakingNews: news.filter((item) => item.articleType === "breakingNews"),
+    main: news.filter((item) => item.articleType === "main"),
+    left: news.filter((item) => item.articleType === "left"),
+    right: news.filter((item) => item.articleType === "right"),
+    grid: news.filter((item) => item.articleType === "grid"),
+  };
 
-    const pagination = {
-      currentPage: page,
-      limit: limit,
-      totalPages: Math.ceil(totalCounts.total / limit),
-      totalItems: totalCounts.total,
-    };
+  const pagination = {
+    currentPage: page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+    totalItems: total,
+    itemsOnPage: news.length,
+  };
 
-    res.json({
-      breakingNews,
-      main,
-      left,
-      right,
-      grid,
-      pagination,
-      totalCounts,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
+  res.json({
+    ...responseData,
+    pagination,
+    totalCounts: {
+      breakingNews: await News.countDocuments({ articleType: "breakingNews" }),
+      main: await News.countDocuments({ articleType: "main" }),
+      left: await News.countDocuments({ articleType: "left" }),
+      right: await News.countDocuments({ articleType: "right" }),
+      grid: await News.countDocuments({ articleType: "grid" }),
+      total,
+    },
+  });
 });
 
 const getWeather = async (req, res) => {
@@ -152,20 +138,9 @@ const getWeather = async (req, res) => {
  * @access Public
  */
 const getNewsPostById = asyncHandler(async (req, res) => {
-  const { type, id } = req.params;
-  const models = {
-    main: MainNews,
-    left: LeftNews,
-    right: RightNews,
-    grid: GridNews,
-  };
+  const { id } = req.params;
 
-  if (!models[type]) {
-    res.status(400);
-    throw new Error("Invalid news type");
-  }
-
-  const newsPost = await models[type].findById(id);
+  const newsPost = await News.findById(id);
   if (newsPost) {
     res.json(newsPost);
   } else {
@@ -191,46 +166,27 @@ const createNewsPost = asyncHandler(async (req, res) => {
     footerTags,
   } = req.body;
 
-  // Check if articleType is provided
-  if (!articleType) {
-    res.status(400);
-    throw new Error("News article type is required");
-  }
-
-  const models = {
-    breakingNews: BreakingNews,
-    main: MainNews,
-    left: LeftNews,
-    right: RightNews,
-    grid: GridNews,
-  };
-
-  // Log the request body for debugging (optional, can be removed later)
-  // console.log("Request body:", req.body);
-  // console.log("Received type:", articleType);
-  // console.log("Available models:", Object.keys(models));
-  // console.log("===========", models[articleType]);
-
-  // Check if the articleType exists in models object
-  if (!models[articleType]) {
+  // Check if articleType is provided and valid
+  const validTypes = ["breakingNews", "main", "left", "right", "grid"];
+  if (!articleType || !validTypes.includes(articleType)) {
     res.status(400);
     throw new Error(
-      `Invalid news type: ${articleType}. Must be one of: ${Object.keys(
-        models
-      ).join(", ")}`
+      `Invalid news type: ${articleType}. Must be one of: ${validTypes.join(
+        ", "
+      )}`
     );
   }
 
-  // Create new news post with the appropriate model
-  const newsPost = new models[articleType]({
+  // Create new news post
+  const newsPost = new News({
     articleType,
     title,
     conclusion,
     imgUrl,
     content,
-    navbarCategories,
-    hashtags,
-    footerTags,
+    navbarCategories: navbarCategories || [],
+    hashtags: hashtags || [],
+    footerTags: footerTags || [],
     user: req.user._id,
   });
 
@@ -245,33 +201,48 @@ const createNewsPost = asyncHandler(async (req, res) => {
  */
 const updateNewsPost = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { articleType } = req.body;
-  const models = {
-    breakingNews: BreakingNews,
-    main: MainNews,
-    left: LeftNews,
-    right: RightNews,
-    grid: GridNews,
-  };
+  const {
+    articleType,
+    title,
+    conclusion,
+    imgUrl,
+    content,
+    navbarCategories,
+    hashtags,
+    footerTags,
+  } = req.body;
 
-  console.log(req.body);
-  console.log(req.params);
-  console.log(models[articleType]);
-
-  if (!models[articleType]) {
-    res.status(400);
-    throw new Error("Invalid news Article Type");
-  }
-
-  const newsPost = await models[articleType].findById(id);
-  if (newsPost) {
-    Object.assign(newsPost, req.body);
-    const updatedNewsPost = await newsPost.save();
-    res.json(updatedNewsPost);
-  } else {
+  const newsPost = await News.findById(id);
+  if (!newsPost) {
     res.status(404);
     throw new Error("News post not found");
   }
+
+  // If articleType is provided, validate it
+  if (articleType) {
+    const validTypes = ["breakingNews", "main", "left", "right", "grid"];
+    if (!validTypes.includes(articleType)) {
+      res.status(400);
+      throw new Error(
+        `Invalid news type: ${articleType}. Must be one of: ${validTypes.join(
+          ", "
+        )}`
+      );
+    }
+  }
+
+  // Update fields only if provided in the request
+  newsPost.articleType = articleType || newsPost.articleType;
+  newsPost.title = title || newsPost.title;
+  newsPost.conclusion = conclusion || newsPost.conclusion;
+  newsPost.imgUrl = imgUrl || newsPost.imgUrl;
+  newsPost.content = content || newsPost.content;
+  newsPost.navbarCategories = navbarCategories || newsPost.navbarCategories;
+  newsPost.hashtags = hashtags || newsPost.hashtags;
+  newsPost.footerTags = footerTags || newsPost.footerTags;
+
+  const updatedNewsPost = await newsPost.save();
+  res.json(updatedNewsPost);
 });
 
 /**
@@ -280,22 +251,11 @@ const updateNewsPost = asyncHandler(async (req, res) => {
  * @access Private/Admin
  */
 const deleteNewsPost = asyncHandler(async (req, res) => {
-  const { type, id } = req.params;
-  const models = {
-    main: MainNews,
-    left: LeftNews,
-    right: RightNews,
-    grid: GridNews,
-  };
+  const { id } = req.params;
 
-  if (!models[type]) {
-    res.status(400);
-    throw new Error("Invalid news type");
-  }
-
-  const newsPost = await models[type].findById(id);
+  const newsPost = await News.findById(id);
   if (newsPost) {
-    await models[type].deleteOne({ _id: id });
+    await News.deleteOne({ _id: id });
     res.status(200).json({ message: "News post deleted successfully" });
   } else {
     res.status(404);
@@ -309,7 +269,7 @@ const deleteNewsPost = asyncHandler(async (req, res) => {
  * @access Private
  */
 const getNewsPostsByUser = asyncHandler(async (req, res) => {
-  const newsPosts = await MainNews.find({ user: req.params.userId }).sort({
+  const newsPosts = await News.find({ user: req.params.userId }).sort({
     createdAt: -1,
   });
 
@@ -328,12 +288,11 @@ const getNewsPostsByUser = asyncHandler(async (req, res) => {
  */
 const getNewsPostsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
-  const newsPosts = await MainNews.find({
+
+  const newsPosts = await News.find({
     navbarCategories: category,
-  }).sort({
-    createdAt: -1,
-  });
-  // console.log(newsPosts);
+    articleType: "main", // Assuming this endpoint is only for MainNews
+  }).sort({ createdAt: -1 });
 
   if (newsPosts.length > 0) {
     res.json(newsPosts);
@@ -354,3 +313,32 @@ export {
   getWeather,
   getAllNewsPostsAdmin,
 };
+
+// const migrateNews = async () => {
+//   const BreakingNews = mongoose.model("BreakingNews");
+//   const MainNews = mongoose.model("MainNews");
+//   const LeftNews = mongoose.model("LeftNews");
+//   const RightNews = mongoose.model("RightNews");
+//   const GridNews = mongoose.model("GridNews");
+
+//   const collections = [
+//     { model: BreakingNews, type: "breakingNews" },
+//     { model: MainNews, type: "main" },
+//     { model: LeftNews, type: "left" },
+//     { model: RightNews, type: "right" },
+//     { model: GridNews, type: "grid" },
+//   ];
+
+//   for (const { model, type } of collections) {
+//     const items = await model.find().lean();
+//     const updatedItems = items.map((item) => ({
+//       ...item,
+//       articleType: type,
+//       navbarCategories: item.navbarCategories || [],
+//       hashtags: item.hashtags || [],
+//       footerTags: item.footerTags || [],
+//     }));
+//     await News.insertMany(updatedItems);
+//     console.log(`Migrated ${type}: ${updatedItems.length} items`);
+//   }
+// };

@@ -12,8 +12,6 @@ const AddNewPage = () => {
   const location = useLocation();
   const existingNews = location.state?.news;
 
-  console.log(existingNews);
-
   const createNewsMutation = useCreateNewsPostMutation();
   const updateNewsMutation = useUpdateNewsPostMutation();
 
@@ -30,16 +28,6 @@ const AddNewPage = () => {
     "वीडियो",
     "मनोरंजन",
   ];
-
-  // articleType;
-  // navbarCategories;
-  // hashtags;
-  // footerTags;
-  // user;
-  // title;
-  // conclusion;
-  // imgUrl;
-  // content;
 
   const [formData, setFormData] = useState({
     articleType: existingNews ? existingNews?.articleType : "",
@@ -58,6 +46,24 @@ const AddNewPage = () => {
   );
   const [errors, setErrors] = useState({});
 
+  // React Quill toolbar configuration with all features
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ font: [] }],
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ align: [] }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -70,12 +76,10 @@ const AddNewPage = () => {
   };
 
   const handleCategorySelect = (category) => {
-    // console.log("clicked");
     setFormData((prev) => {
       const updatedCategories = prev.navbarCategories.includes(category)
         ? prev.navbarCategories.filter((c) => c !== category)
         : [...prev.navbarCategories, category];
-
       return {
         ...prev,
         navbarCategories: updatedCategories,
@@ -98,10 +102,10 @@ const AddNewPage = () => {
     }
   };
 
-  const handleEditorChange = (content) => {
-    setFormData((prev) => ({ ...prev, content }));
-    if (errors.content) {
-      setErrors((prev) => ({ ...prev, content: "" }));
+  const handleEditorChange = (name) => (content) => {
+    setFormData((prev) => ({ ...prev, [name]: content }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -124,24 +128,12 @@ const AddNewPage = () => {
       );
 
       const uploadedIMGUrl = await res.json();
-
-      // Add error checking
       if (!uploadedIMGUrl?.url) {
         console.error("No URL in response:", uploadedIMGUrl);
         return;
       }
 
-      setFormData((prev) => {
-        const newState = { ...prev, imgUrl: uploadedIMGUrl.url };
-        console.log("Updated state:", newState); // Log inside setState callback
-        return newState;
-      });
-
-      // If you need to track changes, use useEffect
-      // Add this hook in your component:
-      // useEffect(() => {
-      //     console.log("formData.imgUrl changed:", formData.imgUrl);
-      // }, [formData.imgUrl]);
+      setFormData((prev) => ({ ...prev, imgUrl: uploadedIMGUrl.url }));
     } catch (error) {
       console.error("Upload error:", error);
     }
@@ -152,10 +144,9 @@ const AddNewPage = () => {
     if (!formData.title.trim()) newErrors.title = "Title is required";
     if (!formData.conclusion.trim())
       newErrors.conclusion = "Conclusion is required";
-    // if (!formData.imgUrl) newErrors.image = "Image is required";
     if (!formData.content.trim()) newErrors.content = "Content is required";
     if (!formData.articleType)
-      newErrors.articleType = "Article type is required"; // Validate articleType
+      newErrors.articleType = "Article type is required";
     return newErrors;
   };
 
@@ -175,19 +166,19 @@ const AddNewPage = () => {
           imgUrl: formData.imgUrl,
           content: formData.content,
         };
-        console.log(dataToSubmit);
 
+        let response;
         if (formData._id) {
-          await updateNewsMutation.mutateAsync({
+          response = await updateNewsMutation.mutateAsync({
             id: formData._id,
             ...dataToSubmit,
           });
         } else {
-          await createNewsMutation.mutateAsync(dataToSubmit);
+          response = await createNewsMutation.mutateAsync(dataToSubmit);
         }
+
         navigate("/admin");
       } catch (error) {
-        // Extract specific error messages from the error response
         const errorMessages = error.response?.data?.errors || {};
         const formattedErrors = {};
         for (const key in errorMessages) {
@@ -211,19 +202,16 @@ const AddNewPage = () => {
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
-        <div>
+        {/* Title (React Quill) */}
+        <div className="h-[200px]">
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Title *
           </label>
-          <input
-            type="text"
-            name="title"
+          <ReactQuill
             value={formData.title}
-            onChange={handleInputChange}
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.title ? "border-red-500" : "border-gray-300"
-            }`}
+            onChange={handleEditorChange("title")}
+            modules={quillModules}
+            className={`h-40 bg-white ${errors.title ? "border-red-500" : ""}`}
           />
           {errors.title && (
             <p className="mt-1 text-sm text-red-500">{errors.title}</p>
@@ -232,7 +220,7 @@ const AddNewPage = () => {
 
         {/* Article Type */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 mt-12 block text-sm font-medium text-gray-700">
             Article Type *
           </label>
           <select
@@ -300,7 +288,7 @@ const AddNewPage = () => {
           <input
             type="text"
             name="hashtags"
-            value={formData.hashtags.join(", ")} // Join array for display
+            value={formData.hashtags.join(", ")}
             onChange={(e) => {
               const hashtagsArray = e.target.value
                 .split(",")
@@ -324,7 +312,7 @@ const AddNewPage = () => {
           <input
             type="text"
             name="footerTags"
-            value={formData.footerTags.join(", ")} // Join array for display
+            value={formData.footerTags.join(", ")}
             onChange={(e) => {
               const footerTagsArray = e.target.value
                 .split(",")
@@ -384,14 +372,15 @@ const AddNewPage = () => {
           )}
         </div>
 
-        {/* Content Editor */}
+        {/* Content Editor (React Quill) */}
         <div className="h-[460px]">
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Content *
           </label>
           <ReactQuill
             value={formData.content}
-            onChange={handleEditorChange}
+            onChange={handleEditorChange("content")}
+            modules={quillModules}
             className={`h-96 bg-white ${errors.content ? "border-red-500" : ""}`}
           />
           {errors.content && (

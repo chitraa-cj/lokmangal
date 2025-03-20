@@ -21,7 +21,7 @@ const RightSideBar = ({ trendingNews }) => {
                   onClick={() => onClickNavigate(article)}
                   className="cursor-pointer text-sm font-medium text-black"
                 >
-                  {article.title}
+                  <div dangerouslySetInnerHTML={{ __html: article.title }} />
                 </h4>
                 <p className="mt-3 text-xs text-gray-600">
                   {new Date(article.createdAt).toLocaleDateString("en-IN")}

@@ -40,27 +40,6 @@ export const useNewsPostDetails = (type, newsId, initialData) => {
 };
 
 // Mutations
-// export const useCreateNewsPostMutation = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: async (data) => {
-//       const response = await axios.post("/api/news", data);
-//       return response.data;
-//     },
-//     onSuccess: () => {
-//       // Invalidate all relevant queries
-//       queryClient.invalidateQueries({ queryKey: ["news"] });
-//       queryClient.invalidateQueries({ queryKey: ["newsPosts"] });
-//     },
-//   });
-// };
-
-// 1. Optimistic Updates
-// Instead of invalidating and refetching, you could update the cache directly with the new data in the onSuccess callback. This avoids extra network requests:
-
-// https://grok.com/chat/c9dc16a3-e312-4a6e-b96d-27396a494041
-
 export const useCreateNewsPostMutation = () => {
   const queryClient = useQueryClient();
 
@@ -69,13 +48,34 @@ export const useCreateNewsPostMutation = () => {
       const response = await axios.post("/api/news", data);
       return response.data;
     },
-    onSuccess: (newPost) => {
-      // Update the cache directly
-      queryClient.setQueryData(["news"], (oldData) => [...oldData, newPost]);
-      queryClient.invalidateQueries({ queryKey: ["newsPosts"] }); // Still invalidate admin list
+    onSuccess: () => {
+      // Invalidate all relevant queries
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+      queryClient.invalidateQueries({ queryKey: ["newsPosts"] });
     },
   });
 };
+
+// 1. Optimistic Updates
+// Instead of invalidating and refetching, you could update the cache directly with the new data in the onSuccess callback. This avoids extra network requests:
+
+// https://grok.com/chat/c9dc16a3-e312-4a6e-b96d-27396a494041
+
+// export const useCreateNewsPostMutation = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: async (data) => {
+//       const response = await axios.post("/api/news", data);
+//       return response.data;
+//     },
+//     onSuccess: (newPost) => {
+//       // Update the cache directly
+//       queryClient.setQueryData(["news"], (oldData) => [...oldData, newPost]);
+//       queryClient.invalidateQueries({ queryKey: ["newsPosts"] }); // Still invalidate admin list
+//     },
+//   });
+// };
 
 export const useUpdateNewsPostMutation = () => {
   const queryClient = useQueryClient();
