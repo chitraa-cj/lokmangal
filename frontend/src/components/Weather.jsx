@@ -86,7 +86,7 @@ const Weather = () => {
     const statuses = {
       1: { text: "Good", color: "text-green-600" },
       2: { text: "Moderate", color: "text-yellow-500" },
-      3: { text: "Unhealthy for sensitive groups", color: "text-orange-500" },
+      3: { text: "Unhealthy Sensitive groups", color: "text-orange-500" },
       4: { text: "Unhealthy", color: "text-red-500" },
       5: { text: "Very Unhealthy", color: "text-purple-600" },
       6: { text: "Hazardous", color: "text-red-800" },
@@ -172,7 +172,7 @@ const Weather = () => {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium">Air Quality</p>
-          <p className={`text-sm ${airQualityStatus.color}`}>
+          <p className={`text-xs ${airQualityStatus.color}`}>
             {airQualityStatus.text}
           </p>
         </div>

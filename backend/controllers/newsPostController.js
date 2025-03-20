@@ -4,7 +4,7 @@ import MainNews from "../models/newsMainModel.js";
 import LeftNews from "../models/newsLeftModel.js";
 import RightNews from "../models/newsRightModel.js";
 import GridNews from "../models/newsGridModel.js";
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 import axios from "axios";
 
 /**
@@ -16,7 +16,7 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
   const [breakingNews, main, left, right, grid] = await Promise.all([
     BreakingNews.find().sort({ createdAt: -1 }).limit(1),
     MainNews.find().sort({ createdAt: -1 }).limit(10),
-    LeftNews.find().sort({ createdAt: -1 }).limit(4),
+    LeftNews.find().sort({ createdAt: -1 }).limit(5),
     RightNews.find().sort({ createdAt: -1 }).limit(4),
     GridNews.find().sort({ createdAt: -1 }).limit(10),
   ]);
@@ -124,7 +124,7 @@ const getNewsPostById = asyncHandler(async (req, res) => {
  */
 const createNewsPost = asyncHandler(async (req, res) => {
   const {
-    type,
+    articleType,
     title,
     conclusion,
     imgUrl,
@@ -134,6 +134,12 @@ const createNewsPost = asyncHandler(async (req, res) => {
     footerTags,
   } = req.body;
 
+  // Check if articleType is provided
+  if (!articleType) {
+    res.status(400);
+    throw new Error("News article type is required");
+  }
+
   const models = {
     breakingNews: BreakingNews,
     main: MainNews,
@@ -142,20 +148,24 @@ const createNewsPost = asyncHandler(async (req, res) => {
     grid: GridNews,
   };
 
-  // if (!models[type]) {
-  //   res.status(400);
-  //   throw new Error("Invalid news type");
-  // }
+  // Log the request body for debugging (optional, can be removed later)
+  // console.log("Request body:", req.body);
+  // console.log("Received type:", articleType);
+  // console.log("Available models:", Object.keys(models));
+  // console.log("===========", models[articleType]);
 
-  switch (key) {
-    case value:
-      break;
-
-    default:
-      break;
+  // Check if the articleType exists in models object
+  if (!models[articleType]) {
+    res.status(400);
+    throw new Error(
+      `Invalid news type: ${articleType}. Must be one of: ${Object.keys(
+        models
+      ).join(", ")}`
+    );
   }
 
-  const newsPost = new models[type]({
+  // Create new news post with the appropriate model
+  const newsPost = new models[articleType]({
     title,
     conclusion,
     imgUrl,
