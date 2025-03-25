@@ -535,12 +535,13 @@ const AddNewPage = () => {
               <p className="mt-2 text-sm text-red-500">{errors.content}</p>
             )}
           </div>
+
           {/* Submit Button */}
           <div className="flex justify-end gap-4">
             <button
               type="button"
               onClick={() => navigate("/admin")}
-              className="rounded-lg border border-gray-300 px-6 py-2 text-gray-700 transition-all duration-200 hover:bg-gray-50"
+              className="rounded-lg border border-gray-300 px-6 py-2 pt-3 text-xl font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50 hover:text-black"
             >
               Cancel
             </button>
@@ -551,7 +552,7 @@ const AddNewPage = () => {
                   ? updateNewsMutation.isPending
                   : createNewsMutation.isPending
               }
-              className="rounded-lg bg-blue-600 px-6 py-2 text-white transition-all duration-200 hover:bg-blue-700 disabled:bg-blue-400"
+              className="rounded-lg bg-blue-600 px-6 py-2 pt-3 text-xl font-medium text-white transition-all duration-200 hover:bg-blue-700 disabled:bg-blue-400"
             >
               {formData._id
                 ? updateNewsMutation.isPending
