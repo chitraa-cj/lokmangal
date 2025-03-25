@@ -18,7 +18,7 @@ const NewsArticlePage = () => {
     isLoading,
     error,
   } = useNewsPostDetails(type, id, articleFromState);
-  console.log(newsPost);
+  // console.log(newsPost);
 
   if (isLoading) {
     return <Loader />;

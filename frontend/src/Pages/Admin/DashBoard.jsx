@@ -81,7 +81,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
               >
                 <td className="px-4 py-3">
                   {/* <Link to={`/news/${item._id}`}> */}
-                  <Link to={`/${item.type}/${item._id}`}>
+                  <Link to={`/${item.articleType}/${item._id}`}>
                     <img
                       src={item.imgUrl}
                       alt={stripHtml(item.title)}
@@ -91,7 +91,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                 </td>
                 <td className="px-4 py-3">
                   <Link
-                    to={`/${item.type}/${item._id}`}
+                    to={`/${item.articleType}/${item._id}`}
                     className="hover:text-blue-800 hover:underline"
                   >
                     <div dangerouslySetInnerHTML={{ __html: item.title }} />

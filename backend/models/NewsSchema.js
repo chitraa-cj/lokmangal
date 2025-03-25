@@ -12,17 +12,15 @@ const NewsSchema = mongoose.Schema(
       required: true,
       enum: ["breakingNews", "main", "left", "right", "grid"],
     },
-    // MainNews-specific fields (optional for other types)
-    navbarCategories: { type: [String], default: [] },
-    hashtags: { type: [String], default: [] },
-    footerTags: { type: [String], default: [] },
+    navbarCategories: { type: String },
+    hashtags: { type: [String] },
+    footerTags: { type: String },
   },
   { timestamps: true }
 );
 
-// Indexes for performance
-NewsSchema.index({ articleType: 1, createdAt: -1 }); // For reader queries
-NewsSchema.index({ createdAt: -1 }); // For admin pagination
+NewsSchema.index({ articleType: 1, createdAt: -1 });
+NewsSchema.index({ createdAt: -1 });
 
 const News = mongoose.model("News", NewsSchema);
 export default News;

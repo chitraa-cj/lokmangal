@@ -28,42 +28,30 @@ const importData = async () => {
       user: adminUser,
       articleType: "breakingNews",
       ...news,
-      navbarCategories: [], // BreakingNews doesn't use these fields
-      hashtags: [],
-      footerTags: [],
     }));
 
     const sampleLeftNews = generateMainNewsData(40).map((news) => ({
       user: adminUser,
       articleType: "left",
       ...news,
-      navbarCategories: [], // LeftNews doesn't use these fields
-      hashtags: [],
-      footerTags: [],
     }));
 
     const sampleRightNews = generateMainNewsData(40).map((news) => ({
       user: adminUser,
       articleType: "right",
       ...news,
-      navbarCategories: [], // RightNews doesn't use these fields
-      hashtags: [],
-      footerTags: [],
     }));
 
     const sampleGridNews = generateMainNewsData(60).map((news) => ({
       user: adminUser,
       articleType: "grid",
       ...news,
-      navbarCategories: [], // GridNews doesn't use these fields
-      hashtags: [],
-      footerTags: [],
     }));
 
     const sampleMainNews = generateMainNewsData(80).map((news) => ({
       user: adminUser,
       articleType: "main",
-      ...news, // navbarCategories, hashtags, footerTags are included from generateMainNewsData
+      ...news,
     }));
 
     // Combine all news into one array

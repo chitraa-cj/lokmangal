@@ -1,5 +1,26 @@
 const generateMainNewsData = (count) => {
-  const titles = ["लोरेम इप्सुम डोलर सिट अमेट, कॉन्सेक्टुर एडिपिसिंग एलिट"];
+  // // Single base title
+  // const baseTitle = "लोरेम इप्सुम डोलर सिट अमेट, कॉन्सेक्टुर एडिपिसिंग एलिट";
+
+  // // Expanded conclusions with variety
+  // const conclusions = [
+  //   "लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेचर एडिपिसिंग एलीट। डोनेक वेल सेपियन नॉन वेलिट सॉलिसिटुडिन टेम्पस।",
+  //   "यह कदम समाज में सकारात्मक बदलाव लाने की दिशा में एक महत्वपूर्ण प्रयास है।",
+  //   "खिलाड़ियों ने अपनी मेहनत से सभी को प्रभावित किया, भविष्य उज्ज्वल दिखाई देता है।",
+  //   "अपराधियों के खिलाफ सख्ती से निपटने की जरूरत पर जोर दिया गया।",
+  //   "फिल्म उद्योग में यह बदलाव दर्शकों के लिए नई उम्मीदें लेकर आया है।",
+  // ];
+
+  // // Expanded content with variety
+  // const content = [
+  //   "<p>लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेचर एडिपिसिंग एलीट। डोनेक वेल सेपियन नॉन वेलिट सॉलिसिटुडिन टेम्पस। इंटीजर यूइस्मोड, नंक एगेट कॉन्वेलिस बिबेंडम, लिगुला एराट डिक्टम पुरस, एनईसी टिनसीडंट टॉर्टर उरना सिट अमेट इरोस।</p>",
+  //   "<p>सरकार ने हाल ही में एक नई नीति की घोषणा की है जो देश के आर्थिक ढांचे को मजबूत करने का लक्ष्य रखती है। विशेषज्ञों का मानना है कि यह कदम लंबे समय तक प्रभावी रहेगा।</p><p>लोगों ने इस फैसले का स्वागत किया और इसे एक साहसिक कदम बताया।</p>",
+  //   "<p>खेल के मैदान में एक नया इतिहास रचा गया जब टीम ने लगातार पांच मैच जीते। प्रशंसकों में उत्साह की लहर दौड़ गई।</p><p>कोच ने खिलाड़ियों की मेहनत और समर्पण की सराहना की।</p>",
+  //   "<p>शहर में अपराध की एक बड़ी घटना ने सभी को चौंका दिया। पुलिस ने तुरंत कार्रवाई करते हुए मुख्य आरोपी को गिरफ्तार कर लिया।</p><p>स्थानीय लोगों ने राहत की सांस ली और कानून व्यवस्था पर भरोसा जताया।</p>",
+  //   "<p>मनोरंजन जगत में एक नई फिल्म की रिलीज ने दर्शकों को उत्साहित कर दिया। सितारों की शानदार एक्टिंग ने सभी का दिल जीत लिया।</p><p>फिल्म समीक्षकों ने इसे साल की सबसे बड़ी हिट बताया।</p>",
+  // ];
+
+  const baseTitle = ["लोरेम इप्सुम डोलर सिट अमेट, कॉन्सेक्टुर एडिपिसिंग एलिट"];
 
   const conclusions = [
     "लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेचर एडिपिसिंग एलीट। डोनेक वेल सेपियन नॉन वेलिट सॉलिसिटुडिन टेम्पस। इंटीजर यूइस्मोड, ननक एगेट कॉन्वेलिस बिबेंडम, लिगुला एराट डिक्टम पुरस, नेक टिनसीडंट टॉर्टर उरना सिट अमेट इरोस।",
@@ -9,15 +30,14 @@ const generateMainNewsData = (count) => {
     "<p>लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेचर एडिपिसिंग एलीट। डोनेक वेल सेपियन नॉन वेलिट सॉलिसिटुडिन टेम्पस। इंटीजर यूइस्मोड, नंक एगेट कॉन्वेलिस बिबेंडम, लिगुला एराट डिक्टम पुरस, एनईसी टिनसीडंट टॉर्टर उरना सिट अमेट इरोस।</p> <p>सस्पेंडिस पोटेंटी। विवामस नॉन टर्पिस ए फेलिस वेहिकुला फेरमेंटम। क्रैस बिबेंडम डोलोर एसी एमआई कमोडो, एट इंटरडम एलीट ससिपिट। नाम कॉनसेक्वेट निसी नेक लोरेम ट्रिस्टिक, इन फ्यूगिएट फेलिस टेम्पस।</p> <p>वेस्टिबुलम डिक्टम क्वाम आईडी लिगुला प्लेसरैट, एसी फॉसीबस पुरस मोलेस्टी। फ़्यूसे यूइस्मोड लिगुला वेल टेलस सैगिटिस, वेल वेहिकुला लिबरो एलिकेट। नल्लम नेक ओरसी सिट अमेट लिगुला डेपिबस पोसुएरे।</p> <p>क्यूराबिटूर वाहन ओरसी आईडी लिबरो फ्यूगियाट, वेल पोसुएरे लिबरो हेंड्रेरिट। फेसेलस फ्रिंजिला क्वाम और निसी वेहिकुला, सिट अमेट डिग्निसिम पुरस ग्रेविडा। इन एचएसी हैबिटास प्लैटिया डिक्टमस्ट।</p> <p>मोरबी एसी लेक्टस ईयू एमआई ऑक्टर मालेसुआडा। एलिक्वम एराट वॉलुटपैट. एनियन सैगिटिस मस्सा इन निस्ल फ्रिंजिला, ईयू वल्पुटेट इरोस टिनसिडंट।</p> <p>क्विस्क नेक जस्टो यूट ओरसी फ्यूगिएट टिनसिडंट। वेलिट डैपिबस में प्रेजेंट मोलिस मेटस, एक वेरियस लिबरो वेरियस। इंटीजर वल्पुटेट फेलिस आईडी एराट फेरेट्रा, ए फैसिलिसिस जस्टो इंटरडम।</p>",
   ];
 
-  // const imgUrl = "https://picsum.photos/700/384";
   const imgUrl = "/image.jpg";
 
   const navbarCategories = [
     "देश",
-    "दुनिया",
-    "प्रदेशक खबरे",
+    "दुनियाँ",
+    "प्रदेशक ख़बरें",
     "राजनीति",
-    "अप्राध",
+    "अपराध",
     "खेल",
     "हमारा शहर",
     "वीडियो",
@@ -53,31 +73,31 @@ const generateMainNewsData = (count) => {
     "Bihar News",
   ];
 
+  const getRandomItem = (array) => {
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
   const getRandomItems = (array, count) => {
-    const shuffled = array.sort(() => 0.5 - Math.random());
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };
 
-  // return Array.from({ length: count }, (_, index) => ({
-  //   title: titles[index % titles.length], // Rotating through titles
-  //   conclusion: conclusions[index % conclusions.length], // Rotating through conclusions
-  //   imgUrl: imgUrl, // Static image URL
-  //   content: content[index % content.length], // Rotating through content
-  //   navbarCategories: getRandomItems(navbarCategories, 3), // Random 3 categories
-  //   hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1),
-  //   footerTags: getRandomItems(footerTags, 3), // Random 3 footer tags
-  // }));
+  return Array.from({ length: count }, (_, index) => {
+    const selectedCategory = getRandomItem(navbarCategories); // Single category
+    const selectedFooterTag = getRandomItem(footerTags); // Single footer tag
+    // Append navbarCategories and footerTags to the base title
+    const title = `${baseTitle} - ${selectedCategory}, ${selectedFooterTag}`;
 
-  return Array.from({ length: count }, (_, index) => ({
-    title: titles[index % titles.length],
-    conclusion: conclusions[index % conclusions.length],
-    imgUrl: imgUrl,
-    content: content[index % content.length],
-    // Only include these fields for 'main' news; they'll be overridden as empty arrays for others
-    navbarCategories: getRandomItems(navbarCategories, 3),
-    hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1),
-    footerTags: getRandomItems(footerTags, 3),
-  }));
+    return {
+      title: title,
+      conclusion: conclusions[index % conclusions.length],
+      imgUrl: imgUrl,
+      content: content[index % content.length],
+      navbarCategories: selectedCategory, // Single string
+      hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1), // Array
+      footerTags: selectedFooterTag, // Single string
+    };
+  });
 };
 
 export default generateMainNewsData;

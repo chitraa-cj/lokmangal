@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
@@ -25,6 +24,35 @@ export default function Navbar() {
     checkAuth();
   }, [navigate]);
 
+  // const handleCategoryClick = async (category) => {
+  //   try {
+  //     if (category === "होम") {
+  //       navigate("/");
+  //       return;
+  //     }
+
+  //     console.log("log");
+  //     // Fetch only the specific category data we need
+  //     const { data } = await axios.get(`/api/news/category/${category}`);
+  //     console.log("log2");
+
+  //     // Navigate to the category page with the merged data
+  //     navigate(`/category/${category}`, { state: { mainPosts: data } });
+  //     // console.log(mergedPosts);
+  //     // } else {
+  //     //   console.log("No cached data found, fetching from server");
+  //     //   // If no cached data, just use the fetched data
+  //     //   navigate(`/category/${category}`, { state: { articles: data } });
+  //     // }
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 404) {
+  //       toast.warn("No News Posts Found for this Category");
+  //     } else {
+  //       toast.error("An error occurred while fetching news");
+  //     }
+  //   }
+  // };
+
   const handleCategoryClick = async (category) => {
     try {
       if (category === "होम") {
@@ -32,17 +60,15 @@ export default function Navbar() {
         return;
       }
 
-      // Fetch only the specific category data we need
-      const { data } = await axios.get(`/api/news/category/${category}`);
+      // console.log("Fetching category:", category);
+      const { data } = await axios.get(
+        `/api/news/category/${encodeURIComponent(category)}`,
+      );
+      // console.log("Category data:", data);
 
-      // Navigate to the category page with the merged data
-      navigate(`/category/${category}`, { state: { mainPosts: data } });
-      // console.log(mergedPosts);
-      // } else {
-      //   console.log("No cached data found, fetching from server");
-      //   // If no cached data, just use the fetched data
-      //   navigate(`/category/${category}`, { state: { articles: data } });
-      // }
+      navigate(`/category/${encodeURIComponent(category)}`, {
+        state: { data },
+      });
     } catch (error) {
       if (error.response && error.response.status === 404) {
         toast.warn("No News Posts Found for this Category");
@@ -58,23 +84,6 @@ export default function Navbar() {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       setSearchQuery(""); // Clear search after submitting
-    }
-  };
-
-  const logoutMutation = useMutation({
-    mutationFn: () =>
-      axios.post("/api/users/logout", {}, { withCredentials: true }),
-    onError: (error) => {
-      console.error("An error occurred during logout:", error);
-    },
-  });
-
-  const handleLogout = () => {
-    if (isAuthenticated) {
-      logoutMutation.mutate();
-      window.location.reload();
-    } else {
-      navigate("/login");
     }
   };
 

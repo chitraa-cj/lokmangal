@@ -5,7 +5,7 @@ const HeroArticle = ({ article }) => {
   const navigate = useNavigate();
 
   const onClickNavigate = (article) => {
-    navigate(`/${article.type}/${article._id}`, { state: { article } });
+    navigate(`/${article.articleType}/${article._id}`, { state: { article } });
   };
 
   return (

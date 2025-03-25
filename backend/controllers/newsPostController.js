@@ -288,16 +288,30 @@ const getNewsPostsByUser = asyncHandler(async (req, res) => {
  */
 const getNewsPostsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
-  console.log("sdfjk");
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
 
-  console.log(category);
+  // Query news posts with pagination
+  const newsPosts = await News.find({
+    navbarCategories: { $in: [category] },
+  })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
-  const newsPosts = await News.find({ navbarCategories: category }).sort({
-    createdAt: -1,
+  // Get total count for pagination
+  const totalPosts = await News.countDocuments({
+    navbarCategories: { $in: [category] },
   });
 
   if (newsPosts.length > 0) {
-    res.json(newsPosts);
+    res.json({
+      posts: newsPosts,
+      currentPage: page,
+      totalPages: Math.ceil(totalPosts / limit),
+      totalPosts: totalPosts,
+    });
   } else {
     res.status(404);
     throw new Error("No news posts found for this category");
