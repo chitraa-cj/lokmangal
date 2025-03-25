@@ -32,7 +32,10 @@ const GridItem = ({ article }) => {
           onClick={() => onClickNavigate(article)}
           className="rounded-sm"
         />
-        <h3 onClick={() => onClickNavigate(article)} className="title">
+        <h3
+          onClick={() => onClickNavigate(article)}
+          className="title line-clamp-6"
+        >
           <div dangerouslySetInnerHTML={{ __html: article.title }} />
         </h3>
       </div>

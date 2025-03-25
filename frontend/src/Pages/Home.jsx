@@ -43,32 +43,29 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
-          <div className="mx-4 md:mx-0">
-            <div className="block md:hidden">
-              <Weather />
-            </div>
-            {mainPosts?.length > 0 && (
-              <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
-            )}
+          <div className="block md:hidden">
+            <Weather />
           </div>
+
+          {mainPosts?.length > 0 && (
+            <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+          )}
 
           {gridPosts?.length > 0 && (
             <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
           )}
 
-          <div className="mx-4 md:mx-0">
-            {mainPosts?.slice(1, 2).map((post) => (
-              <div key={post._id}>
-                <HeroArticle id={post._id} article={post} />
-              </div>
-            ))}
-          </div>
+          {mainPosts?.slice(1, 2).map((post) => (
+            <div key={post._id}>
+              <HeroArticle id={post._id} article={post} />
+            </div>
+          ))}
 
           {gridPosts?.length > 6 && (
             <ScrollableGrid gridPosts={gridPosts.slice(6)} />
           )}
 
-          <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
+          <div className="space-y-4 sm:space-y-8">
             {mainPosts?.slice(2).map((post) => (
               <div key={post._id}>
                 <HeroArticle id={post._id} article={post} />

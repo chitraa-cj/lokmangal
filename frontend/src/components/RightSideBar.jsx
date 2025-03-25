@@ -19,7 +19,7 @@ const RightSideBar = ({ trendingNews }) => {
               <div>
                 <h4
                   onClick={() => onClickNavigate(article)}
-                  className="cursor-pointer text-sm font-medium text-black"
+                  className="cursor-pointer line-clamp-3 text-sm font-medium text-black"
                 >
                   <div dangerouslySetInnerHTML={{ __html: article.title }} />
                 </h4>

@@ -12,7 +12,7 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
   const [breakingNews, main, left, right, grid] = await Promise.all([
     News.find({ articleType: "breakingNews" }).sort({ createdAt: -1 }).limit(1),
     News.find({ articleType: "main" }).sort({ createdAt: -1 }).limit(10),
-    News.find({ articleType: "left" }).sort({ createdAt: -1 }).limit(5),
+    News.find({ articleType: "left" }).sort({ createdAt: -1 }).limit(4),
     News.find({ articleType: "right" }).sort({ createdAt: -1 }).limit(4),
     News.find({ articleType: "grid" }).sort({ createdAt: -1 }).limit(10),
   ]);
