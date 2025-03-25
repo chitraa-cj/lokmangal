@@ -1,19 +1,57 @@
 import { Edit, Trash } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-import { useDeleteNewsPostMutation, useNewsPosts } from "../../hooks/useApi";
+import {
+  useDeleteNewsPostMutation,
+  useAdminNewsPosts,
+} from "../../hooks/useApi";
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
+import { useState } from "react";
+import { convert } from "html-to-text";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
     <div className="flex flex-col items-center justify-center">
       <h3 className="mb-2 text-3xl font-bold">{value}</h3>
-      <p className="text-gray-600">{title}</p>
+      <p className="text-gray-600">
+        <div dangerouslySetInnerHTML={{ __html: title }} />
+      </p>
     </div>
   </div>
 );
 
+const Pagination = ({ pagination, onPageChange }) => {
+  const { currentPage, totalPages } = pagination;
+
+  return (
+    <div className="mt-4 flex justify-center gap-2">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300 disabled:opacity-50"
+      >
+        Previous
+      </button>
+      <span className="px-4 py-2">
+        Page {currentPage} of {totalPages}
+      </span>
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300 disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+
 const NewsTable = ({ news, onEdit, onDelete }) => {
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
   // const navigate = useNavigate();
   return (
     <div className="mt-8">
@@ -47,7 +85,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                   <Link to={`/${item.type}/${item._id}`}>
                     <img
                       src={item.imgUrl}
-                      alt={item.title}
+                      alt={stripHtml(item.title)}
                       className="w-28 rounded object-cover"
                     />
                   </Link>
@@ -57,7 +95,8 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     to={`/${item.type}/${item._id}`}
                     className="hover:text-blue-800 hover:underline"
                   >
-                    {item.title}
+                    <div dangerouslySetInnerHTML={{ __html: item.title }} />
+                    {/* {item.title} */}
                   </Link>
                 </td>
                 <td className="px-4 py-3">{item.conclusion}</td>
@@ -103,28 +142,37 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
 };
 
 const Dashboard = () => {
-  const { data: newsData, isLoading, error } = useNewsPosts();
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const deleteNewsMutation = useDeleteNewsPostMutation();
 
-  let transformedNewsData;
+  // Modify the useNewsPosts hook to accept page parameter
+  const {
+    data: newsData,
+    isLoading,
+    error,
+    refetch,
+  } = useAdminNewsPosts({ page });
+
+  // console.log(newsData);
+
+  let transformedNewsData = [];
 
   if (newsData) {
     transformedNewsData = [
-      ...newsData.main,
-      ...newsData.left,
-      ...newsData.right,
-      ...newsData.grid,
+      ...(newsData.breakingNews || []),
+      ...(newsData.main || []),
+      ...(newsData.left || []),
+      ...(newsData.right || []),
+      ...(newsData.grid || []),
     ];
   }
 
-  // console.log(transformedNewsData);
-
   const stats = {
-    totalNews: transformedNewsData?.length || 0,
+    totalNews: newsData?.pagination?.totalItems || 0,
     // pendingNews: transformedNewsData?.filter((n) => n.status === "pending").length || 0,
     // activeNews: transformedNewsData?.filter((n) => n.status === "active").length || 0,
-    activeNews: transformedNewsData?.length || 0,
+    activeNews: newsData?.pagination?.totalItems || 0,
     // deActiveNews: transformedNewsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
@@ -137,19 +185,19 @@ const Dashboard = () => {
     if (window.confirm("Are you sure you want to delete this article?")) {
       try {
         await deleteNewsMutation.mutateAsync(id);
+        refetch(); // Refresh the data after deletion
       } catch (error) {
         console.error("Error deleting article:", error);
       }
     }
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
 
-  if (error) {
-    return <Error />;
-  }
+  if (isLoading) return <Loader />;
+  if (error) return <Error />;
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-8">
@@ -194,6 +242,13 @@ const Dashboard = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+
+      {newsData?.pagination && (
+        <Pagination
+          pagination={newsData.pagination}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

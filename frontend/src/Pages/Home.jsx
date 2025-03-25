@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
-import { X } from "lucide-react";
+// import { X } from "lucide-react";
 import HeroArticle from "../components/HeroArticle";
 import BreakingNews from "../components/BreakingNews";
 import ScrollableGrid from "../components/ScrollableGrid";
@@ -9,10 +9,9 @@ import RightSideBar from "../components/RightSideBar";
 import LeftSideBar from "../components/LeftSideBar";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
-import CricketScore from "../components/CricketScore";
+// import CricketScore from "../components/CricketScore";
 import Weather from "../components/Weather";
 import FollowUs from "../components/FollowUs";
-import YouTube from "react-youtube"; // Import the YouTube component
 
 const NewsArticlePage = () => {
   const { category } = useParams();
@@ -88,12 +87,9 @@ const NewsArticlePage = () => {
             )}
           </div>
 
-          {/* <div className="hidden md:block"> */}
-          <div className="">
-            {gridPosts.length > 0 && (
-              <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-            )}
-          </div>
+          {gridPosts.length > 0 && (
+            <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
+          )}
 
           <div className="mx-4 md:mx-0">
             {mainPosts.slice(1, 2).map((post) => (
@@ -103,12 +99,9 @@ const NewsArticlePage = () => {
             ))}
           </div>
 
-          {/* <div className="hidden md:block"> */}
-          <div className="">
-            {gridPosts.length > 6 && (
-              <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-            )}
-          </div>
+          {gridPosts.length > 6 && (
+            <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+          )}
 
           <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
             {mainPosts.slice(2).map((post) => (

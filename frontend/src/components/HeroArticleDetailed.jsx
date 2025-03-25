@@ -3,7 +3,9 @@ const HeroArticle = ({ article }) => {
     <div className="min-w-3xl unselectable mb-2">
       {/* Article Header */}
       <div className="mb-3 pt-2">
-        <h1 className="mx-[34px] text-xl font-bold">{article.title}</h1>
+        <h1 className="mx-[34px] text-xl font-bold">
+          <div dangerouslySetInnerHTML={{ __html: article.title }} />
+        </h1>
       </div>
 
       {/* Main Image / Placeholder */}

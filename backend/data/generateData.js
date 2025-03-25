@@ -58,14 +58,25 @@ const generateMainNewsData = (count) => {
     return shuffled.slice(0, count);
   };
 
+  // return Array.from({ length: count }, (_, index) => ({
+  //   title: titles[index % titles.length], // Rotating through titles
+  //   conclusion: conclusions[index % conclusions.length], // Rotating through conclusions
+  //   imgUrl: imgUrl, // Static image URL
+  //   content: content[index % content.length], // Rotating through content
+  //   navbarCategories: getRandomItems(navbarCategories, 3), // Random 3 categories
+  //   hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1),
+  //   footerTags: getRandomItems(footerTags, 3), // Random 3 footer tags
+  // }));
+
   return Array.from({ length: count }, (_, index) => ({
-    title: titles[index % titles.length], // Rotating through titles
-    conclusion: conclusions[index % conclusions.length], // Rotating through conclusions
-    imgUrl: imgUrl, // Static image URL
-    content: content[index % content.length], // Rotating through content
-    navbarCategories: getRandomItems(navbarCategories, 3), // Random 3 categories
+    title: titles[index % titles.length],
+    conclusion: conclusions[index % conclusions.length],
+    imgUrl: imgUrl,
+    content: content[index % content.length],
+    // Only include these fields for 'main' news; they'll be overridden as empty arrays for others
+    navbarCategories: getRandomItems(navbarCategories, 3),
     hashtags: getRandomItems(hashtags, Math.floor(Math.random() * 3) + 1),
-    footerTags: getRandomItems(footerTags, 3), // Random 3 footer tags
+    footerTags: getRandomItems(footerTags, 3),
   }));
 };
 

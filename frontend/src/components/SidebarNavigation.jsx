@@ -28,15 +28,15 @@ const Sidebar = () => {
       path: "/admin/add-new",
     },
     {
-      title: "Add Hashtags",
+      title: "Edit Hashtags & Links",
       icon: <Hash size={20} />,
       path: "/admin/add-hashtags",
     },
-    {
-      title: "Add Footer Tags",
-      icon: <Hash size={20} />,
-      path: "/admin/add-footer-hashtags",
-    },
+    // {
+    //   title: "Add Footer Tags",
+    //   icon: <Hash size={20} />,
+    //   path: "/admin/add-footer-hashtags",
+    // },
     {
       title: "Go To News",
       icon: <Home size={20} />,

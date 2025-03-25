@@ -23,7 +23,7 @@ const LeftSidebar = ({ leftNews }) => {
               className="cursor-pointer text-sm font-medium text-black"
               onClick={() => onClickNavigate(article)}
             >
-              {article.title}
+              <div dangerouslySetInnerHTML={{ __html: article.title }} />
             </h4>
             <span className="text-xs text-gray-500">
               {(() => {

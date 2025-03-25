@@ -12,7 +12,7 @@ const ErrorPage = () => {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen min-w-full items-center justify-center bg-gray-50">
         <div className="w-full max-w-md p-6 text-center">
           <div className="mb-8 flex w-full justify-center">
             <div
