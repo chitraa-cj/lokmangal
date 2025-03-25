@@ -16,9 +16,7 @@ const HeroArticle = ({ article }) => {
           onClickNavigate(article);
         }}
       >
-        <h1 className="mx-[34px] text-xl font-bold">
-          <div dangerouslySetInnerHTML={{ __html: article.title }} />
-        </h1>
+        <div dangerouslySetInnerHTML={{ __html: article.title }} />
       </h1>
 
       <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
