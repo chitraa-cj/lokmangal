@@ -1,4 +1,3 @@
-import { Link, useLocation, useParams } from "react-router-dom";
 import { useNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
 import BreakingNews from "../components/BreakingNews";
@@ -11,12 +10,11 @@ import Error from "../components/Error";
 import Weather from "../components/Weather";
 import FollowUs from "../components/FollowUs";
 
-const NewsArticlePage = () => {
-  const { category } = useParams();
-  const location = useLocation();
-  const categoryNewsPosts = location.state?.data;
-
+const HomePage = () => {
   const { data, isLoading, error } = useNewsPosts();
+
+  if (isLoading) return <Loader />;
+  if (error) return <Error />;
 
   let breakingNews,
     mainPosts = [],
@@ -34,33 +32,13 @@ const NewsArticlePage = () => {
     } = data);
   }
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <Error />;
-  }
-
-  if (category && !categoryNewsPosts) {
-    return (
-      <p className="flex min-h-screen items-center justify-center bg-gray-100">
-        Error loading news articles.
-      </p>
-    );
-  }
-
   return (
     <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
-      {/* Show BreakingNews only when not on category page */}
-      {!category && <BreakingNews breakingNews={breakingNews} />}
+      <BreakingNews breakingNews={breakingNews} />
 
       <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
-        {/* Show LeftSideBar only when not on category page */}
         <div className="sticky top-4 hidden flex-col items-end gap-y-6 lg:flex">
-          {!category && leftPosts.length > 0 && (
-            <LeftSideBar leftNews={leftPosts} />
-          )}
+          {leftPosts?.length > 0 && <LeftSideBar leftNews={leftPosts} />}
           <FollowUs />
         </div>
 
@@ -69,66 +47,41 @@ const NewsArticlePage = () => {
             <div className="block md:hidden">
               <Weather />
             </div>
-            {/* Use categoryNewsPosts if on category page, otherwise use mainPosts */}
-            {category
-              ? categoryNewsPosts.length > 0 && (
-                  <HeroArticle
-                    id={categoryNewsPosts[0]._id}
-                    article={categoryNewsPosts[0]}
-                  />
-                )
-              : mainPosts.length > 0 && (
-                  <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
-                )}
+            {mainPosts?.length > 0 && (
+              <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+            )}
           </div>
 
-          {/* Show ScrollableGrid only when not on category page */}
-          {!category && gridPosts.length > 0 && (
+          {gridPosts?.length > 0 && (
             <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
           )}
 
           <div className="mx-4 md:mx-0">
-            {category
-              ? categoryNewsPosts.slice(1, 2).map((post) => (
-                  <div key={post._id}>
-                    <HeroArticle id={post._id} article={post} />
-                  </div>
-                ))
-              : mainPosts.slice(1, 2).map((post) => (
-                  <div key={post._id}>
-                    <HeroArticle id={post._id} article={post} />
-                  </div>
-                ))}
+            {mainPosts?.slice(1, 2).map((post) => (
+              <div key={post._id}>
+                <HeroArticle id={post._id} article={post} />
+              </div>
+            ))}
           </div>
 
-          {/* Show second ScrollableGrid only when not on category page */}
-          {!category && gridPosts.length > 6 && (
+          {gridPosts?.length > 6 && (
             <ScrollableGrid gridPosts={gridPosts.slice(6)} />
           )}
 
           <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
-            {category
-              ? categoryNewsPosts.slice(2).map((post) => (
-                  <div key={post._id}>
-                    <HeroArticle id={post._id} article={post} />
-                  </div>
-                ))
-              : mainPosts.slice(2).map((post) => (
-                  <div key={post._id}>
-                    <HeroArticle id={post._id} article={post} />
-                  </div>
-                ))}
+            {mainPosts?.slice(2).map((post) => (
+              <div key={post._id}>
+                <HeroArticle id={post._id} article={post} />
+              </div>
+            ))}
           </div>
 
           <VideoCard />
         </div>
 
-        {/* Show RightSideBar only when not on category page */}
         <div className="sticky top-4 hidden flex-col items-start lg:flex">
           <Weather />
-          {!category && rightPosts.length > 0 && (
-            <RightSideBar trendingNews={rightPosts} />
-          )}
+          {rightPosts?.length > 0 && <RightSideBar trendingNews={rightPosts} />}
         </div>
       </main>
 
@@ -146,4 +99,4 @@ const NewsArticlePage = () => {
   );
 };
 
-export default NewsArticlePage;
+export default HomePage;

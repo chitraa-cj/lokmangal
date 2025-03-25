@@ -18,6 +18,7 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 
 import Home from "./Pages/Home.jsx";
+import CategoryHome from "./Pages/CategoryHome.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/DashBoard.jsx";
@@ -30,8 +31,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
-      <Route path="/category/:category" element={<Home />} />
-      {/* <Route path="/category/:category" element={<CategoryHome />} /> */}
+      <Route path="/category/:category" element={<CategoryHome />} />
       <Route path="/:type/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}

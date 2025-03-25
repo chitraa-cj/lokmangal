@@ -305,17 +305,13 @@ const getNewsPostsByCategory = asyncHandler(async (req, res) => {
     navbarCategories: { $in: [category] },
   });
 
-  if (newsPosts.length > 0) {
-    res.json({
-      posts: newsPosts,
-      currentPage: page,
-      totalPages: Math.ceil(totalPosts / limit),
-      totalPosts: totalPosts,
-    });
-  } else {
-    res.status(404);
-    throw new Error("No news posts found for this category");
-  }
+  // Always return a response, even if no posts are found for this page
+  res.json({
+    posts: newsPosts || [], // Return empty array if no posts
+    currentPage: page,
+    totalPages: Math.ceil(totalPosts / limit),
+    totalPosts: totalPosts,
+  });
 });
 
 export {

@@ -100,7 +100,6 @@ const AddNewPage = () => {
     "हमारा शहर Bhopal",
     "हमारा शहर Jabalpur",
     "हमारा शहर Indore",
-    "वीडियो",
     "मनोरंजन",
   ];
 

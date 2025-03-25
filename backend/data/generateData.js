@@ -40,7 +40,6 @@ const generateMainNewsData = (count) => {
     "अपराध",
     "खेल",
     "हमारा शहर",
-    "वीडियो",
     "मनोरंजन",
   ];
 
