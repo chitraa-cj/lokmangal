@@ -28,14 +28,6 @@ textarea {
   user-select: none;
 } */
 
-/* Ensure content is visible on smaller devices */
-/* @media (max-width: 640px) {
-  .flex {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-} */
-
 /*
 img {
   max-inline-size: 100%;
@@ -172,11 +164,11 @@ img {
   }
 }
 
-.containerXL {
+/* .containerXL {
   width: 100%;
-}
+} */
 
-@media (min-width: 640px) {
+/* @media (min-width: 640px) {
   .containerXL {
     max-width: 640px;
   }
@@ -198,10 +190,10 @@ img {
   .containerXL {
     max-width: 1280px;
   }
-}
+} */
 
-@media (min-width: 1536px) {
+/* @media (min-width: 1536px) {
   .containerXL {
     max-width: 1280px;
   }
-}
+} */

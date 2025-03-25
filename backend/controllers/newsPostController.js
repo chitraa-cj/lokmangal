@@ -288,11 +288,13 @@ const getNewsPostsByUser = asyncHandler(async (req, res) => {
  */
 const getNewsPostsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
+  console.log("sdfjk");
 
-  const newsPosts = await News.find({
-    navbarCategories: category,
-    articleType: "main", // Assuming this endpoint is only for MainNews
-  }).sort({ createdAt: -1 });
+  console.log(category);
+
+  const newsPosts = await News.find({ navbarCategories: category }).sort({
+    createdAt: -1,
+  });
 
   if (newsPosts.length > 0) {
     res.json(newsPosts);

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Added state for search
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,13 +52,14 @@ export default function Navbar() {
     }
   };
 
-  let LoginOrLogout;
-
-  if (isAuthenticated) {
-    LoginOrLogout = "Logout";
-  } else {
-    LoginOrLogout = "login";
-  }
+  // Added search handler
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery(""); // Clear search after submitting
+    }
+  };
 
   const logoutMutation = useMutation({
     mutationFn: () =>
@@ -78,7 +80,7 @@ export default function Navbar() {
 
   return (
     <nav className="border-b-2 border-gray-300 shadow-sm">
-      <div className="flex items-center justify-center bg-white px-4">
+      <div className="flex items-center justify-center bg-white">
         <div className="py-3">
           <Link to="/">
             <img src="./lokmangallogo_00.png" alt="logo" className="" />
@@ -87,7 +89,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center justify-center bg-gray-800">
-        <div className="containerXL relative px-0 text-white md:px-4">
+        <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute hidden lg:block">
               <Link to="/">
@@ -97,7 +99,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            <div></div>
+            <div className="lg:w-[211px]"></div>
 
             <div
               className={`ml-0 flex items-center justify-center`}
@@ -117,7 +119,7 @@ export default function Navbar() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="flex cursor-pointer items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold"
+                  className="flex cursor-pointer items-center whitespace-nowrap p-2 px-3 text-sm font-semibold transition-all duration-200 ease-in-out hover:scale-105 hover:text-blue-300 focus:text-blue-300"
                   onClick={() => handleCategoryClick(item)}
                 >
                   {item}
@@ -125,28 +127,32 @@ export default function Navbar() {
               ))}
             </div>
             <div className="flex items-center justify-center">
-              {isAuthenticated && (
-                <div
-                  key="admin"
-                  className="mx-auto flex cursor-pointer items-center whitespace-nowrap p-2 text-sm font-semibold"
-                  onClick={() => navigate("/admin")}
-                >
-                  Admin
-                </div>
-              )}
-              <div
-                key="logout"
-                className="mx-auto flex cursor-pointer items-center whitespace-nowrap py-2 text-sm font-semibold"
-                onClick={handleLogout}
+              {/* Search Box */}
+              <form
+                onSubmit={handleSearch}
+                className="flex items-center py-2 pr-1"
               >
-                {isAuthenticated ? "Logout" : "Login"}
-              </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search..."
+                    className="rounded-md bg-gray-700 px-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 -translate-y-1/2"
+                  >
+                    <Search size={16} className="text-gray-400" />
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Trending Topics - Added mobile padding */}
       <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
         <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
           {[
