@@ -95,7 +95,7 @@ const Sidebar = () => {
             }`}
           >
             {item.icon}
-            <span>{item.title}</span>
+            <span className="whitespace-nowrap">{item.title}</span>
           </Link>
         ))}
       </nav>

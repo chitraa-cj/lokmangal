@@ -16,8 +16,7 @@ const BreakingNews = ({ breakingNews }) => {
         className="line-clamp-2 flex-1 cursor-pointer items-center justify-center border-l pl-2 text-lg font-semibold sm:pl-4"
         onClick={() => onClickNavigate(breakingNews[0])}
       >
-        {/* JK: कठुआ जिले के बिलावर इलाके में मिले 3 लापता नागरिकों के शव - सूत्र */}
-        {breakingNews[0]?.title}
+        <span dangerouslySetInnerHTML={{ __html: breakingNews[0]?.title }} />
       </span>
     </div>
   );

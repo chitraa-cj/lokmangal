@@ -7,6 +7,13 @@ import {
   useUpdateNewsPostMutation,
 } from "../../hooks/useApi";
 
+import {
+  ArticleTypeSelector,
+  CategoriesSelector,
+  TagInput,
+  ConclusionInput,
+} from "./Comp";
+
 const AddNewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -219,133 +226,39 @@ const AddNewPage = () => {
         </div>
 
         {/* Article Type */}
-        <div>
-          <label className="mb-1 mt-12 block text-sm font-medium text-gray-700">
-            Article Type *
-          </label>
-          <select
-            name="articleType"
-            value={formData.articleType}
-            onChange={handleInputChange}
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.articleType ? "border-red-500" : "border-gray-300"
-            }`}
-          >
-            <option value="breakingNews">BreakingNews</option>
-            <option value="main">Main</option>
-            <option value="left">Left</option>
-            <option value="right">Right</option>
-            <option value="grid">Grid</option>
-          </select>
-          {errors.articleType && (
-            <p className="mt-1 text-sm text-red-500">{errors.articleType}</p>
-          )}
-        </div>
+        <ArticleTypeSelector
+          value={formData.articleType}
+          onChange={(value) =>
+            handleInputChange({ target: { name: "articleType", value } })
+          }
+          errors={errors.articleType}
+        />
 
         {/* Categories Multi-Select */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Categories * (Selected: {formData.navbarCategories.length})
-          </label>
-          <div className="mb-2 flex flex-wrap gap-2">
-            {formData.navbarCategories.map((category) => (
-              <span
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-                className="cursor-pointer rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 hover:bg-blue-200"
-              >
-                {category} ×
-              </span>
-            ))}
-          </div>
-          <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-300 bg-white">
-            {categories.map((category) => (
-              <div
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-                className={`cursor-pointer border-b border-gray-200 px-4 py-2 last:border-b-0 hover:bg-gray-50 ${
-                  formData.navbarCategories.includes(category)
-                    ? "bg-blue-50 font-medium text-blue-600"
-                    : ""
-                }`}
-              >
-                {category}
-              </div>
-            ))}
-          </div>
-          {errors.navbarCategories && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.navbarCategories}
-            </p>
-          )}
-        </div>
+        <CategoriesSelector
+          categories={categories}
+          selectedCategories={formData.navbarCategories}
+          onSelect={handleCategorySelect}
+          errors={errors.navbarCategories}
+        />
 
         {/* Hashtags */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Hashtags *
-          </label>
-          <input
-            type="text"
-            name="hashtags"
-            value={formData.hashtags.join(", ")}
-            onChange={(e) => {
-              const hashtagsArray = e.target.value
-                .split(",")
-                .map((tag) => tag.trim());
-              setFormData((prev) => ({ ...prev, hashtags: hashtagsArray }));
-            }}
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.hashtags ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.hashtags && (
-            <p className="mt-1 text-sm text-red-500">{errors.hashtags}</p>
-          )}
-        </div>
-
         {/* Footer Tags */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Footer Tags *
-          </label>
-          <input
-            type="text"
-            name="footerTags"
-            value={formData.footerTags.join(", ")}
-            onChange={(e) => {
-              const footerTagsArray = e.target.value
-                .split(",")
-                .map((tag) => tag.trim());
-              setFormData((prev) => ({ ...prev, footerTags: footerTagsArray }));
-            }}
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.footerTags ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.footerTags && (
-            <p className="mt-1 text-sm text-red-500">{errors.footerTags}</p>
-          )}
-        </div>
+        <TagInput
+          label="Hashtags"
+          tags={formData.hashtags}
+          onTagsChange={(tags) =>
+            setFormData((prev) => ({ ...prev, hashtags: tags }))
+          }
+          errors={errors.hashtags}
+        />
 
         {/* Conclusion */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Conclusion *
-          </label>
-          <textarea
-            name="conclusion"
-            value={formData.conclusion}
-            onChange={handleInputChange}
-            rows="3"
-            className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.conclusion ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.conclusion && (
-            <p className="mt-1 text-sm text-red-500">{errors.conclusion}</p>
-          )}
-        </div>
+        <ConclusionInput
+          value={formData.conclusion}
+          onChange={(e) => handleInputChange(e)}
+          errors={errors.conclusion}
+        />
 
         {/* Image Upload */}
         <div>
@@ -425,6 +338,434 @@ const AddNewPage = () => {
 };
 
 export default AddNewPage;
+
+// import { useState } from "react";
+// import { useNavigate, useLocation } from "react-router-dom";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import {
+//   useCreateNewsPostMutation,
+//   useUpdateNewsPostMutation,
+// } from "../../hooks/useApi";
+
+// const AddNewPage = () => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const existingNews = location.state?.news;
+
+//   const createNewsMutation = useCreateNewsPostMutation();
+//   const updateNewsMutation = useUpdateNewsPostMutation();
+
+//   const categories = [
+//     "देश",
+//     "दुनिया",
+//     "प्रदेशक खबरे",
+//     "राजनीति",
+//     "अप्राध",
+//     "खेल",
+//     "हमारा शहर Bhopal",
+//     "हमारा शहर Jabalpur",
+//     "हमारा शहर Indore",
+//     "वीडियो",
+//     "मनोरंजन",
+//   ];
+
+//   const [formData, setFormData] = useState({
+//     articleType: existingNews ? existingNews?.articleType : "",
+//     navbarCategories: existingNews?.navbarCategories || [],
+//     hashtags: existingNews?.hashtags || [],
+//     footerTags: existingNews?.footerTags || [],
+//     title: existingNews ? existingNews.title : "",
+//     conclusion: existingNews ? existingNews.conclusion : "",
+//     imgUrl: existingNews ? existingNews.imgUrl : "",
+//     content: existingNews ? existingNews.content : "",
+//     _id: existingNews ? existingNews._id : undefined,
+//   });
+
+//   const [imagePreview, setImagePreview] = useState(
+//     existingNews ? existingNews.imgUrl : null,
+//   );
+//   const [errors, setErrors] = useState({});
+
+//   // React Quill toolbar configuration with all features
+//   const quillModules = {
+//     toolbar: [
+//       [{ header: [1, 2, 3, 4, 5, 6, false] }],
+//       ["bold", "italic", "underline", "strike"],
+//       [{ color: [] }, { background: [] }],
+//       [{ font: [] }],
+//       [{ size: ["small", false, "large", "huge"] }],
+//       [{ align: [] }],
+//       ["blockquote", "code-block"],
+//       [{ list: "ordered" }, { list: "bullet" }],
+//       [{ script: "sub" }, { script: "super" }],
+//       [{ indent: "-1" }, { indent: "+1" }],
+//       ["link", "image", "video"],
+//       ["clean"],
+//     ],
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//     if (errors[name]) {
+//       setErrors((prev) => ({ ...prev, [name]: "" }));
+//     }
+//   };
+
+//   const handleCategorySelect = (category) => {
+//     setFormData((prev) => {
+//       const updatedCategories = prev.navbarCategories.includes(category)
+//         ? prev.navbarCategories.filter((c) => c !== category)
+//         : [...prev.navbarCategories, category];
+//       return {
+//         ...prev,
+//         navbarCategories: updatedCategories,
+//       };
+//     });
+//     if (errors.navbarCategories) {
+//       setErrors((prev) => ({ ...prev, navbarCategories: "" }));
+//     }
+//   };
+
+//   const handleImageChange = async (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         setImagePreview(reader.result);
+//       };
+//       reader.readAsDataURL(file);
+//       setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
+//     }
+//   };
+
+//   const handleEditorChange = (name) => (content) => {
+//     setFormData((prev) => ({ ...prev, [name]: content }));
+//     if (errors[name]) {
+//       setErrors((prev) => ({ ...prev, [name]: "" }));
+//     }
+//   };
+
+//   const handleFileUpload = async (e) => {
+//     const file = e.target.files[0];
+//     if (!file) return;
+
+//     const data = new FormData();
+//     data.append("file", file);
+//     data.append("upload_preset", "LOK_MANGAL");
+//     data.append("cloud_name", "drp32fxif");
+
+//     try {
+//       const res = await fetch(
+//         "https://api.cloudinary.com/v1_1/drp32fxif/image/upload",
+//         {
+//           method: "POST",
+//           body: data,
+//         },
+//       );
+
+//       const uploadedIMGUrl = await res.json();
+//       if (!uploadedIMGUrl?.url) {
+//         console.error("No URL in response:", uploadedIMGUrl);
+//         return;
+//       }
+
+//       setFormData((prev) => ({ ...prev, imgUrl: uploadedIMGUrl.url }));
+//     } catch (error) {
+//       console.error("Upload error:", error);
+//     }
+//   };
+
+//   const validateForm = () => {
+//     const newErrors = {};
+//     if (!formData.title.trim()) newErrors.title = "Title is required";
+//     if (!formData.conclusion.trim())
+//       newErrors.conclusion = "Conclusion is required";
+//     if (!formData.content.trim()) newErrors.content = "Content is required";
+//     if (!formData.articleType)
+//       newErrors.articleType = "Article type is required";
+//     return newErrors;
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const newErrors = validateForm();
+
+//     if (Object.keys(newErrors).length === 0) {
+//       try {
+//         const dataToSubmit = {
+//           articleType: formData.articleType,
+//           navbarCategories: formData.navbarCategories,
+//           hashtags: formData.hashtags,
+//           footerTags: formData.footerTags,
+//           title: formData.title,
+//           conclusion: formData.conclusion,
+//           imgUrl: formData.imgUrl,
+//           content: formData.content,
+//         };
+
+//         let response;
+//         if (formData._id) {
+//           response = await updateNewsMutation.mutateAsync({
+//             id: formData._id,
+//             ...dataToSubmit,
+//           });
+//         } else {
+//           response = await createNewsMutation.mutateAsync(dataToSubmit);
+//         }
+
+//         navigate("/admin");
+//       } catch (error) {
+//         const errorMessages = error.response?.data?.errors || {};
+//         const formattedErrors = {};
+//         for (const key in errorMessages) {
+//           formattedErrors[key] = errorMessages[key].message;
+//         }
+//         setErrors((prev) => ({
+//           ...prev,
+//           ...formattedErrors,
+//           submit: "Failed to create or update article",
+//         }));
+//       }
+//     } else {
+//       setErrors(newErrors);
+//     }
+//   };
+
+//   return (
+//     <div className="mx-auto min-h-screen w-full p-8">
+//       <h1 className="mb-6 text-2xl font-bold">
+//         {formData._id ? "Update Article" : "Create New Article"}
+//       </h1>
+
+//       <form onSubmit={handleSubmit} className="space-y-6">
+//         {/* Title (React Quill) */}
+//         <div className="h-[200px]">
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Title *
+//           </label>
+//           <ReactQuill
+//             value={formData.title}
+//             onChange={handleEditorChange("title")}
+//             modules={quillModules}
+//             className={`h-40 bg-white ${errors.title ? "border-red-500" : ""}`}
+//           />
+//           {errors.title && (
+//             <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+//           )}
+//         </div>
+
+//         {/* Article Type */}
+//         <div>
+//           <label className="mb-1 mt-12 block text-sm font-medium text-gray-700">
+//             Article Type *
+//           </label>
+//           <select
+//             name="articleType"
+//             value={formData.articleType}
+//             onChange={handleInputChange}
+//             className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+//               errors.articleType ? "border-red-500" : "border-gray-300"
+//             }`}
+//           >
+//             <option value="breakingNews">BreakingNews</option>
+//             <option value="main">Main</option>
+//             <option value="left">Left</option>
+//             <option value="right">Right</option>
+//             <option value="grid">Grid</option>
+//           </select>
+//           {errors.articleType && (
+//             <p className="mt-1 text-sm text-red-500">{errors.articleType}</p>
+//           )}
+//         </div>
+
+//         {/* Categories Multi-Select */}
+//         <div>
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Categories * (Selected: {formData.navbarCategories.length})
+//           </label>
+//           <div className="mb-2 flex flex-wrap gap-2">
+//             {formData.navbarCategories.map((category) => (
+//               <span
+//                 key={category}
+//                 onClick={() => handleCategorySelect(category)}
+//                 className="cursor-pointer rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 hover:bg-blue-200"
+//               >
+//                 {category} ×
+//               </span>
+//             ))}
+//           </div>
+//           <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-300 bg-white">
+//             {categories.map((category) => (
+//               <div
+//                 key={category}
+//                 onClick={() => handleCategorySelect(category)}
+//                 className={`cursor-pointer border-b border-gray-200 px-4 py-2 last:border-b-0 hover:bg-gray-50 ${
+//                   formData.navbarCategories.includes(category)
+//                     ? "bg-blue-50 font-medium text-blue-600"
+//                     : ""
+//                 }`}
+//               >
+//                 {category}
+//               </div>
+//             ))}
+//           </div>
+//           {errors.navbarCategories && (
+//             <p className="mt-1 text-sm text-red-500">
+//               {errors.navbarCategories}
+//             </p>
+//           )}
+//         </div>
+
+//         {/* Hashtags */}
+//         <div>
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Hashtags *
+//           </label>
+//           <input
+//             type="text"
+//             name="hashtags"
+//             value={formData.hashtags.join(", ")}
+//             onChange={(e) => {
+//               const hashtagsArray = e.target.value
+//                 .split(",")
+//                 .map((tag) => tag.trim());
+//               setFormData((prev) => ({ ...prev, hashtags: hashtagsArray }));
+//             }}
+//             className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+//               errors.hashtags ? "border-red-500" : "border-gray-300"
+//             }`}
+//           />
+//           {errors.hashtags && (
+//             <p className="mt-1 text-sm text-red-500">{errors.hashtags}</p>
+//           )}
+//         </div>
+
+//         {/* Footer Tags */}
+//         <div>
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Footer Tags *
+//           </label>
+//           <input
+//             type="text"
+//             name="footerTags"
+//             value={formData.footerTags.join(", ")}
+//             onChange={(e) => {
+//               const footerTagsArray = e.target.value
+//                 .split(",")
+//                 .map((tag) => tag.trim());
+//               setFormData((prev) => ({ ...prev, footerTags: footerTagsArray }));
+//             }}
+//             className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+//               errors.footerTags ? "border-red-500" : "border-gray-300"
+//             }`}
+//           />
+//           {errors.footerTags && (
+//             <p className="mt-1 text-sm text-red-500">{errors.footerTags}</p>
+//           )}
+//         </div>
+
+//         {/* Conclusion */}
+//         <div>
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Conclusion *
+//           </label>
+//           <textarea
+//             name="conclusion"
+//             value={formData.conclusion}
+//             onChange={handleInputChange}
+//             rows="3"
+//             className={`w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${
+//               errors.conclusion ? "border-red-500" : "border-gray-300"
+//             }`}
+//           />
+//           {errors.conclusion && (
+//             <p className="mt-1 text-sm text-red-500">{errors.conclusion}</p>
+//           )}
+//         </div>
+
+//         {/* Image Upload */}
+//         <div>
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Featured Image *
+//           </label>
+//           <input
+//             type="file"
+//             name="imgUrl"
+//             onChange={handleFileUpload}
+//             className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+//           />
+//           {formData.imgUrl && (
+//             <div className="flex justify-center">
+//               <img
+//                 src={formData.imgUrl}
+//                 alt="Preview"
+//                 className="my-4 h-full w-[700px] rounded-lg object-cover"
+//               />
+//             </div>
+//           )}
+//           {errors.image && (
+//             <p className="mt-1 text-sm text-red-500">{errors.image}</p>
+//           )}
+//         </div>
+
+//         {/* Content Editor (React Quill) */}
+//         <div className="h-[460px]">
+//           <label className="mb-1 block text-sm font-medium text-gray-700">
+//             Content *
+//           </label>
+//           <ReactQuill
+//             value={formData.content}
+//             onChange={handleEditorChange("content")}
+//             modules={quillModules}
+//             className={`h-96 bg-white ${errors.content ? "border-red-500" : ""}`}
+//           />
+//           {errors.content && (
+//             <p className="mt-1 text-sm text-red-500">{errors.content}</p>
+//           )}
+//         </div>
+
+//         {/* Submit Button */}
+//         <div className="flex justify-end gap-4">
+//           <button
+//             type="button"
+//             onClick={() => navigate("/admin")}
+//             className="rounded-lg border border-gray-300 px-6 py-2 hover:bg-gray-50"
+//           >
+//             Cancel
+//           </button>
+//           <button
+//             type="submit"
+//             disabled={
+//               formData._id
+//                 ? updateNewsMutation.isPending
+//                 : createNewsMutation.isPending
+//             }
+//             className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:bg-blue-400"
+//           >
+//             {formData._id
+//               ? updateNewsMutation.isPending
+//                 ? "Updating..."
+//                 : "Update Article"
+//               : createNewsMutation.isPending
+//                 ? "Creating..."
+//                 : "Create Article"}
+//           </button>
+//         </div>
+
+//         {errors.submit && (
+//           <p className="text-center text-sm text-red-500">{errors.submit}</p>
+//         )}
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default AddNewPage;
 
 // import { useState } from "react";
 // import { useNavigate, useLocation } from "react-router-dom";
