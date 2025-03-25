@@ -42,17 +42,21 @@ const HomePage = () => {
           <FollowUs />
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
+        <div className="flex flex-col items-center justify-center">
           <div className="block md:hidden">
             <Weather />
           </div>
 
           {mainPosts?.length > 0 && (
-            <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+            <div className="">
+              <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+            </div>
           )}
 
           {gridPosts?.length > 0 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
+            <div className="my-4 sm:my-8">
+              <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
+            </div>
           )}
 
           {mainPosts?.slice(1, 2).map((post) => (
@@ -62,7 +66,9 @@ const HomePage = () => {
           ))}
 
           {gridPosts?.length > 6 && (
-            <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+            <div className="my-4 sm:my-8">
+              <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+            </div>
           )}
 
           <div className="space-y-4 sm:space-y-8">

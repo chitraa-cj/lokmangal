@@ -1,6 +1,6 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
-@import "https://unpkg.com/open-props"; */
-/* @import "https://unpkg.com/open-props/normalize.min.css"; */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100..900&display=swap");
+/* @import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css"; */
 
 @tailwind base;
 @tailwind components;
@@ -34,17 +34,14 @@ img {
 } */
 
 .media-scroller {
-  --_spacer: var(--size-3, 1.125rem);
+  --_spacer: 1.125rem;
   display: grid;
   gap: var(--_spacer);
   grid-auto-flow: column;
   grid-auto-columns: 36%;
-
-  /* padding: 0 var(--_spacer) var(--_spacer); */
-  padding-bottom: var(--_spacer);
-
   overflow-x: auto;
   overscroll-behavior-inline: contain;
+  padding-bottom: 1rem;
 }
 
 .media-scroller--with-groups {
@@ -66,8 +63,8 @@ img {
   background: white;
   color: black;
   /* height: 260px; */
-  border-radius: var(--radius-2);
-  box-shadow: var(--shadow-2);
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
 }
 
@@ -86,13 +83,6 @@ img {
   scroll-snap-align: start;
 }
 
-@media (min-width: 434px) {
-  .media-scroller {
-    /* padding: 0 var(--_spacer) var(--_spacer); */
-    padding-bottom: var(--_spacer);
-  }
-}
-
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -107,40 +97,6 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-/* general styling */
-
-/*
-.container {
-  inline-size: min(100% - 4rem, 70rem);
-  margin-inline: auto;
-}
-
-.flow {
-  display: grid;
-  gap: var(--size-3);
-}
-
-.page-header {
-  padding-block: var(--size-9);
-  margin-block-end: var(--size-9);
-  background: var(--gradient-16);
-  color: var(--gray-0);
-  box-shadow: var(--shadow-2);
-}
-
-.page-title {
-  font-size: var(--font-size-fluid-3);
-}
-
-.page-subtitle {
-  font-size: var(--font-size-fluid-1);
-}
-
-.section-title {
-  padding-inline-start: var(--size-6);
-  margin-block: var(--size-9) var(--size-3);
-} */
 
 .girdMaxWidth {
   max-width: 420px;
