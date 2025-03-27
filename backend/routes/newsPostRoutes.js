@@ -12,6 +12,7 @@ import {
   searchNewsPosts,
   getWeather,
   getAllNewsPostsAdmin,
+  getAllHashtags,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -20,6 +21,7 @@ const router = express.Router();
 // General routes
 router.route("/").get(getAllNewsPosts).post(protect, isAdmin, createNewsPost);
 router.route("/weather").get(getWeather);
+router.get("/hashtags", getAllHashtags);
 router.route("/all").get(getAllNewsPostsAdmin);
 
 // ID-based routes (generic) - Place AFTER specific routes

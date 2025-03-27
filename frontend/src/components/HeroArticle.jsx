@@ -26,7 +26,7 @@ const HeroArticle = ({ article }) => {
             className="mr-2 cursor-pointer sm:mr-3"
             onClick={() => navigate(`/hashtag/${encodeURIComponent(tag)}`)}
           >
-            #{tag}
+            {tag}
           </span>
         ))}
       </div>

@@ -438,6 +438,54 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllHashtags = asyncHandler(async (req, res) => {
+  try {
+    // Use aggregation to get unique hashtags
+    const hashtags = await News.aggregate([
+      // Unwind the hashtags array to process each hashtag individually
+      { $unwind: "$hashtags" },
+      // Group by hashtag to remove duplicates and sort them
+      {
+        $group: {
+          _id: "$hashtags",
+        },
+      },
+      // Project to reshape the output
+      {
+        $project: {
+          hashtag: "$_id",
+          _id: 0,
+        },
+      },
+      // Sort alphabetically
+      { $sort: { hashtag: 1 } },
+      // Limit the number of hashtags (optional, adjust as needed)
+      { $limit: 6 },
+    ]);
+
+    // Map the results to add # prefix if not already present
+    const formattedHashtags = hashtags.map((item) => {
+      const hashtag = item.hashtag;
+      return hashtag.startsWith("#") ? hashtag : `#${hashtag}`;
+    });
+
+    // Remove any duplicates that might have slipped through (just in case)
+    const uniqueHashtags = [...new Set(formattedHashtags)];
+
+    res.json({
+      success: true,
+      hashtags: uniqueHashtags,
+      count: uniqueHashtags.length,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching hashtags",
+      error: error.message,
+    });
+  }
+});
+
 export {
   getAllNewsPosts,
   getNewsPostById,
@@ -451,6 +499,7 @@ export {
   searchNewsPosts,
   getWeather,
   getAllNewsPostsAdmin,
+  getAllHashtags,
 };
 
 // const migrateNews = async () => {

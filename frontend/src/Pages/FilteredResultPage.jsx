@@ -15,7 +15,6 @@ const FilteredResultPage = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
-  const searchQuery = queryParams.get("q"); // For search bar queries
 
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(initialPage);
@@ -66,15 +65,10 @@ const FilteredResultPage = () => {
 
     fetchPosts();
   }, [category, hashtag, footertag, page]);
+
   useEffect(() => {
-    setPage(1); // Reset to page 1 whenever search context changes
-    // console.log("Reset page to 1 due to search context change:", {
-    //   category,
-    //   hashtag,
-    //   footertag,
-    //   searchQuery,
-    // });
-  }, [category, hashtag, footertag, searchQuery]);
+    setPage(1); // Reset to page 1 whenever filter context changes
+  }, [category, hashtag, footertag]);
 
   useEffect(() => {
     let basePath = "";
@@ -85,10 +79,7 @@ const FilteredResultPage = () => {
     } else if (searchType === "hashtag" && hashtag) {
       basePath = `/hashtag/${encodeURIComponent(hashtag)}`;
     } else if (searchType === "footertag" && footertag) {
-      basePath = `/footertag/${encodeURIComponent(footertag)}`;
-    } else if (searchType === "search" && searchQuery) {
-      basePath = `/search`;
-      params.set("q", searchQuery); // Add search query to params
+      basePath = `/footer/${encodeURIComponent(footertag)}`;
     } else {
       console.log("No valid search type for navigation");
       return; // No valid search type, skip navigation
@@ -98,42 +89,24 @@ const FilteredResultPage = () => {
 
     const newPath = `${basePath}?${params.toString()}`;
 
-    console.log("Navigation update:", {
-      current: location.pathname + location.search,
-      new: newPath,
-    });
+    // console.log("Navigation update:", {
+    //   current: location.pathname + location.search,
+    //   new: newPath,
+    // });
 
     if (location.pathname + location.search !== newPath) {
       navigate(newPath, { replace: true });
     }
-  }, [
-    page,
-    category,
-    hashtag,
-    footertag,
-    searchQuery,
-    searchType,
-    navigate,
-    location,
-  ]);
+  }, [page, category, hashtag, footertag, searchType, navigate, location]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
-      console.log("Page changed to:", newPage);
+      // console.log("Page changed to:", newPage);
     } else {
-      console.log("Invalid page change attempted:", newPage);
+      // console.log("Invalid page change attempted:", newPage);
     }
   };
-
-  // console.log("Render state:", {
-  //   isLoading,
-  //   error,
-  //   posts: posts.length,
-  //   page,
-  //   totalPages,
-  //   searchType,
-  // });
 
   if (isLoading) return <Loader />;
   if (error) return <Error message={error} />;

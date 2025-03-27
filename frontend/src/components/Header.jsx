@@ -1,28 +1,34 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 //cspell:disable
+// Fetch function for hashtags
+const fetchHashtags = async () => {
+  const { data } = await axios.get("/api/news/hashtags");
+  return data.hashtags; // Return only the hashtags array
+};
 
 export default function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // Added state for search
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data } = await axios.get("/api/users/verify");
-        setIsAuthenticated(data.isAuthenticated);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
+  // Use TanStack Query to fetch hashtags
+  const {
+    data: hashtags,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["hashtags"], // Unique key for this query
+    queryFn: fetchHashtags, // Fetch function
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    cacheTime: 10 * 60 * 1000, // Keep data in cache for 10 minutes
+    retry: 1, // Retry once on failure
+  });
 
-    checkAuth();
-  }, [navigate]);
+  // console.log(hashtags);
 
   const handleCategoryClick = (category) => {
     if (category === "होम") {
@@ -41,6 +47,19 @@ export default function Navbar() {
       setSearchQuery(""); // Clear search after submitting
     }
   };
+
+  const fallbackHashtags = [
+    "#ब्रेकिंगन्यूज़",
+    "#स्थानीयन्यूज़",
+    "#टेकट्रेंड्स",
+    "#स्वास्थ्यअद्यतन",
+    "#खेलहाइलाइट्स",
+    "#समुदाय",
+    // "#अर्थव्यवस्था",
+    // "#संस्कृति",
+    // "#शिक्षा",
+    // "#यात्रा",
+  ];
 
   return (
     <nav className="border-b-2 border-gray-300 shadow-sm">
@@ -117,29 +136,45 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
-        <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
-          {[
-            "#ब्रेकिंगन्यूज़",
-            "#स्थानीयन्यूज़",
-            "#टेकट्रेंड्स",
-            "#स्वास्थ्यअद्यतन",
-            "#खेलहाइलाइट्स",
-            "#समुदाय",
-            "#अर्थव्यवस्था",
-            "#संस्कृति",
-            "#शिक्षा",
-            "#यात्रा",
-          ].map((topic) => (
-            <span
-              key={topic}
-              className="cursor-pointer text-red-600 transition-all"
-              onClick={() =>
-                navigate(`/hashtag/${encodeURIComponent(topic.slice(1))}`)
-              }
-            >
-              {topic}
-            </span>
-          ))}
+        <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-medium">
+          {isLoading
+            ? // Show loading state or fallback while fetching
+              fallbackHashtags.map((topic) => (
+                <span
+                  key={topic}
+                  className="cursor-pointer text-red-600 transition-all"
+                  onClick={() =>
+                    navigate(`/hashtag/${encodeURIComponent(topic)}`)
+                  }
+                >
+                  {topic}
+                </span>
+              ))
+            : error
+              ? // Show fallback on error
+                fallbackHashtags.map((topic) => (
+                  <span
+                    key={topic}
+                    className="cursor-pointer text-red-600 transition-all"
+                    onClick={() =>
+                      navigate(`/hashtag/${encodeURIComponent(topic)}`)
+                    }
+                  >
+                    {topic}
+                  </span>
+                ))
+              : // Show fetched hashtags
+                hashtags?.map((topic) => (
+                  <span
+                    key={topic}
+                    className="cursor-pointer text-red-600 transition-all"
+                    onClick={() =>
+                      navigate(`/hashtag/${encodeURIComponent(topic)}`)
+                    }
+                  >
+                    {topic}
+                  </span>
+                ))}
         </div>
       </div>
     </nav>
