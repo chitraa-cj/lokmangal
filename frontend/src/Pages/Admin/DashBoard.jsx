@@ -98,7 +98,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     {/* {item.title} */}
                   </Link>
                 </td>
-                <td className="px-4 py-3">{item.conclusion}</td>
+                <td className="line-clamp-3 px-4 py-3">{item.conclusion}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
                   {item.articleType}
                 </td>
