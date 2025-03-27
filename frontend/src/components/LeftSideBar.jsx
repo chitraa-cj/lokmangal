@@ -20,10 +20,13 @@ const LeftSidebar = ({ leftNews }) => {
         {leftNews.map((article, index) => (
           <div key={index} className="flex flex-col gap-y-2 p-2">
             <h4
-              className="line-clamp-3 cursor-pointer text-sm font-medium text-black"
+              className="cursor-pointer text-sm font-medium text-black"
               onClick={() => onClickNavigate(article)}
             >
-              <div dangerouslySetInnerHTML={{ __html: article.title }} />
+              <div
+                className="line-clamp-3"
+                dangerouslySetInnerHTML={{ __html: article.title }}
+              />
             </h4>
             <span className="text-xs text-gray-500">
               {(() => {

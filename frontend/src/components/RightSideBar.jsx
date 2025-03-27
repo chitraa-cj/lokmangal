@@ -19,9 +19,12 @@ const RightSideBar = ({ trendingNews }) => {
               <div>
                 <h4
                   onClick={() => onClickNavigate(article)}
-                  className="line-clamp-3 cursor-pointer text-sm font-medium text-black"
+                  className="cursor-pointer text-sm font-medium text-black"
                 >
-                  <div dangerouslySetInnerHTML={{ __html: article.title }} />
+                  <div
+                    className="line-clamp-3"
+                    dangerouslySetInnerHTML={{ __html: article.title }}
+                  />
                 </h4>
                 <p className="mt-3 text-xs text-gray-600">
                   {new Date(article.createdAt).toLocaleDateString("en-IN")}
