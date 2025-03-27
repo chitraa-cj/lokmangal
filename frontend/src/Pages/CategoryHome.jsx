@@ -72,16 +72,28 @@ const CategoryHome = () => {
   }, [category, hashtag, footertag, searchQuery, page]);
 
   useEffect(() => {
-    if (page !== initialPage) {
-      const basePath =
-        searchType === "category"
-          ? `/category/${category}`
-          : searchType === "hashtag"
-            ? `/hashtag/${hashtag}`
-            : searchType === "footertag"
-              ? `/footer/${footertag}`
-              : `/search?q=${searchQuery}`;
-      navigate(`${basePath}?page=${page}`, { replace: true });
+    setPage(1); // Reset to page 1 whenever search context changes
+  }, [category, hashtag, footertag, searchQuery]);
+
+  useEffect(() => {
+    let basePath = "";
+    if (searchType === "category" && category) {
+      basePath = `/category/${encodeURIComponent(category)}`;
+    } else if (searchType === "hashtag" && hashtag) {
+      basePath = `/hashtag/${encodeURIComponent(hashtag)}`;
+    } else if (searchType === "footertag" && footertag) {
+      basePath = `/footertag/${encodeURIComponent(footertag)}`;
+    } else if (searchType === "search" && searchQuery) {
+      basePath = `/search?q=${encodeURIComponent(searchQuery)}`;
+    } else {
+      // console.log("Skipping navigation due to invalid parameters");
+      return;
+    }
+
+    const newPath = `${basePath}?page=${page}`;
+    // console.log("Navigating to:", newPath);
+    if (location.pathname + location.search !== newPath) {
+      navigate(newPath, { replace: true });
     }
   }, [
     page,
@@ -91,7 +103,7 @@ const CategoryHome = () => {
     searchQuery,
     searchType,
     navigate,
-    initialPage,
+    location,
   ]);
 
   const handlePageChange = (newPage) => {

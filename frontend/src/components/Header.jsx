@@ -119,11 +119,6 @@ export default function Navbar() {
       <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
         <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-semibold">
           {[
-            // "#Delhi Election 2025",
-            // "#Budget 2025-26",
-            // "#Mahakumbh Mela Live",
-            // "#Mahakumbh",
-            // "#महाकुंभ",
             "#ब्रेकिंगन्यूज़",
             "#स्थानीयन्यूज़",
             "#टेकट्रेंड्स",
@@ -140,7 +135,7 @@ export default function Navbar() {
               className="cursor-pointer text-red-600 transition-all"
               onClick={() =>
                 navigate(`/hashtag/${encodeURIComponent(topic.slice(1))}`)
-              } // Remove # and navigate
+              }
             >
               {topic}
             </span>
