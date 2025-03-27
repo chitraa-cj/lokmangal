@@ -393,35 +393,86 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  * @route GET /api/news/search
  * @access Public
  */
+// const searchNewsPosts = asyncHandler(async (req, res) => {
+//   try {
+//     let { q, page = 1, limit = 5 } = req.query;
+
+//     console.log("Received search request:", { q, page, limit });
+
+//     // Convert page and limit to numbers and ensure they are valid
+//     page = Math.max(parseInt(page) || 1, 1);
+//     limit = Math.max(parseInt(limit) || 5, 1);
+//     const skip = (page - 1) * limit;
+
+//     console.log("Processed pagination:", { page, limit, skip });
+
+//     if (!q || typeof q !== "string" || q.trim().length === 0) {
+//       console.warn("Invalid search query received:", q);
+//       return res.status(400).json({ message: "Invalid search query" });
+//     }
+
+//     const searchQuery = {
+//       $or: [
+//         { title: { $regex: q, $options: "i" } },
+//         { content: { $regex: q, $options: "i" } },
+//         { hashtags: { $in: [q] } }, // Match hashtags exactly
+//       ],
+//     };
+
+//     console.log("Constructed search query:", JSON.stringify(searchQuery));
+
+//     const [newsPosts, totalPosts] = await Promise.all([
+//       News.find(searchQuery)
+//         .sort({ createdAt: -1 })
+//         .skip(skip)
+//         .limit(limit)
+//         .lean(), // Use .lean() to improve performance
+//       News.countDocuments(searchQuery),
+//     ]);
+
+//     console.log(
+//       "Fetched posts:",
+//       newsPosts.length,
+//       "Total matching posts:",
+//       totalPosts
+//     );
+
+//     res.json({
+//       posts: newsPosts,
+//       currentPage: page,
+//       totalPages: Math.ceil(totalPosts / limit),
+//       totalPosts,
+//     });
+
+//     console.log("Response sent successfully.");
+//   } catch (error) {
+//     console.error("Error searching news posts:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
+
+// newsPostController.js
+/**
+ * @desc Search news posts by query
+ * @route GET /api/news/search
+ * @access Public
+ */
 const searchNewsPosts = asyncHandler(async (req, res) => {
-  const { q, page = 1, limit = 5 } = req.query; // Default values for page and limit
-
-  console.log("Search query:", q);
-
-  if (!q || typeof q !== "string" || q.trim() === "") {
-    console.log("Invalid search query");
-    return res.status(400).json({ message: "Invalid search query" });
-  }
-
-  const pageNum = parseInt(page) || 1;
-  const limitNum = parseInt(limit) || 5;
-  const skip = (pageNum - 1) * limitNum;
-
-  console.log("Pagination - Page:", pageNum, "Limit:", limitNum, "Skip:", skip);
+  const { q } = req.query; // Search query from URL
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
 
   const newsPosts = await News.find({
     $or: [
-      { title: { $regex: q, $options: "i" } },
-      // Add back content and conclusion if needed
+      { title: { $regex: q, $options: "i" } }, // Case-insensitive search
       // { content: { $regex: q, $options: "i" } },
       // { conclusion: { $regex: q, $options: "i" } },
     ],
   })
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limitNum);
-
-  console.log("Fetched posts:", newsPosts.length);
+    .limit(limit);
 
   const totalPosts = await News.countDocuments({
     $or: [
@@ -431,13 +482,11 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
     ],
   });
 
-  console.log("Total matching posts:", totalPosts);
-
   res.json({
     posts: newsPosts || [],
-    currentPage: pageNum,
-    totalPages: Math.ceil(totalPosts / limitNum),
-    totalPosts,
+    currentPage: page,
+    totalPages: Math.ceil(totalPosts / limit),
+    totalPosts: totalPosts,
   });
 });
 

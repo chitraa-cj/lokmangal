@@ -9,13 +9,13 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 const CategoryHome = () => {
-  const { category, hashtag, footertag } = useParams();
+  const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
   const navigate = useNavigate();
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
-  const initialSearchQuery = queryParams.get("q") || "";
+  const searchQuery = queryParams.get("q"); // For search bar queries
 
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(initialPage);
@@ -23,9 +23,7 @@ const CategoryHome = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchType, setSearchType] = useState(""); // Track the type of search
-  const [searchQuery, setSearchQuery] = useState(initialSearchQuery); // Stabilize searchQuery
 
-  // Fetch posts when search parameters or page changes
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true);
@@ -73,18 +71,14 @@ const CategoryHome = () => {
     fetchPosts();
   }, [category, hashtag, footertag, searchQuery, page]);
 
-  // Sync searchQuery with URL changes and reset page
   useEffect(() => {
-    const newSearchQuery = queryParams.get("q") || "";
-    if (newSearchQuery !== searchQuery) {
-      setSearchQuery(newSearchQuery);
-      setPage(1); // Reset to page 1 whenever search context changes // Reset page only when searchQuery changes
-    }
-  }, [location.search]);
+    setPage(1); // Reset to page 1 whenever search context changes
+  }, [category, hashtag, footertag, searchQuery]);
 
-  // Update URL when page changes
   useEffect(() => {
     let basePath = "";
+    const params = new URLSearchParams();
+
     if (searchType === "category" && category) {
       basePath = `/category/${encodeURIComponent(category)}`;
     } else if (searchType === "hashtag" && hashtag) {
@@ -92,14 +86,15 @@ const CategoryHome = () => {
     } else if (searchType === "footertag" && footertag) {
       basePath = `/footertag/${encodeURIComponent(footertag)}`;
     } else if (searchType === "search" && searchQuery) {
-      basePath = `/search?q=${encodeURIComponent(searchQuery)}`;
+      basePath = `/search`;
+      params.set("q", searchQuery); // Add search query to params
     } else {
-      // console.log("Skipping navigation due to invalid parameters");
-      return;
+      return; // No valid search type, skip navigation
     }
 
-    const newPath = `${basePath}?page=${page}`;
-    // console.log("Navigating to:", newPath);
+    params.set("page", page); // Always set the page parameter
+
+    const newPath = `${basePath}?${params.toString()}`;
     if (location.pathname + location.search !== newPath) {
       navigate(newPath, { replace: true });
     }
