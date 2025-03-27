@@ -30,6 +30,14 @@ const CategoryHome = () => {
       setError(null);
       setPosts([]);
 
+      console.log("Fetching posts with params:", {
+        category,
+        hashtag,
+        footertag,
+        searchQuery,
+        page,
+      });
+
       let url = "";
       let param = "";
 
@@ -52,19 +60,30 @@ const CategoryHome = () => {
       } else {
         setError("Invalid search parameters");
         setIsLoading(false);
+        console.log("Invalid search parameters");
         return;
       }
+
+      console.log("API URL:", `${url}?page=${page}`);
 
       try {
         const response = await axios.get(`${url}?page=${page}`);
         const data = response.data;
 
+        console.log("API Response:", data);
+
         setPosts(data.posts || []);
         setTotalPages(data.totalPages);
       } catch (err) {
         setError(err.response?.data?.message || "Error fetching posts");
+        console.error("Error fetching posts:", err);
       } finally {
         setIsLoading(false);
+        console.log("Loading complete. Current state:", {
+          posts: posts.length,
+          totalPages,
+          error,
+        });
       }
     };
 
@@ -73,6 +92,12 @@ const CategoryHome = () => {
 
   useEffect(() => {
     setPage(1); // Reset to page 1 whenever search context changes
+    console.log("Reset page to 1 due to search context change:", {
+      category,
+      hashtag,
+      footertag,
+      searchQuery,
+    });
   }, [category, hashtag, footertag, searchQuery]);
 
   useEffect(() => {
@@ -89,12 +114,19 @@ const CategoryHome = () => {
       basePath = `/search`;
       params.set("q", searchQuery); // Add search query to params
     } else {
+      console.log("No valid search type for navigation");
       return; // No valid search type, skip navigation
     }
 
     params.set("page", page); // Always set the page parameter
 
     const newPath = `${basePath}?${params.toString()}`;
+
+    console.log("Navigation update:", {
+      current: location.pathname + location.search,
+      new: newPath,
+    });
+
     if (location.pathname + location.search !== newPath) {
       navigate(newPath, { replace: true });
     }
@@ -112,8 +144,20 @@ const CategoryHome = () => {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
+      console.log("Page changed to:", newPage);
+    } else {
+      console.log("Invalid page change attempted:", newPage);
     }
   };
+
+  // console.log("Render state:", {
+  //   isLoading,
+  //   error,
+  //   posts: posts.length,
+  //   page,
+  //   totalPages,
+  //   searchType,
+  // });
 
   if (isLoading) return <Loader />;
   if (error) return <Error message={error} />;

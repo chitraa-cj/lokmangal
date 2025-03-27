@@ -457,31 +457,100 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  * @route GET /api/news/search
  * @access Public
  */
-const searchNewsPosts = asyncHandler(async (req, res) => {
-  const { q } = req.query; // Search query from URL
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
-  const skip = (page - 1) * limit;
+// const searchNewsPosts = asyncHandler(async (req, res) => {
+//   const { q } = req.query; // Search query from URL
+//   const page = parseInt(req.query.page) || 1;
+//   const limit = parseInt(req.query.limit) || 5;
+//   const skip = (page - 1) * limit;
 
+//   console.log(q);
+
+//   const newsPosts = await News.find({
+//     $or: [
+//       { title: { $regex: q, $options: "i" } }, // Case-insensitive search
+//       // { content: { $regex: q, $options: "i" } },
+//       // { conclusion: { $regex: q, $options: "i" } },
+//     ],
+//   })
+//     .sort({ createdAt: -1 })
+//     .skip(skip)
+//     .limit(limit);
+
+//   const totalPosts = await News.countDocuments({
+//     $or: [
+//       { title: { $regex: q, $options: "i" } },
+//       // { content: { $regex: q, $options: "i" } },
+//       // { conclusion: { $regex: q, $options: "i" } },
+//     ],
+//   });
+
+//   res.json({
+//     posts: newsPosts || [],
+//     currentPage: page,
+//     totalPages: Math.ceil(totalPosts / limit),
+//     totalPosts: totalPosts,
+//   });
+// });
+
+const searchNewsPosts = asyncHandler(async (req, res) => {
+  // Log the raw query object for debugging
+  console.log("Raw req.query:", req.query);
+
+  // Extract query parameters
+  let { q } = req.query; // Search query from URL
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 5; // Default to 5 posts per page
+  const skip = (page - 1) * limit; // Calculate skip for pagination
+
+  // Log pagination parameters
+  console.log("Pagination params:", { page, limit, skip });
+
+  // If q contains "?page=", split it and take only the search term
+  if (q && q.includes("?page=")) {
+    q = q.split("?page=")[0]; // Extract "Rajasthan News" from "Rajasthan News?page=1"
+  }
+
+  // Log the cleaned search term
+  console.log("Cleaned search term (q):", q);
+
+  // Validate that q exists and is not empty
+  if (!q || q.trim() === "") {
+    return res.status(400).json({ message: "Search query is required" });
+  }
+
+  // Search in title, content, and conclusion fields, case-insensitive
   const newsPosts = await News.find({
     $or: [
-      { title: { $regex: q, $options: "i" } }, // Case-insensitive search
-      // { content: { $regex: q, $options: "i" } },
-      // { conclusion: { $regex: q, $options: "i" } },
+      { title: { $regex: q, $options: "i" } }, // Matches titles
+      { content: { $regex: q, $options: "i" } }, // Matches content
+      { conclusion: { $regex: q, $options: "i" } }, // Matches conclusions
     ],
   })
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit);
+    .sort({ createdAt: -1 }) // Newest first
+    .skip(skip) // Pagination skip
+    .limit(limit); // Pagination limit
 
+  // Count total matching posts
   const totalPosts = await News.countDocuments({
     $or: [
       { title: { $regex: q, $options: "i" } },
-      // { content: { $regex: q, $options: "i" } },
-      // { conclusion: { $regex: q, $options: "i" } },
+      { content: { $regex: q, $options: "i" } },
+      { conclusion: { $regex: q, $options: "i" } },
     ],
   });
 
+  // Log detailed results
+  console.log("Total matching posts:", totalPosts);
+  console.log("Posts returned for this page:", newsPosts.length);
+  console.log("Expected posts per page:", limit);
+  console.log(
+    "Current page:",
+    page,
+    "Total pages:",
+    Math.ceil(totalPosts / limit)
+  );
+
+  // Send response
   res.json({
     posts: newsPosts || [],
     currentPage: page,
