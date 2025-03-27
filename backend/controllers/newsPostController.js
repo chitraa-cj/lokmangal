@@ -394,30 +394,32 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  * @access Public
  */
 const searchNewsPosts = asyncHandler(async (req, res) => {
-  const { q } = req.query; // Search query from URL
+  const { q, page = 1, limit = 5 } = req.query; // Default values for page and limit
+
   console.log("Search query:", q);
 
-  if (!q || typeof q !== "string") {
+  if (!q || typeof q !== "string" || q.trim() === "") {
     console.log("Invalid search query");
     return res.status(400).json({ message: "Invalid search query" });
   }
 
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
-  const skip = (page - 1) * limit;
+  const pageNum = parseInt(page) || 1;
+  const limitNum = parseInt(limit) || 5;
+  const skip = (pageNum - 1) * limitNum;
 
-  console.log("Pagination - Page:", page, "Limit:", limit, "Skip:", skip);
+  console.log("Pagination - Page:", pageNum, "Limit:", limitNum, "Skip:", skip);
 
   const newsPosts = await News.find({
     $or: [
-      { title: { $regex: q, $options: "i" } }, // Case-insensitive search
+      { title: { $regex: q, $options: "i" } },
+      // Add back content and conclusion if needed
       // { content: { $regex: q, $options: "i" } },
       // { conclusion: { $regex: q, $options: "i" } },
     ],
   })
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limit);
+    .limit(limitNum);
 
   console.log("Fetched posts:", newsPosts.length);
 
@@ -433,9 +435,9 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
 
   res.json({
     posts: newsPosts || [],
-    currentPage: page,
-    totalPages: Math.ceil(totalPosts / limit),
-    totalPosts: totalPosts,
+    currentPage: pageNum,
+    totalPages: Math.ceil(totalPosts / limitNum),
+    totalPosts,
   });
 });
 

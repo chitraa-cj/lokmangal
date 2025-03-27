@@ -32,12 +32,12 @@ export default function Navbar() {
     }
   };
 
-  // Added search handler
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Ensure the URL is constructed with q and page as separate parameters
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}&page=1`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}&page=1`, {
+        replace: true,
+      });
       setSearchQuery(""); // Clear search after submitting
     }
   };

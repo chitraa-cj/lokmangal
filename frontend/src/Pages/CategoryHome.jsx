@@ -9,13 +9,13 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 const CategoryHome = () => {
-  const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
+  const { category, hashtag, footertag } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
-  const searchQuery = queryParams.get("q"); // For search bar queries
+  const initialSearchQuery = queryParams.get("q") || "";
 
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(initialPage);
@@ -23,7 +23,9 @@ const CategoryHome = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchType, setSearchType] = useState(""); // Track the type of search
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery); // Stabilize searchQuery
 
+  // Fetch posts when search parameters or page changes
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true);
@@ -71,10 +73,16 @@ const CategoryHome = () => {
     fetchPosts();
   }, [category, hashtag, footertag, searchQuery, page]);
 
+  // Sync searchQuery with URL changes and reset page
   useEffect(() => {
-    setPage(1); // Reset to page 1 whenever search context changes
-  }, [category, hashtag, footertag, searchQuery]);
+    const newSearchQuery = queryParams.get("q") || "";
+    if (newSearchQuery !== searchQuery) {
+      setSearchQuery(newSearchQuery);
+      setPage(1); // Reset to page 1 whenever search context changes // Reset page only when searchQuery changes
+    }
+  }, [location.search]);
 
+  // Update URL when page changes
   useEffect(() => {
     let basePath = "";
     if (searchType === "category" && category) {
