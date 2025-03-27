@@ -14,7 +14,7 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
     News.find({ articleType: "main" }).sort({ createdAt: -1 }).limit(10),
     News.find({ articleType: "left" }).sort({ createdAt: -1 }).limit(4),
     News.find({ articleType: "right" }).sort({ createdAt: -1 }).limit(4),
-    News.find({ articleType: "grid" }).sort({ createdAt: -1 }).limit(10),
+    News.find({ articleType: "grid" }).sort({ createdAt: -1 }).limit(12),
   ]);
 
   res.json({ breakingNews, main, left, right, grid });
