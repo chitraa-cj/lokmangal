@@ -7,6 +7,9 @@ import {
   deleteNewsPost,
   getNewsPostsByUser,
   getNewsPostsByCategory,
+  getNewsPostsByHashtag,
+  getNewsPostsByFooterTag,
+  searchNewsPosts,
   getWeather,
   getAllNewsPostsAdmin,
 } from "../controllers/newsPostController.js";
@@ -25,8 +28,10 @@ router
   .put(protect, isAdmin, updateNewsPost)
   .delete(protect, isAdmin, deleteNewsPost);
 
-// Category route (specific) - Place BEFORE /:id
 router.route("/category/:category").get(getNewsPostsByCategory);
+router.route("/hashtag/:hashtag").get(getNewsPostsByHashtag);
+router.route("/footertag/:footertag").get(getNewsPostsByFooterTag);
+router.route("/search").get(searchNewsPosts);
 
 // Type/ID route
 router.route("/:type/:id").get(getNewsPostById);

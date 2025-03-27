@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   const newsCategories = [
     {
@@ -37,12 +39,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {category.links.map((link, i) => (
                 <li key={`link-${index}-${i}`}>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/footertag/${encodeURIComponent(link)}`}
                     className="text-center text-gray-400 hover:text-gray-100"
                   >
                     {link}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

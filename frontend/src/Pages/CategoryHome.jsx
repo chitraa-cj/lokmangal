@@ -9,57 +9,90 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 const CategoryHome = () => {
-  const { category } = useParams();
+  const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get page from URL query params, default to 1
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
+  const searchQuery = queryParams.get("q"); // For search bar queries
 
-  const [categoryPosts, setCategoryPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchType, setSearchType] = useState(""); // Track the type of search
 
-  // Fetch posts when category or page changes
   useEffect(() => {
-    const fetchCategoryPosts = async () => {
-      if (!category) return;
-
+    const fetchPosts = async () => {
       setIsLoading(true);
       setError(null);
-      setCategoryPosts([]); // Reset posts when page or category changes
+      setPosts([]);
+
+      let url = "";
+      let param = "";
+
+      if (category) {
+        setSearchType("category");
+        url = `/api/news/category/${encodeURIComponent(category)}`;
+        param = category;
+      } else if (hashtag) {
+        setSearchType("hashtag");
+        url = `/api/news/hashtag/${encodeURIComponent(hashtag)}`;
+        param = hashtag;
+      } else if (footertag) {
+        setSearchType("footertag");
+        url = `/api/news/footertag/${encodeURIComponent(footertag)}`;
+        param = footertag;
+      } else if (searchQuery) {
+        setSearchType("search");
+        url = `/api/news/search?q=${encodeURIComponent(searchQuery)}`;
+        param = searchQuery;
+      } else {
+        setError("Invalid search parameters");
+        setIsLoading(false);
+        return;
+      }
 
       try {
-        const response = await axios.get(
-          `/api/news/category/${encodeURIComponent(category)}?page=${page}`,
-        );
+        const response = await axios.get(`${url}?page=${page}`);
         const data = response.data;
 
-        setCategoryPosts(data.posts || []);
+        setPosts(data.posts || []);
         setTotalPages(data.totalPages);
       } catch (err) {
-        setError(
-          err.response?.data?.message || "Error fetching category posts",
-        );
+        setError(err.response?.data?.message || "Error fetching posts");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchCategoryPosts();
-  }, [category, page]);
+    fetchPosts();
+  }, [category, hashtag, footertag, searchQuery, page]);
 
-  // Update URL when page changes
   useEffect(() => {
     if (page !== initialPage) {
-      navigate(`/category/${encodeURIComponent(category)}?page=${page}`, {
-        replace: true,
-      });
+      const basePath =
+        searchType === "category"
+          ? `/category/${category}`
+          : searchType === "hashtag"
+            ? `/hashtag/${hashtag}`
+            : searchType === "footertag"
+              ? `/footertag/${footertag}`
+              : `/search?q=${searchQuery}`;
+      navigate(`${basePath}?page=${page}`, { replace: true });
     }
-  }, [page, category, navigate, initialPage]);
+  }, [
+    page,
+    category,
+    hashtag,
+    footertag,
+    searchQuery,
+    searchType,
+    navigate,
+    initialPage,
+  ]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -67,42 +100,30 @@ const CategoryHome = () => {
     }
   };
 
-  // Initial loading state
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  // Error state
-  if (error) {
-    return <Error message={error} />;
-  }
-
-  // No posts found
-  if (category && !categoryPosts.length && !isLoading) {
+  if (isLoading) return <Loader />;
+  if (error) return <Error message={error} />;
+  if (!posts.length && !isLoading) {
     return (
       <p className="flex min-h-screen items-center justify-center bg-gray-100">
-        No news articles found for this category.
+        No news articles found for this {searchType}.
       </p>
     );
   }
 
   return (
-    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
-      <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
+    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-4 pb-8 pt-2 sm:pb-12 sm:pt-4">
+      <main className="flex items-start justify-center md:space-x-4 lg:space-x-6">
         <div className="sticky top-4 hidden flex-col items-end gap-y-6 lg:flex">
           <FollowUs />
         </div>
 
         <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
-          {categoryPosts.length > 0 && (
-            <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
-              {categoryPosts.map((post) => (
-                <div key={post._id}>
-                  <HeroArticle id={post._id} article={post} />
-                </div>
-              ))}
-            </div>
-          )}
+          {posts.length > 0 &&
+            posts.map((post) => (
+              <div key={post._id}>
+                <HeroArticle id={post._id} article={post} />
+              </div>
+            ))}
 
           {/* Pagination Controls */}
           {totalPages > 0 && (

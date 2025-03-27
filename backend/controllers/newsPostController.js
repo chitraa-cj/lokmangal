@@ -314,6 +314,105 @@ const getNewsPostsByCategory = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @desc Get all news posts by hashtag
+ * @route GET /api/news/hashtag/:hashtag
+ * @access Public
+ */
+const getNewsPostsByHashtag = asyncHandler(async (req, res) => {
+  const { hashtag } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const newsPosts = await News.find({
+    hashtags: { $in: [hashtag] },
+  })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPosts = await nivews.countDocuments({
+    hashtags: { $in: [hashtag] },
+  });
+
+  res.json({
+    posts: newsPosts || [],
+    currentPage: page,
+    totalPages: Math.ceil(totalPosts / limit),
+    totalPosts: totalPosts,
+  });
+});
+
+// newsPostController.js
+/**
+ * @desc Get all news posts by footer tag
+ * @route GET /api/news/footertag/:footertag
+ * @access Public
+ */
+const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
+  const { footertag } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const newsPosts = await News.find({
+    footerTags: footertag, // Assuming footerTags is a string; adjust if it's an array
+  })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPosts = await News.countDocuments({
+    footerTags: footertag,
+  });
+
+  res.json({
+    posts: newsPosts || [],
+    currentPage: page,
+    totalPages: Math.ceil(totalPosts / limit),
+    totalPosts: totalPosts,
+  });
+});
+
+/**
+ * @desc Search news posts by query
+ * @route GET /api/news/search
+ * @access Public
+ */
+const searchNewsPosts = asyncHandler(async (req, res) => {
+  const { q } = req.query; // Search query from URL
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const newsPosts = await News.find({
+    $or: [
+      { title: { $regex: q, $options: "i" } }, // Case-insensitive search
+      // { content: { $regex: q, $options: "i" } },
+      // { conclusion: { $regex: q, $options: "i" } },
+    ],
+  })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPosts = await News.countDocuments({
+    $or: [
+      { title: { $regex: q, $options: "i" } },
+      // { content: { $regex: q, $options: "i" } },
+      // { conclusion: { $regex: q, $options: "i" } },
+    ],
+  });
+
+  res.json({
+    posts: newsPosts || [],
+    currentPage: page,
+    totalPages: Math.ceil(totalPosts / limit),
+    totalPosts: totalPosts,
+  });
+});
+
 export {
   getAllNewsPosts,
   getNewsPostById,
@@ -322,6 +421,9 @@ export {
   deleteNewsPost,
   getNewsPostsByUser,
   getNewsPostsByCategory,
+  getNewsPostsByHashtag,
+  getNewsPostsByFooterTag,
+  searchNewsPosts,
   getWeather,
   getAllNewsPostsAdmin,
 };
