@@ -393,144 +393,32 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  * @route GET /api/news/search
  * @access Public
  */
-// const searchNewsPosts = asyncHandler(async (req, res) => {
-//   try {
-//     let { q, page = 1, limit = 5 } = req.query;
-
-//     console.log("Received search request:", { q, page, limit });
-
-//     // Convert page and limit to numbers and ensure they are valid
-//     page = Math.max(parseInt(page) || 1, 1);
-//     limit = Math.max(parseInt(limit) || 5, 1);
-//     const skip = (page - 1) * limit;
-
-//     console.log("Processed pagination:", { page, limit, skip });
-
-//     if (!q || typeof q !== "string" || q.trim().length === 0) {
-//       console.warn("Invalid search query received:", q);
-//       return res.status(400).json({ message: "Invalid search query" });
-//     }
-
-//     const searchQuery = {
-//       $or: [
-//         { title: { $regex: q, $options: "i" } },
-//         { content: { $regex: q, $options: "i" } },
-//         { hashtags: { $in: [q] } }, // Match hashtags exactly
-//       ],
-//     };
-
-//     console.log("Constructed search query:", JSON.stringify(searchQuery));
-
-//     const [newsPosts, totalPosts] = await Promise.all([
-//       News.find(searchQuery)
-//         .sort({ createdAt: -1 })
-//         .skip(skip)
-//         .limit(limit)
-//         .lean(), // Use .lean() to improve performance
-//       News.countDocuments(searchQuery),
-//     ]);
-
-//     console.log(
-//       "Fetched posts:",
-//       newsPosts.length,
-//       "Total matching posts:",
-//       totalPosts
-//     );
-
-//     res.json({
-//       posts: newsPosts,
-//       currentPage: page,
-//       totalPages: Math.ceil(totalPosts / limit),
-//       totalPosts,
-//     });
-
-//     console.log("Response sent successfully.");
-//   } catch (error) {
-//     console.error("Error searching news posts:", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
-
-// newsPostController.js
-/**
- * @desc Search news posts by query
- * @route GET /api/news/search
- * @access Public
- */
-// const searchNewsPosts = asyncHandler(async (req, res) => {
-//   const { q } = req.query; // Search query from URL
-//   const page = parseInt(req.query.page) || 1;
-//   const limit = parseInt(req.query.limit) || 5;
-//   const skip = (page - 1) * limit;
-
-//   console.log(q);
-
-//   const newsPosts = await News.find({
-//     $or: [
-//       { title: { $regex: q, $options: "i" } }, // Case-insensitive search
-//       // { content: { $regex: q, $options: "i" } },
-//       // { conclusion: { $regex: q, $options: "i" } },
-//     ],
-//   })
-//     .sort({ createdAt: -1 })
-//     .skip(skip)
-//     .limit(limit);
-
-//   const totalPosts = await News.countDocuments({
-//     $or: [
-//       { title: { $regex: q, $options: "i" } },
-//       // { content: { $regex: q, $options: "i" } },
-//       // { conclusion: { $regex: q, $options: "i" } },
-//     ],
-//   });
-
-//   res.json({
-//     posts: newsPosts || [],
-//     currentPage: page,
-//     totalPages: Math.ceil(totalPosts / limit),
-//     totalPosts: totalPosts,
-//   });
-// });
-
 const searchNewsPosts = asyncHandler(async (req, res) => {
-  // Log the raw query object for debugging
   console.log("Raw req.query:", req.query);
 
-  // Extract query parameters
-  let { q } = req.query; // Search query from URL
-  const page = parseInt(req.query.page) || 1; // Default to page 1
-  const limit = parseInt(req.query.limit) || 5; // Default to 5 posts per page
-  const skip = (page - 1) * limit; // Calculate skip for pagination
+  let { q } = req.query;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
 
-  // Log pagination parameters
   console.log("Pagination params:", { page, limit, skip });
+  console.log("Search term (q):", q);
 
-  // If q contains "?page=", split it and take only the search term
-  if (q && q.includes("?page=")) {
-    q = q.split("?page=")[0]; // Extract "Rajasthan News" from "Rajasthan News?page=1"
-  }
-
-  // Log the cleaned search term
-  console.log("Cleaned search term (q):", q);
-
-  // Validate that q exists and is not empty
   if (!q || q.trim() === "") {
     return res.status(400).json({ message: "Search query is required" });
   }
 
-  // Search in title, content, and conclusion fields, case-insensitive
   const newsPosts = await News.find({
     $or: [
-      { title: { $regex: q, $options: "i" } }, // Matches titles
-      { content: { $regex: q, $options: "i" } }, // Matches content
-      { conclusion: { $regex: q, $options: "i" } }, // Matches conclusions
+      { title: { $regex: q, $options: "i" } },
+      { content: { $regex: q, $options: "i" } },
+      { conclusion: { $regex: q, $options: "i" } },
     ],
   })
-    .sort({ createdAt: -1 }) // Newest first
-    .skip(skip) // Pagination skip
-    .limit(limit); // Pagination limit
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
-  // Count total matching posts
   const totalPosts = await News.countDocuments({
     $or: [
       { title: { $regex: q, $options: "i" } },
@@ -539,18 +427,9 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
     ],
   });
 
-  // Log detailed results
   console.log("Total matching posts:", totalPosts);
   console.log("Posts returned for this page:", newsPosts.length);
-  console.log("Expected posts per page:", limit);
-  console.log(
-    "Current page:",
-    page,
-    "Total pages:",
-    Math.ceil(totalPosts / limit)
-  );
 
-  // Send response
   res.json({
     posts: newsPosts || [],
     currentPage: page,

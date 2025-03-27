@@ -8,7 +8,7 @@ import FollowUs from "../components/FollowUs";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 
-const CategoryHome = () => {
+const FilteredResultPage = () => {
   const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,14 +30,6 @@ const CategoryHome = () => {
       setError(null);
       setPosts([]);
 
-      console.log("Fetching posts with params:", {
-        category,
-        hashtag,
-        footertag,
-        searchQuery,
-        page,
-      });
-
       let url = "";
       let param = "";
 
@@ -53,51 +45,35 @@ const CategoryHome = () => {
         setSearchType("footertag");
         url = `/api/news/footertag/${encodeURIComponent(footertag)}`;
         param = footertag;
-      } else if (searchQuery) {
-        setSearchType("search");
-        url = `/api/news/search?q=${encodeURIComponent(searchQuery)}`;
-        param = searchQuery;
       } else {
         setError("Invalid search parameters");
         setIsLoading(false);
-        console.log("Invalid search parameters");
         return;
       }
 
-      console.log("API URL:", `${url}?page=${page}`);
-
       try {
-        const response = await axios.get(`${url}?page=${page}`);
+        const response = await axios.get(url, { params: { page } });
         const data = response.data;
-
-        console.log("API Response:", data);
 
         setPosts(data.posts || []);
         setTotalPages(data.totalPages);
       } catch (err) {
         setError(err.response?.data?.message || "Error fetching posts");
-        console.error("Error fetching posts:", err);
       } finally {
         setIsLoading(false);
-        console.log("Loading complete. Current state:", {
-          posts: posts.length,
-          totalPages,
-          error,
-        });
       }
     };
 
     fetchPosts();
-  }, [category, hashtag, footertag, searchQuery, page]);
-
+  }, [category, hashtag, footertag, page]);
   useEffect(() => {
     setPage(1); // Reset to page 1 whenever search context changes
-    console.log("Reset page to 1 due to search context change:", {
-      category,
-      hashtag,
-      footertag,
-      searchQuery,
-    });
+    // console.log("Reset page to 1 due to search context change:", {
+    //   category,
+    //   hashtag,
+    //   footertag,
+    //   searchQuery,
+    // });
   }, [category, hashtag, footertag, searchQuery]);
 
   useEffect(() => {
@@ -248,4 +224,4 @@ const CategoryHome = () => {
   );
 };
 
-export default CategoryHome;
+export default FilteredResultPage;

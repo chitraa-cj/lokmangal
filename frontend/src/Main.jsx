@@ -18,7 +18,8 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 
 import Home from "./Pages/Home.jsx";
-import CategoryHome from "./Pages/CategoryHome.jsx";
+import FilteredResultPage from "./Pages/FilteredResultPage.jsx";
+import SearchResultPage from "./Pages/SearchResultPage.jsx";
 import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/DashBoard.jsx";
@@ -31,10 +32,10 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Home />} />
-      <Route path="/category/:category" element={<CategoryHome />} />
-      <Route path="/hashtag/:hashtag" element={<CategoryHome />} />
-      <Route path="/footer/:footertag" element={<CategoryHome />} />
-      <Route path="/search" element={<CategoryHome />} />
+      <Route path="/category/:category" element={<FilteredResultPage />} />
+      <Route path="/hashtag/:hashtag" element={<FilteredResultPage />} />
+      <Route path="/footer/:footertag" element={<FilteredResultPage />} />
+      <Route path="/search" element={<SearchResultPage />} />
       <Route path="/:type/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}
