@@ -321,27 +321,40 @@ const getNewsPostsByCategory = asyncHandler(async (req, res) => {
  */
 const getNewsPostsByHashtag = asyncHandler(async (req, res) => {
   const { hashtag } = req.params;
+  // console.log("Requested hashtag:", hashtag);
+
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
 
-  const newsPosts = await News.find({
-    hashtags: { $in: [hashtag] },
-  })
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit);
+  // console.log("Pagination - Page:", page, "Limit:", limit, "Skip:", skip);
 
-  const totalPosts = await nivews.countDocuments({
-    hashtags: { $in: [hashtag] },
-  });
+  try {
+    const newsPosts = await News.find({
+      hashtags: { $in: [hashtag] }, // Check if the hashtag exists in the array
+    })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-  res.json({
-    posts: newsPosts || [],
-    currentPage: page,
-    totalPages: Math.ceil(totalPosts / limit),
-    totalPosts: totalPosts,
-  });
+    // console.log("Fetched posts:", newsPosts.length);
+
+    const totalPosts = await News.countDocuments({
+      hashtags: { $in: [hashtag] },
+    });
+
+    // console.log("Total matching posts:", totalPosts);
+
+    res.json({
+      posts: newsPosts || [],
+      currentPage: page,
+      totalPages: Math.ceil(totalPosts / limit),
+      totalPosts: totalPosts,
+    });
+  } catch (error) {
+    console.error("Error fetching news posts by hashtag:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 // newsPostController.js
@@ -357,7 +370,7 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const newsPosts = await News.find({
-    footerTags: footertag, // Assuming footerTags is a string; adjust if it's an array
+    footerTags: footertag,
   })
     .sort({ createdAt: -1 })
     .skip(skip)

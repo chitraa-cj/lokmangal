@@ -40,7 +40,7 @@ const Footer = () => {
               {category.links.map((link, i) => (
                 <li key={`link-${index}-${i}`}>
                   <Link
-                    to={`/footertag/${encodeURIComponent(link)}`}
+                    to={`/footer/${encodeURIComponent(link)}`}
                     className="text-center text-gray-400 hover:text-gray-100"
                   >
                     {link}

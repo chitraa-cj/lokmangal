@@ -69,7 +69,6 @@ const generateMainNewsData = (count) => {
     "Uttar Pradesh News",
     "Rajasthan News",
     "Haryana News",
-    "Bihar News",
   ];
 
   const getRandomItem = (array) => {
