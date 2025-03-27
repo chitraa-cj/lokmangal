@@ -382,9 +382,18 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  */
 const searchNewsPosts = asyncHandler(async (req, res) => {
   const { q } = req.query; // Search query from URL
+  console.log("Search query:", q);
+
+  if (!q || typeof q !== "string") {
+    console.log("Invalid search query");
+    return res.status(400).json({ message: "Invalid search query" });
+  }
+
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
+
+  console.log("Pagination - Page:", page, "Limit:", limit, "Skip:", skip);
 
   const newsPosts = await News.find({
     $or: [
@@ -397,6 +406,8 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
     .skip(skip)
     .limit(limit);
 
+  console.log("Fetched posts:", newsPosts.length);
+
   const totalPosts = await News.countDocuments({
     $or: [
       { title: { $regex: q, $options: "i" } },
@@ -404,6 +415,8 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
       // { conclusion: { $regex: q, $options: "i" } },
     ],
   });
+
+  console.log("Total matching posts:", totalPosts);
 
   res.json({
     posts: newsPosts || [],

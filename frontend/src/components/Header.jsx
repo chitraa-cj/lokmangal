@@ -36,7 +36,8 @@ export default function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      // Ensure the URL is constructed with q and page as separate parameters
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}&page=1`);
       setSearchQuery(""); // Clear search after submitting
     }
   };

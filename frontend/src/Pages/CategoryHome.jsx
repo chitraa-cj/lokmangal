@@ -9,20 +9,20 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 const CategoryHome = () => {
-  const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
+  const { category, hashtag, footertag } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
-  const searchQuery = queryParams.get("q"); // For search bar queries
+  const searchQuery = queryParams.get("q");
 
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchType, setSearchType] = useState(""); // Track the type of search
+  const [searchType, setSearchType] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -56,7 +56,7 @@ const CategoryHome = () => {
       }
 
       try {
-        const response = await axios.get(`${url}?page=${page}`);
+        const response = await axios.get(`${url}&page=${page}`);
         const data = response.data;
 
         setPosts(data.posts || []);
@@ -71,28 +71,25 @@ const CategoryHome = () => {
     fetchPosts();
   }, [category, hashtag, footertag, searchQuery, page]);
 
+  // Handle URL updates for pagination
   useEffect(() => {
-    if (page !== initialPage) {
-      const basePath =
-        searchType === "category"
-          ? `/category/${category}`
-          : searchType === "hashtag"
-            ? `/hashtag/${hashtag}`
-            : searchType === "footertag"
-              ? `/footertag/${footertag}`
-              : `/search?q=${searchQuery}`;
-      navigate(`${basePath}?page=${page}`, { replace: true });
+    const queryParams = new URLSearchParams();
+    if (searchType === "search" && searchQuery) {
+      queryParams.set("q", searchQuery);
     }
-  }, [
-    page,
-    category,
-    hashtag,
-    footertag,
-    searchQuery,
-    searchType,
-    navigate,
-    initialPage,
-  ]);
+    queryParams.set("page", page);
+
+    const basePath = searchType === "category" ? `/category/${category}`
+      : searchType === "hashtag" ? `/hashtag/${hashtag}`
+      : searchType === "footertag" ? `/footertag/${footertag}`
+      : `/search`;
+
+    // Only navigate if the current URL doesn't match the desired state
+    const newPath = `${basePath}?${queryParams.toString()}`;
+    if (location.pathname + location.search !== newPath) {
+      navigate(newPath, { replace: true });
+    }
+  }, [page, searchType, category, hashtag, footertag, searchQuery, navigate, location]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -111,21 +108,23 @@ const CategoryHome = () => {
   }
 
   return (
-    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-4 pb-8 pt-2 sm:pb-12 sm:pt-4">
-      <main className="flex items-start justify-center md:space-x-4 lg:space-x-6">
+    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
+      <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
         <div className="sticky top-4 hidden flex-col items-end gap-y-6 lg:flex">
           <FollowUs />
         </div>
 
         <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
-          {posts.length > 0 &&
-            posts.map((post) => (
-              <div key={post._id}>
-                <HeroArticle id={post._id} article={post} />
-              </div>
-            ))}
+          {posts.length > 0 && (
+            <div className="mx-4 space-y-4 sm:space-y-8 md:mx-0">
+              {posts.map((post) => (
+                <div key={post._id}>
+                  <HeroArticle id={post._id} article={post} />
+                </div>
+              ))}
+            </div>
+          )}
 
-          {/* Pagination Controls */}
           {totalPages > 0 && (
             <div className="mt-4 flex items-center space-x-2">
               <button
@@ -136,21 +135,19 @@ const CategoryHome = () => {
                 Previous
               </button>
               <div className="flex space-x-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (p) => (
-                    <button
-                      key={p}
-                      onClick={() => handlePageChange(p)}
-                      className={`rounded px-3 py-1 ${
-                        p === page
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ),
-                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => handlePageChange(p)}
+                    className={`rounded px-3 py-1 ${
+                      p === page
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
               </div>
               <button
                 onClick={() => handlePageChange(page + 1)}
@@ -162,7 +159,6 @@ const CategoryHome = () => {
             </div>
           )}
 
-          {/* Pagination Feedback */}
           {totalPages > 0 && (
             <p className="mt-2 text-gray-600">
               Page {page} of {totalPages}
