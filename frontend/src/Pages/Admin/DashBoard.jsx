@@ -1,5 +1,5 @@
 import { Edit, Trash } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   useDeleteNewsPostMutation,
   useAdminNewsPosts,
@@ -146,6 +146,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [posts, setPosts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalSearchResults, setTotalSearchResults] = useState(null); // New state for total search results
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -167,9 +168,11 @@ const Dashboard = () => {
       });
       setPosts(response.data.posts || []);
       setTotalPages(response.data.totalPages || 0);
+      setTotalSearchResults(response.data.totalPosts || 0); // Update total search results
     } catch (err) {
       setError(err.response?.data?.message || "Error fetching search results");
       setPosts([]);
+      setTotalSearchResults(null);
     } finally {
       setIsLoading(false);
     }
@@ -187,12 +190,14 @@ const Dashboard = () => {
       ];
       setPosts(transformedNewsData);
       setTotalPages(Math.ceil(newsData.pagination.totalItems / 100));
+      setTotalSearchResults(null); // Reset search results count when no search
     }
   }, [newsData, page, searchQuery]);
 
   const stats = {
     totalNews: newsData?.pagination?.totalItems || 0,
     activeNews: newsData?.pagination?.totalItems || 0,
+    searchResults: totalSearchResults !== null ? totalSearchResults : null,
     writers: 1,
   };
 
@@ -249,15 +254,16 @@ const Dashboard = () => {
               type="submit"
               className="absolute right-2 top-1/2 -translate-y-1/2"
             >
-              <Search size={16} className="text-gray-400" />
+              <Search size={16} className="text-gray-600" />
             </button>
           </div>
         </form>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
-        <StatCard title="Total news" value={stats.totalNews} />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <StatCard title="Total News" value={stats.totalNews} />
         <StatCard title="Active News" value={stats.activeNews} />
+        <StatCard title="Search Results" value={stats.searchResults || 0} />
         <StatCard
           title="Writers"
           value={stats.writers}

@@ -10,6 +10,7 @@ import {
   User,
   LogOut,
   Home,
+  MonitorPlay,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -28,8 +29,8 @@ const Sidebar = () => {
       path: "/admin/add-new",
     },
     {
-      title: "Edit Hashtags & Links",
-      icon: <Hash size={20} />,
+      title: "Video Links",
+      icon: <MonitorPlay size={20} />,
       path: "/admin/add-hashtags",
     },
     // {
@@ -42,16 +43,16 @@ const Sidebar = () => {
       icon: <Home size={20} />,
       path: "/",
     },
-    // {
-    //   title: "Add writer",
-    //   icon: <UserPlus size={20} />,
-    //   path: "/admin/add-writer",
-    // },
-    // {
-    //   title: "Writers",
-    //   icon: <Users size={20} />,
-    //   path: "/admin/writers",
-    // },
+    {
+      title: "Add writer",
+      icon: <UserPlus size={20} />,
+      path: "/admin/add-writer",
+    },
+    {
+      title: "Writers",
+      icon: <Users size={20} />,
+      path: "/admin/writers",
+    },
     // {
     //   title: "Profile",
     //   icon: <User size={20} />,

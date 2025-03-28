@@ -394,15 +394,15 @@ const getNewsPostsByFooterTag = asyncHandler(async (req, res) => {
  * @access Public
  */
 const searchNewsPosts = asyncHandler(async (req, res) => {
-  console.log("Raw req.query:", req.query);
+  // console.log("Raw req.query:", req.query);
 
   let { q } = req.query;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
 
-  console.log("Pagination params:", { page, limit, skip });
-  console.log("Search term (q):", q);
+  // console.log("Pagination params:", { page, limit, skip });
+  // console.log("Search term (q):", q);
 
   if (!q || q.trim() === "") {
     return res.status(400).json({ message: "Search query is required" });
@@ -427,8 +427,8 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
     ],
   });
 
-  console.log("Total matching posts:", totalPosts);
-  console.log("Posts returned for this page:", newsPosts.length);
+  // console.log("Total matching posts:", totalPosts);
+  // console.log("Posts returned for this page:", newsPosts.length);
 
   res.json({
     posts: newsPosts || [],
