@@ -24,12 +24,12 @@ const Sidebar = () => {
       path: "/admin",
     },
     {
-      title: "Add New",
+      title: "Add New Post",
       icon: <Newspaper size={20} />,
       path: "/admin/add-new",
     },
     {
-      title: "Video Links",
+      title: "Manage Video Links",
       icon: <MonitorPlay size={20} />,
       path: "/admin/add-hashtags",
     },
@@ -52,6 +52,11 @@ const Sidebar = () => {
       title: "Writers",
       icon: <Users size={20} />,
       path: "/admin/writers",
+    },
+    {
+      title: "Go To News",
+      icon: <Home size={20} />,
+      path: "/",
     },
     // {
     //   title: "Profile",

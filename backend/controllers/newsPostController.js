@@ -37,13 +37,13 @@ const getAllNewsPostsAdmin = asyncHandler(async (req, res) => {
   ]);
 
   // Group by articleType for response
-  const responseData = {
-    breakingNews: news.filter((item) => item.articleType === "breakingNews"),
-    main: news.filter((item) => item.articleType === "main"),
-    left: news.filter((item) => item.articleType === "left"),
-    right: news.filter((item) => item.articleType === "right"),
-    grid: news.filter((item) => item.articleType === "grid"),
-  };
+  // const responseData = {
+  //   breakingNews: news.filter((item) => item.articleType === "breakingNews"),
+  //   main: news.filter((item) => item.articleType === "main"),
+  //   left: news.filter((item) => item.articleType === "left"),
+  //   right: news.filter((item) => item.articleType === "right"),
+  //   grid: news.filter((item) => item.articleType === "grid"),
+  // };
 
   const pagination = {
     currentPage: page,
@@ -54,7 +54,8 @@ const getAllNewsPostsAdmin = asyncHandler(async (req, res) => {
   };
 
   res.json({
-    ...responseData,
+    // ...responseData,
+    posts: news,
     pagination,
     totalCounts: {
       breakingNews: await News.countDocuments({ articleType: "breakingNews" }),

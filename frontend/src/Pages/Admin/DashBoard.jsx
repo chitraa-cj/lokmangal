@@ -10,13 +10,11 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import axios from "axios";
 
-const StatCard = ({ title, value, className = "" }) => (
-  <div className={`${className} rounded-lg bg-white p-6 shadow`}>
+const StatCard = ({ title, value }) => (
+  <div className={`rounded-lg bg-white p-6 shadow`}>
     <div className="flex flex-col items-center justify-center">
       <h3 className="mb-2 text-3xl font-bold">{value}</h3>
-      <p className="text-gray-600">
-        <div dangerouslySetInnerHTML={{ __html: title }} />
-      </p>
+      <p className="text-gray-600">{title} </p>
     </div>
   </div>
 );
@@ -178,17 +176,10 @@ const Dashboard = () => {
     }
   };
 
-  // Load initial data or after page change when no search is active
+  // Set posts directly from newsData when there's no search query
   useEffect(() => {
     if (!searchQuery.trim() && newsData) {
-      const transformedNewsData = [
-        ...(newsData.breakingNews || []),
-        ...(newsData.main || []),
-        ...(newsData.left || []),
-        ...(newsData.right || []),
-        ...(newsData.grid || []),
-      ];
-      setPosts(transformedNewsData);
+      setPosts(newsData.posts || []); // Assuming newsData now has a 'posts' array
       setTotalPages(Math.ceil(newsData.pagination.totalItems / 100));
       setTotalSearchResults(null); // Reset search results count when no search
     }
