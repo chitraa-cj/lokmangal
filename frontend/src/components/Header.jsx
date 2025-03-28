@@ -74,20 +74,21 @@ export default function Navbar() {
       <div className="flex items-center justify-center bg-gray-800">
         <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           <div className="flex items-center justify-between overflow-x-auto">
-            <div className="absolute hidden lg:block">
+            <div className="absolute left-40 hidden lg:block">
               <Link to="/">
-                {/* <img src="./image.png" alt="logo" className="w-20" /> */}
-                <img src="./logo.png" alt="logo" className="w-20" />
-                {/* <img src="./lokmangal logo from YouTube channels4_profile.jpg" alt="logo" className="w-20" /> */}
+                <img src="./logo.gif" alt="logo" className="w-28" />
               </Link>
             </div>
 
             <div className="block lg:w-[211px]"></div>
 
-            <div
-              className={`ml-0 flex items-center justify-center`}
-              // className={`ml-0 flex items-center justify-center ${isAuthenticated ? "lg:ml-28" : "lg:ml-16"}`}
-            >
+            <div className={`flex items-center justify-center`}>
+              <img
+                src="./logo.gif"
+                alt="logo"
+                className="ml-8 w-16 lg:hidden"
+              />
+
               {[
                 "होम",
                 "देश",

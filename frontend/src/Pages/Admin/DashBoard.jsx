@@ -1,13 +1,14 @@
 import { Edit, Trash } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useDeleteNewsPostMutation,
   useAdminNewsPosts,
 } from "../../hooks/useApi";
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import axios from "axios";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
@@ -20,9 +21,7 @@ const StatCard = ({ title, value, className = "" }) => (
   </div>
 );
 
-const Pagination = ({ pagination, onPageChange }) => {
-  const { currentPage, totalPages } = pagination;
-
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <div className="mt-4 flex justify-center gap-2">
       <button
@@ -52,61 +51,41 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
     return doc.body.textContent || "";
   };
 
-  // const navigate = useNavigate();
   return (
     <div className="mt-8">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Recent News</h2>
-        {/* <button className="text-blue-600 hover:text-blue-800">View all</button> */}
       </div>
       <div className="overflow-x-auto rounded-lg bg-white shadow">
         <table className="w-full">
+          {/* Same table structure as before */}
           <thead>
             <tr className="border-b">
               <th className="px-4 py-3 text-left uppercase">IMAGE</th>
               <th className="px-4 py-3 text-left uppercase">TITLE</th>
               <th className="px-4 py-3 text-left uppercase">Conclusion</th>
               <th className="px-4 py-3 text-left uppercase">type</th>
-              {/* <th className="px-4 py-3 text-left uppercase">Category</th> */}
               <th className="px-4 py-3 text-left uppercase">DATE</th>
-              {/* <th className="px-4 py-3 text-left uppercase">STATUS</th> */}
               <th className="px-4 py-3 text-left uppercase">ACTION</th>
             </tr>
           </thead>
           <tbody>
             {news.map((item) => (
-              <tr
-                key={item._id}
-                className="order-b hover:bg-gray-100"
-                // onClick={() => navigate(`/news/${item._id}`)}
-              >
+              <tr key={item._id} className="border-b hover:bg-gray-100">
                 <td className="px-4 py-3">
-                  {/* <Link to={`/news/${item._id}`}> */}
-                  <Link to={`/${item.articleType}/${item._id}`}>
-                    <img
-                      src={item.imgUrl}
-                      alt={stripHtml(item.title)}
-                      className="w-28 rounded object-cover"
-                    />
-                  </Link>
+                  <img
+                    src={item.imgUrl}
+                    alt={stripHtml(item.title)}
+                    className="w-28 rounded object-cover"
+                  />
                 </td>
                 <td className="px-4 py-3">
-                  <Link
-                    to={`/${item.articleType}/${item._id}`}
-                    className="hover:text-blue-800 hover:underline"
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: item.title }} />
-                    {/* {item.title} */}
-                  </Link>
+                  <div dangerouslySetInnerHTML={{ __html: item.title }} />
                 </td>
                 <td className="line-clamp-3 px-4 py-3">{item.conclusion}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
                   {item.articleType}
                 </td>
-                {/* <td className="py-3 px-4">{item.category}</td> */}
-                {/* <td className="py-3 px-4 max-w-xs truncate">
-                {item.description}
-              </td> */}
                 <td className="px-4 py-3">
                   {new Date(item.createdAt).toLocaleDateString("en-IN")}
                 </td>
@@ -117,7 +96,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                         e.stopPropagation();
                         onEdit(item);
                       }}
-                      className="rounded-full p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-800"
+                      className="rounded-full p-2 text-blue-600 hover:bg-blue-100"
                     >
                       <Edit size={20} />
                     </button>
@@ -126,7 +105,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                         e.stopPropagation();
                         onDelete(item._id);
                       }}
-                      className="rounded-full p-2 text-red-600 hover:bg-red-100 hover:text-red-800"
+                      className="rounded-full p-2 text-red-600 hover:bg-red-100"
                     >
                       <Trash size={20} />
                     </button>
@@ -143,38 +122,55 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
 
 const Dashboard = () => {
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const deleteNewsMutation = useDeleteNewsPostMutation();
-  const [searchQuery, setSearchQuery] = useState(""); // Added state for search
+  const { data: newsData, refetch } = useAdminNewsPosts({ page });
 
-  // Modify the useNewsPosts hook to accept page parameter
-  const {
-    data: newsData,
-    isLoading,
-    error,
-    refetch,
-  } = useAdminNewsPosts({ page });
+  const fetchSearchResults = async (query, pageNum) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get("/api/news/search", {
+        params: {
+          q: query,
+          page: pageNum,
+          limit: 100, // Set limit to 100
+        },
+      });
+      setPosts(response.data.posts || []);
+      setTotalPages(response.data.totalPages || 0);
+    } catch (err) {
+      setError(err.response?.data?.message || "Error fetching search results");
+      setPosts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // console.log(newsData);
-
-  let transformedNewsData = [];
-
-  if (newsData) {
-    transformedNewsData = [
-      ...(newsData.breakingNews || []),
-      ...(newsData.main || []),
-      ...(newsData.left || []),
-      ...(newsData.right || []),
-      ...(newsData.grid || []),
-    ];
-  }
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      fetchSearchResults(searchQuery, page);
+    } else if (newsData) {
+      const transformedNewsData = [
+        ...(newsData.breakingNews || []),
+        ...(newsData.main || []),
+        ...(newsData.left || []),
+        ...(newsData.right || []),
+        ...(newsData.grid || []),
+      ];
+      setPosts(transformedNewsData);
+      setTotalPages(Math.ceil(newsData.pagination.totalItems / 100));
+    }
+  }, [searchQuery, page, newsData]);
 
   const stats = {
     totalNews: newsData?.pagination?.totalItems || 0,
-    // pendingNews: transformedNewsData?.filter((n) => n.status === "pending").length || 0,
-    // activeNews: transformedNewsData?.filter((n) => n.status === "active").length || 0,
     activeNews: newsData?.pagination?.totalItems || 0,
-    // deActiveNews: transformedNewsData?.filter((n) => n.status === "inactive").length || 0,
     writers: 1,
   };
 
@@ -186,7 +182,10 @@ const Dashboard = () => {
     if (window.confirm("Are you sure you want to delete this article?")) {
       try {
         await deleteNewsMutation.mutateAsync(id);
-        refetch(); // Refresh the data after deletion
+        refetch();
+        if (searchQuery.trim()) {
+          fetchSearchResults(searchQuery, page);
+        }
       } catch (error) {
         console.error("Error deleting article:", error);
       }
@@ -195,12 +194,8 @@ const Dashboard = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}&page=1`, {
-        replace: true,
-      });
-      setSearchQuery(""); // Clear search after submitting
-    }
+    setPage(1); // Reset to first page on new search
+    fetchSearchResults(searchQuery, 1);
   };
 
   const handlePageChange = (newPage) => {
@@ -208,19 +203,12 @@ const Dashboard = () => {
   };
 
   if (isLoading) return <Loader />;
-  if (error) return <Error />;
+  if (error) return <Error message={error} />;
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        {/* <div className="relative">
-          <input
-            type="search"
-            placeholder="Search News Articles"
-            className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            </div> */}
         <form onSubmit={handleSearch} className="flex items-center py-2 pr-1">
           <div className="relative">
             <input
@@ -228,7 +216,6 @@ const Dashboard = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search News Articles"
-              // className="rounded-md bg-gray-700 px-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
@@ -242,39 +229,21 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
-        <StatCard title="Total news" value={stats.totalNews} key="totalNews" />
-        {/* <StatCard
-          title="Pending News"
-          value={stats.pendingNews}
-          key="pendingNews"
-        /> */}
-        <StatCard
-          title="Active News"
-          value={stats.activeNews}
-          key="activeNews"
-        />
-        {/* <StatCard
-          title="DeActive news"
-          value={stats.deActiveNews}
-          key="deActiveNews"
-        /> */}
+        <StatCard title="Total news" value={stats.totalNews} />
+        <StatCard title="Active News" value={stats.activeNews} />
         <StatCard
           title="Writers"
           value={stats.writers}
           className="bg-blue-50"
-          key="writers"
         />
       </div>
 
-      <NewsTable
-        news={transformedNewsData || []}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <NewsTable news={posts} onEdit={handleEdit} onDelete={handleDelete} />
 
-      {newsData?.pagination && (
+      {totalPages > 0 && (
         <Pagination
-          pagination={newsData.pagination}
+          currentPage={page}
+          totalPages={totalPages}
           onPageChange={handlePageChange}
         />
       )}

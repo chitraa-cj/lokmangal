@@ -517,7 +517,7 @@ const HomePage = () => {
         </div>
       </main>
 
-      <div className="fixed bottom-8 right-3">
+      <div className="fixed bottom-8 right-3 hidden lg:block">
         <iframe
           className="h-40 w-40 rounded-lg shadow-lg"
           src="https://www.youtube.com/embed/CDjD5gQjXQk?autoplay=1&mute=1&loop=1&playlist=CDjD5gQjXQk"
