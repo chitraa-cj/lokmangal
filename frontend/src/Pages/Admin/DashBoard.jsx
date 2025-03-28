@@ -7,6 +7,7 @@ import {
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import { useState } from "react";
+import { Search } from "lucide-react";
 
 const StatCard = ({ title, value, className = "" }) => (
   <div className={`${className} rounded-lg bg-white p-6 shadow`}>
@@ -144,6 +145,7 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const deleteNewsMutation = useDeleteNewsPostMutation();
+  const [searchQuery, setSearchQuery] = useState(""); // Added state for search
 
   // Modify the useNewsPosts hook to accept page parameter
   const {
@@ -191,6 +193,16 @@ const Dashboard = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}&page=1`, {
+        replace: true,
+      });
+      setSearchQuery(""); // Clear search after submitting
+    }
+  };
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
@@ -202,13 +214,31 @@ const Dashboard = () => {
     <div className="min-h-screen w-full bg-gray-100 p-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="relative">
+        {/* <div className="relative">
           <input
             type="search"
             placeholder="Search News Articles"
             className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+            />
+            </div> */}
+        <form onSubmit={handleSearch} className="flex items-center py-2 pr-1">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search News Articles"
+              // className="rounded-md bg-gray-700 px-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <Search size={16} className="text-gray-400" />
+            </button>
+          </div>
+        </form>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
