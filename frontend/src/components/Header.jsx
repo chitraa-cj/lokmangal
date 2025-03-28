@@ -109,7 +109,7 @@ export default function Navbar() {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-center">
+            <div className="ml-16 flex items-center justify-center md:ml-0">
               {/* Search Box */}
               <form
                 onSubmit={handleSearch}

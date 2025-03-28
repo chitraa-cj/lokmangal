@@ -58,34 +58,55 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
       </div>
       <div className="overflow-x-auto rounded-lg bg-white shadow">
         <table className="w-full">
-          {/* Same table structure as before */}
           <thead>
             <tr className="border-b">
               <th className="px-4 py-3 text-left uppercase">IMAGE</th>
               <th className="px-4 py-3 text-left uppercase">TITLE</th>
               <th className="px-4 py-3 text-left uppercase">Conclusion</th>
               <th className="px-4 py-3 text-left uppercase">type</th>
+              {/* <th className="px-4 py-3 text-left uppercase">Category</th> */}
               <th className="px-4 py-3 text-left uppercase">DATE</th>
+              {/* <th className="px-4 py-3 text-left uppercase">STATUS</th> */}
               <th className="px-4 py-3 text-left uppercase">ACTION</th>
             </tr>
           </thead>
           <tbody>
             {news.map((item) => (
-              <tr key={item._id} className="border-b hover:bg-gray-100">
+              <tr
+                key={item._id}
+                className="order-b hover:bg-gray-100"
+                // onClick={() => navigate(`/news/${item._id}`)}
+              >
                 <td className="px-4 py-3">
-                  <img
-                    src={item.imgUrl}
-                    alt={stripHtml(item.title)}
-                    className="w-28 rounded object-cover"
-                  />
+                  {/* <Link to={`/news/${item._id}`}> */}
+
+                  <Link to={`/${item.articleType}/${item._id}`}>
+                    <img
+                      src={item.imgUrl}
+                      alt={stripHtml(item.title)}
+                      className="w-28 rounded object-cover"
+                    />
+                  </Link>
                 </td>
+
                 <td className="px-4 py-3">
-                  <div dangerouslySetInnerHTML={{ __html: item.title }} />
+                  <Link
+                    to={`/${item.articleType}/${item._id}`}
+                    className="hover:text-blue-800 hover:underline"
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: item.title }} />
+
+                    {/* {item.title} */}
+                  </Link>
                 </td>
                 <td className="line-clamp-3 px-4 py-3">{item.conclusion}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
                   {item.articleType}
                 </td>
+                {/* <td className="py-3 px-4">{item.category}</td> */}
+                {/* <td className="py-3 px-4 max-w-xs truncate">
+                  {item.description}
+                </td> */}
                 <td className="px-4 py-3">
                   {new Date(item.createdAt).toLocaleDateString("en-IN")}
                 </td>
@@ -132,6 +153,8 @@ const Dashboard = () => {
   const { data: newsData, refetch } = useAdminNewsPosts({ page });
 
   const fetchSearchResults = async (query, pageNum) => {
+    if (!query.trim()) return; // Don't search if query is empty
+
     setIsLoading(true);
     setError(null);
     try {
@@ -139,7 +162,7 @@ const Dashboard = () => {
         params: {
           q: query,
           page: pageNum,
-          limit: 100, // Set limit to 100
+          limit: 100,
         },
       });
       setPosts(response.data.posts || []);
@@ -152,10 +175,9 @@ const Dashboard = () => {
     }
   };
 
+  // Load initial data or after page change when no search is active
   useEffect(() => {
-    if (searchQuery.trim()) {
-      fetchSearchResults(searchQuery, page);
-    } else if (newsData) {
+    if (!searchQuery.trim() && newsData) {
       const transformedNewsData = [
         ...(newsData.breakingNews || []),
         ...(newsData.main || []),
@@ -166,7 +188,7 @@ const Dashboard = () => {
       setPosts(transformedNewsData);
       setTotalPages(Math.ceil(newsData.pagination.totalItems / 100));
     }
-  }, [searchQuery, page, newsData]);
+  }, [newsData, page, searchQuery]);
 
   const stats = {
     totalNews: newsData?.pagination?.totalItems || 0,
@@ -194,16 +216,21 @@ const Dashboard = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setPage(1); // Reset to first page on new search
-    fetchSearchResults(searchQuery, 1);
+    if (searchQuery.trim()) {
+      setPage(1); // Reset to first page on new search
+      fetchSearchResults(searchQuery, 1);
+    }
   };
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
+    if (searchQuery.trim()) {
+      fetchSearchResults(searchQuery, newPage);
+    }
   };
 
   if (isLoading) return <Loader />;
-  if (error) return <Error message={error} />;
+  if (error) return <Error />;
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-8">
@@ -236,9 +263,23 @@ const Dashboard = () => {
           value={stats.writers}
           className="bg-blue-50"
         />
+        {/* <StatCard
+          title="Pending News"
+          value={stats.pendingNews}
+          key="pendingNews"
+        /> */}
+        {/* <StatCard
+          title="DeActive news"
+          value={stats.deActiveNews}
+          key="deActiveNews"
+        /> */}
       </div>
 
-      <NewsTable news={posts} onEdit={handleEdit} onDelete={handleDelete} />
+      <NewsTable
+        news={posts || []}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       {totalPages > 0 && (
         <Pagination
