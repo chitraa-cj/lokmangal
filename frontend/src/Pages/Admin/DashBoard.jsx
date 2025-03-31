@@ -60,24 +60,17 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
             <tr className="border-b">
               <th className="px-4 py-3 text-left uppercase">IMAGE</th>
               <th className="px-4 py-3 text-left uppercase">TITLE</th>
-              <th className="px-4 py-3 text-left uppercase">Conclusion</th>
-              <th className="px-4 py-3 text-left uppercase">type</th>
-              {/* <th className="px-4 py-3 text-left uppercase">Category</th> */}
+              <th className="px-4 py-3 text-left uppercase">Writer</th>
+              <th className="px-4 py-3 text-left uppercase">Category</th>
+              <th className="px-4 py-3 text-left uppercase">VIEWS</th>
               <th className="px-4 py-3 text-left uppercase">DATE</th>
-              {/* <th className="px-4 py-3 text-left uppercase">STATUS</th> */}
               <th className="px-4 py-3 text-left uppercase">ACTION</th>
             </tr>
           </thead>
           <tbody>
             {news.map((item) => (
-              <tr
-                key={item._id}
-                className="order-b hover:bg-gray-100"
-                // onClick={() => navigate(`/news/${item._id}`)}
-              >
+              <tr key={item._id} className="order-b hover:bg-gray-100">
                 <td className="px-4 py-3">
-                  {/* <Link to={`/news/${item._id}`}> */}
-
                   <Link to={`/${item.articleType}/${item._id}`}>
                     <img
                       src={item.imgUrl}
@@ -86,25 +79,19 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     />
                   </Link>
                 </td>
-
                 <td className="px-4 py-3">
                   <Link
                     to={`/${item.articleType}/${item._id}`}
                     className="hover:text-blue-800 hover:underline"
                   >
                     <div dangerouslySetInnerHTML={{ __html: item.title }} />
-
-                    {/* {item.title} */}
                   </Link>
                 </td>
-                <td className="line-clamp-3 px-4 py-3">{item.conclusion}</td>
+                <td className="px-4 py-3">{item.userName}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
                   {item.articleType}
                 </td>
-                {/* <td className="py-3 px-4">{item.category}</td> */}
-                {/* <td className="py-3 px-4 max-w-xs truncate">
-                  {item.description}
-                </td> */}
+                <td className="px-4 py-3">{item.views}</td>
                 <td className="px-4 py-3">
                   {new Date(item.createdAt).toLocaleDateString("en-IN")}
                 </td>
