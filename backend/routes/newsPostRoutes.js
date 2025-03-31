@@ -13,6 +13,7 @@ import {
   getWeather,
   getAllNewsPostsAdmin,
   getAllHashtags,
+  // incrementArticleViews,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -34,6 +35,9 @@ router.route("/category/:category").get(getNewsPostsByCategory);
 router.route("/hashtag/:hashtag").get(getNewsPostsByHashtag);
 router.route("/footertag/:footertag").get(getNewsPostsByFooterTag);
 router.route("/search").get(searchNewsPosts);
+
+// Route for incrementing views
+// router.route("/:type/:id/views").post(incrementArticleViews);
 
 // Type/ID route
 router.route("/:type/:id").get(getNewsPostById);

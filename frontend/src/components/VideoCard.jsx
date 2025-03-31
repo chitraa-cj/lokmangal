@@ -19,6 +19,7 @@ const VideoCard = ({ link }) => {
         src={link}
         title="YouTube video player"
         frameBorder="0"
+        referrerpolicy="strict-origin-when-cross-origin"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>

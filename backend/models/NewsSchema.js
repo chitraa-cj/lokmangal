@@ -15,6 +15,7 @@ const NewsSchema = mongoose.Schema(
     navbarCategories: { type: String },
     hashtags: { type: [String] },
     footerTags: { type: String },
+    views: { type: Number, default: 0 }, // Add views counter
   },
   { timestamps: true }
 );

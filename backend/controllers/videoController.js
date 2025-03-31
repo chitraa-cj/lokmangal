@@ -53,7 +53,8 @@ const createVideo = asyncHandler(async (req, res) => {
   }
 
   // Generate full embed URL
-  const url = `https://www.youtube.com/embed/${extractedId}?autoplay=1&mute=1&loop=1&playlist=${extractedId}`;
+  // const url = `https://www.youtube.com/embed/${extractedId}?controls=0&autoplay=1&mute=1&loop=1`;
+  const url = `https://www.youtube.com/embed/${extractedId}?autoplay=1&mute=1&loop=1`;
 
   const existingVideo = await Video.findOne({ type });
 

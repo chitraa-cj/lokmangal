@@ -520,11 +520,11 @@ const HomePage = () => {
       <div className="fixed bottom-8 right-3 hidden lg:block">
         <iframe
           className="h-40 w-40 rounded-lg shadow-lg"
-          // src="https://www.youtube.com/embed/CDjD5gQjXQk?autoplay=1&mute=1&loop=1&playlist=CDjD5gQjXQk"
           src={data.videos[1].url}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
       </div>

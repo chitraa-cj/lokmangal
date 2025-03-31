@@ -131,17 +131,20 @@ const getWeather = async (req, res) => {
  * @route GET /api/news/:id
  * @access Public
  */
-const getNewsPostById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+const getNewsPostById = async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    const newsPost = await News.findOne({ _id: id, articleType: type });
 
-  const newsPost = await News.findById(id);
-  if (newsPost) {
+    if (!newsPost) {
+      return res.status(404).json({ message: "News post not found" });
+    }
+
     res.json(newsPost);
-  } else {
-    res.status(404);
-    throw new Error("News post not found");
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
-});
+};
 
 /**
  * @desc Create a news post
@@ -480,6 +483,26 @@ const getAllHashtags = asyncHandler(async (req, res) => {
   }
 });
 
+const incrementArticleViews = async (req, res) => {
+  try {
+    const { type, id } = req.params;
+
+    const newsPost = await News.findOneAndUpdate(
+      { _id: id, articleType: type },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
+
+    if (!newsPost) {
+      return res.status(404).json({ message: "Article not found" });
+    }
+
+    res.status(200).json({ views: newsPost.views });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export {
   getAllNewsPosts,
   getNewsPostById,
@@ -494,6 +517,7 @@ export {
   getWeather,
   getAllNewsPostsAdmin,
   getAllHashtags,
+  incrementArticleViews,
 };
 
 // const migrateNews = async () => {
