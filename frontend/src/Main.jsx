@@ -9,8 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./assets/index.css";
 
-// import PrivateRoute from "./Utils/PrivateRoute.jsx";
-import AdminRoute from "./Utils/AdminRoute.jsx";
+import PrivateRoute from "./Utils/PrivateRoute.jsx";
+// import AdminRoute from "./Utils/AdminRoute.jsx";
 
 import App from "./App.jsx";
 
@@ -25,6 +25,7 @@ import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 import AdminHome from "./Pages/Admin/DashBoard.jsx";
 import AddNewPage from "./Pages/Admin/AddNewPage.jsx";
 import ManageVideoLinks from "./Pages/Admin/ManageVideoLinks.jsx";
+import ManageWriters from "./Pages/Admin/ManageWriters.jsx";
 
 const queryClient = new QueryClient();
 
@@ -40,11 +41,11 @@ const router = createBrowserRouter(
       <Route path="/:type/:id" element={<NewsArticlePage />} />
 
       {/*Admin Routes */}
-      <Route element={<AdminRoute />} errorElement={<ErrorPage />}>
+      <Route element={<PrivateRoute />} errorElement={<ErrorPage />}>
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/add-new" element={<AddNewPage />} />
         <Route path="/admin/video" element={<ManageVideoLinks />} />
-        <Route path="/admin/writers" element={<ManageVideoLinks />} />
+        <Route path="/admin/writers" element={<ManageWriters />} />
       </Route>
     </Route>,
   ),

@@ -19,15 +19,12 @@ router.post("/logout", protect, logoutUser);
 router.get("/verify", protect, verifyToken);
 router.get("/verify-admin", protect, isAdmin, verifyAdmin);
 
-router
-  .route("/")
-  .post(protect, isAdmin, registerUser)
-  .get(protect, isAdmin, getAllUsers);
+router.route("/").post(protect, registerUser).get(protect, getAllUsers);
 
 router
   .route("/:id")
-  .put(protect, isAdmin, updateUser)
-  .get(protect, isAdmin, getUserById)
-  .delete(protect, isAdmin, deleteUser);
+  .put(protect, updateUser)
+  .get(protect, getUserById)
+  .delete(protect, deleteUser);
 
 export default router;

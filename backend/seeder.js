@@ -19,37 +19,42 @@ const importData = async () => {
 
     // Insert users
     const createdUsers = await User.insertMany(users);
-    const adminUser = createdUsers[0]._id; // Assuming first user is an admin
+    const adminUser = createdUsers[0]; // Assuming first user is an admin
 
     console.log(colors.green("Importing News Posts"));
 
     // Generate news data for each category with articleType
     const sampleBreakingNews = generateMainNewsData(40).map((news) => ({
-      user: adminUser,
+      user: adminUser._id,
+      userName: adminUser.name,
       articleType: "breakingNews",
       ...news,
     }));
 
     const sampleLeftNews = generateMainNewsData(40).map((news) => ({
-      user: adminUser,
+      user: adminUser._id,
+      userName: adminUser.name,
       articleType: "left",
       ...news,
     }));
 
     const sampleRightNews = generateMainNewsData(40).map((news) => ({
-      user: adminUser,
+      user: adminUser._id,
+      userName: adminUser.name,
       articleType: "right",
       ...news,
     }));
 
     const sampleGridNews = generateMainNewsData(60).map((news) => ({
-      user: adminUser,
+      user: adminUser._id,
+      userName: adminUser.name,
       articleType: "grid",
       ...news,
     }));
 
     const sampleMainNews = generateMainNewsData(80).map((news) => ({
-      user: adminUser,
+      user: adminUser._id,
+      userName: adminUser.name,
       articleType: "main",
       ...news,
     }));

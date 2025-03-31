@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
@@ -8,40 +7,19 @@ import generateToken from "../utils/generateToken.js";
  * @route   POST /api/users/login
  * @access  Private
  */
-// This logout version will terminate the previous session and create a new one
 export const loginUser = asyncHandler(async (req, res) => {
-  const expirationDate = new Date("2026-01-10");
-  const currentDate = new Date();
+  const { username, password } = req.body;
+  // console.log("Login attempt:", { username });
 
-  if (currentDate > expirationDate) {
-    res
-      .status(403)
-      .json({ message: "Subscription expired. Please contact support." });
-  } else {
-    const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  // console.log("User found:", !!user);
 
-    const user = await User.findOne({ username });
+  if (user) {
+    const isMatch = await user.matchPassword(password);
+    // console.log("Password match result:", isMatch);
 
-    if (user && (await user.matchPassword(password))) {
-      // Generate new token with 1 day expiry
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "24h", // Changed from 30d to 24h
-      });
-
-      // Update user's active session
-      user.activeSession = {
-        token,
-        lastActive: new Date(),
-      };
-      await user.save();
-
-      // Set cookie with 1 day expiry
-      res.cookie("jwt", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
-      });
+    if (isMatch) {
+      generateToken(res, user._id);
 
       res.status(200).json({
         _id: user._id,
@@ -51,66 +29,16 @@ export const loginUser = asyncHandler(async (req, res) => {
         isAuthenticated: true,
       });
     } else {
+      // console.log("Password doesn't match");
       res.status(401);
       throw new Error("Invalid username or password");
     }
+  } else {
+    // console.log("User not found");
+    res.status(401);
+    throw new Error("Invalid username or password");
   }
 });
-
-// This login version won't allow the user to create a new session if there is was a session created before but wasn't logged out and also allowing the programmer to not let the user create a new session
-// const loginUser = asyncHandler(async (req, res) => {
-//   const { username, password } = req.body;
-
-//   const user = await User.findOne({ username });
-
-//   if (user && (await user.matchPassword(password))) {
-//     // Check for existing active session
-//     if (user.activeSession && user.activeSession.lastActive) {
-//       // Calculate time since last activity
-//       const timeSinceLastActive = Date.now() - user.activeSession.lastActive;
-//       const oneDayInMs = 24 * 60 * 60 * 1000;
-
-//       // If session is less than 24 hours old, reject the login
-//       if (timeSinceLastActive < oneDayInMs) {
-//         res.status(403);
-//         throw new Error(
-//           "Another session is already active. Please try again later."
-//         );
-//       }
-//     }
-
-//     // If no active session or session expired, proceed with login
-//     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "24h",
-//     });
-
-//     // Update user's active session
-//     user.activeSession = {
-//       token,
-//       lastActive: new Date(),
-//     };
-//     await user.save();
-
-//     // Set cookie
-//     res.cookie("jwt", token, {
-//       httpOnly: true,
-//       secure: false,
-//       sameSite: "strict",
-//       maxAge: 24 * 60 * 60 * 1000,
-//     });
-
-//     res.status(200).json({
-//       _id: user._id,
-//       name: user.name,
-//       username: user.username,
-//       isAdmin: user.isAdmin,
-//       isAuthenticated: true,
-//     });
-//   } else {
-//     res.status(401);
-//     throw new Error("Invalid username or password");
-//   }
-// });
 
 /**
  * @desc    Logout User / Clear Cookie
@@ -118,14 +46,6 @@ export const loginUser = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const logoutUser = asyncHandler(async (req, res) => {
-  // Clear active session in database
-  const user = await User.findById(req.user._id);
-  if (user) {
-    user.activeSession = null;
-    await user.save();
-  }
-
-  // Clear cookie
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -142,15 +62,6 @@ export const logoutUser = asyncHandler(async (req, res) => {
 export const registerUser = asyncHandler(async (req, res) => {
   const { name, username, password } = req.body;
 
-  // Count total users
-  const userCount = await User.countDocuments();
-
-  // Check if user limit reached (7 users)
-  if (userCount >= 7) {
-    res.status(400);
-    throw new Error("Maximum user limit reached (5 users)");
-  }
-
   const userExists = await User.findOne({ username });
 
   if (userExists) {
@@ -165,9 +76,6 @@ export const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    //claude.ai/chat/af787142-daa4-43ba-8e6f-9217ee4ba93c
-    // generateToken(res, user._id);
-
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -310,8 +218,6 @@ export const verifyToken = asyncHandler(async (req, res) => {
  * @access  Private / Admin
  */
 export const verifyAdmin = asyncHandler(async (req, res) => {
-  // Since we're using the protect and isAdmin middleware,
-  // we can be sure that req.user exists and is an admin
   res.status(200).json({
     isAuthenticated: true,
     user: {

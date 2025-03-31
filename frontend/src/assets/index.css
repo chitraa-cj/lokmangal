@@ -6,11 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face {
-  font-family: "Helvetica";
-  src: local("Helvetica"), local("Arial"), sans-serif;
-} */
-
 html {
   font-family: "Noto Sans Devanagari", sans-serif;
 }

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const NewsSchema = mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userName: { type: String, ref: "User", required: true },
     title: { type: String, required: true },
     conclusion: { type: String, required: true },
     imgUrl: { type: String },

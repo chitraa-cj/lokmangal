@@ -24,7 +24,8 @@ const LoginPage = () => {
       try {
         const { data } = await axios.get("/api/users/verify");
 
-        if (data.isAuthenticated) {
+        // if (data?.isAuthenticated && data?.user?.isAdmin) {
+        if (data?.isAuthenticated) {
           setIsAuthenticated(true);
           navigate("/admin"); // Redirect if authenticated
         } else {

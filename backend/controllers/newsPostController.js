@@ -163,6 +163,8 @@ const createNewsPost = asyncHandler(async (req, res) => {
     footerTags,
   } = req.body;
 
+  console.log(req.user);
+
   // Check if articleType is provided and valid
   const validTypes = ["breakingNews", "main", "left", "right", "grid"];
   if (!articleType || !validTypes.includes(articleType)) {
@@ -185,6 +187,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
     hashtags: hashtags || [],
     footerTags: footerTags || [],
     user: req.user._id,
+    usersName: req.user.name,
   });
 
   const createdNewsPost = await newsPost.save();

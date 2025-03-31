@@ -8,6 +8,9 @@ const AdminRoute = () => {
     queryKey: ["admin-verify"],
     queryFn: () => axios.get("/api/users/verify-admin").then((res) => res.data),
     retry: false,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -17,10 +20,16 @@ const AdminRoute = () => {
   const isAdmin = data?.isAuthenticated && data?.user?.isAdmin;
 
   if (isAdmin) {
-    localStorage.setItem("userName", data.user.username);
+    localStorage.setItem("userName", data?.user?.name);
   }
 
-  return isAdmin ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAdmin ? (
+    <Outlet />
+  ) : data?.isAuthenticated ? (
+    <Navigate to="/" />
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default AdminRoute;
