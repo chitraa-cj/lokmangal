@@ -4,7 +4,6 @@ import {
   createVideo,
   deleteVideo,
 } from "../controllers/videoController.js";
-// Assuming you have auth middleware
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
