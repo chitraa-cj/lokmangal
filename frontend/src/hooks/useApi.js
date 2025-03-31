@@ -123,8 +123,11 @@ export const useNewsPostsByCategory = (category) => {
 };
 
 export const useVideos = () => {
-  return useQuery("videos", async () => {
-    const { data } = await axios.get("/api/videos");
-    return data;
+  return useQuery({
+    queryKey: ["videos"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/videos");
+      return data;
+    },
   });
 };

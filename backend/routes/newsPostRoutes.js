@@ -14,6 +14,7 @@ import {
   getAllNewsPostsAdmin,
   getAllHashtags,
   // incrementArticleViews,
+  trackArticleView,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -37,7 +38,7 @@ router.route("/footertag/:footertag").get(getNewsPostsByFooterTag);
 router.route("/search").get(searchNewsPosts);
 
 // Route for incrementing views
-// router.route("/:type/:id/views").post(incrementArticleViews);
+router.route("/:id/views").post(trackArticleView);
 
 // Type/ID route
 router.route("/:type/:id").get(getNewsPostById);

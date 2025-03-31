@@ -1,5 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useNewsPostDetails } from "../hooks/useApi";
+import { useNewsPostDetails, useVideos } from "../hooks/useApi";
+import { useEffect } from "react";
 import HeroArticle from "../components/HeroArticleDetailed";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
@@ -18,17 +19,36 @@ const NewsArticlePage = () => {
     isLoading,
     error,
   } = useNewsPostDetails(type, id, articleFromState);
+
+  const { data: videos, isLoading: isLinkLoading, isError } = useVideos();
   // console.log(newsPost);
+  // console.log(videos, isLinkLoading, isError);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    let timeoutId;
 
-  if (error || !newsPost) {
-    return <Error />;
-  }
+    const trackView = async () => {
+      try {
+        const response = await fetch(`/api/news/${id}/views`, {
+          method: "POST",
+        });
+        if (!response.ok) {
+          console.error("Failed to track view:", await response.text());
+        }
+      } catch (err) {
+        console.error("View tracking error:", err.message || err);
+      }
+    };
 
-  // console.log(newsPost);
+    if (!isLoading && newsPost) {
+      timeoutId = setTimeout(trackView, 1000); // 1s delay for testing in prod 5 at least
+    }
+
+    return () => clearTimeout(timeoutId); // Cleanup on unmount
+  }, [id, isLoading, newsPost]);
+
+  if (isLoading) return <Loader />;
+  if (error || !newsPost) return <Error />;
 
   return (
     <div className="flex w-full items-start justify-evenly bg-gray-100 pb-12">
@@ -38,7 +58,8 @@ const NewsArticlePage = () => {
           <HeroArticle article={newsPost} />
 
           <div className="pt-5">
-            <VideoCard />
+            {/* Checking if there's a valid video URL */}
+            {videos?.length > 0 && <VideoCard link={videos[0]?.url} />}
           </div>
         </main>
       </div>

@@ -1,4 +1,5 @@
 import asyncHandler from "../middleware/asyncHandler.js";
+import crypto from "crypto";
 import mongoose from "mongoose";
 import News from "../models/NewsSchema.js";
 import Video from "../models/VideoModel.js";
@@ -486,23 +487,85 @@ const getAllHashtags = asyncHandler(async (req, res) => {
   }
 });
 
-const incrementArticleViews = async (req, res) => {
+// const incrementArticleViews = async (req, res) => {
+//   try {
+//     const { type, id } = req.params;
+
+//     const newsPost = await News.findOneAndUpdate(
+//       { _id: id, articleType: type },
+//       { $inc: { views: 1 } },
+//       { new: true }
+//     );
+
+//     if (!newsPost) {
+//       return res.status(404).json({ message: "Article not found" });
+//     }
+
+//     res.status(200).json({ views: newsPost.views });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// };
+
+const getClientIP = (req) => {
+  return (
+    req.headers["x-forwarded-for"]?.split(",")[0] ||
+    req.connection.remoteAddress
+  );
+};
+
+const generateHash = (data) => {
+  return crypto.createHash("sha256").update(data).digest("hex");
+};
+
+// In-memory cache (cleared on server restart)
+const viewCache = new Map(); // { "articleId:visitorHash": timestamp }
+
+const trackArticleView = async (req, res) => {
   try {
-    const { type, id } = req.params;
+    const { articleId } = req.params;
+    console.log("Tracking view for article:", articleId);
 
-    const newsPost = await News.findOneAndUpdate(
-      { _id: id, articleType: type },
-      { $inc: { views: 1 } },
-      { new: true }
-    );
+    const clientIP = getClientIP(req);
+    console.log("Client IP:", clientIP);
 
-    if (!newsPost) {
-      return res.status(404).json({ message: "Article not found" });
+    const userAgent = req.headers["user-agent"];
+    console.log("User-Agent:", userAgent);
+
+    const visitorId = generateHash(clientIP + userAgent);
+    console.log("Generated Visitor ID:", visitorId);
+
+    const timeNow = Date.now();
+    console.log("Current Timestamp:", timeNow);
+
+    const cacheKey = `${articleId}:${visitorId}`;
+    console.log("Cache Key:", cacheKey);
+
+    // Check if this user already viewed the article today
+    if (
+      viewCache.has(cacheKey) &&
+      timeNow - viewCache.get(cacheKey) < 24 * 60 * 60 * 1000
+    ) {
+      console.log("View already counted today for:", cacheKey);
+      return res
+        .status(200)
+        .json({ success: true, message: "View already counted today" });
     }
 
-    res.status(200).json({ views: newsPost.views });
+    // Update cache
+    viewCache.set(cacheKey, timeNow);
+    console.log("View cached for:", cacheKey);
+
+    // Increment view count in DB
+    const updateResult = await NewsArticle.findByIdAndUpdate(articleId, {
+      $inc: { views: 1 },
+    });
+    console.log("DB Update Result:", updateResult);
+
+    res.status(200).json({ success: true, message: "View tracked" });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Error tracking view:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -520,7 +583,8 @@ export {
   getWeather,
   getAllNewsPostsAdmin,
   getAllHashtags,
-  incrementArticleViews,
+  // incrementArticleViews,
+  trackArticleView,
 };
 
 // const migrateNews = async () => {
