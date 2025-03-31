@@ -31,38 +31,23 @@ const Sidebar = () => {
     {
       title: "Manage Video Links",
       icon: <MonitorPlay size={20} />,
-      path: "/admin/add-hashtags",
-    },
-    // {
-    //   title: "Add Footer Tags",
-    //   icon: <Hash size={20} />,
-    //   path: "/admin/add-footer-hashtags",
-    // },
-    {
-      title: "Go To News",
-      icon: <Home size={20} />,
-      path: "/",
+      path: "/admin/video",
     },
     {
-      title: "Add writer",
+      title: "Manage Writers",
       icon: <UserPlus size={20} />,
-      path: "/admin/add-writer",
-    },
-    {
-      title: "Writers",
-      icon: <Users size={20} />,
       path: "/admin/writers",
     },
+    // {
+    //   title: "Writers",
+    //   icon: <Users size={20} />,
+    //   path: "/admin/writers",
+    // },
     {
       title: "Go To News",
       icon: <Home size={20} />,
       path: "/",
     },
-    // {
-    //   title: "Profile",
-    //   icon: <User size={20} />,
-    //   path: "/admin/profile",
-    // },
   ];
 
   const logoutMutation = useMutation({

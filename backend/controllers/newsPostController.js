@@ -1,25 +1,28 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import mongoose from "mongoose";
 import News from "../models/NewsSchema.js";
+import Video from "../models/VideoModel.js";
 import axios from "axios";
 
 /**
- * @desc Get all news posts
+ * @desc Get all news posts with videos
  * @route GET /api/news
  * @access Public
  */
 const getAllNewsPosts = asyncHandler(async (req, res) => {
-  const [breakingNews, main, left, right, grid] = await Promise.all([
+  const [breakingNews, main, left, right, grid, videos] = await Promise.all([
     News.find({ articleType: "breakingNews" }).sort({ createdAt: -1 }).limit(1),
     News.find({ articleType: "main" }).sort({ createdAt: -1 }).limit(10),
     News.find({ articleType: "left" }).sort({ createdAt: -1 }).limit(4),
     News.find({ articleType: "right" }).sort({ createdAt: -1 }).limit(4),
     News.find({ articleType: "grid" }).sort({ createdAt: -1 }).limit(12),
+    Video.find(),
   ]);
 
-  res.json({ breakingNews, main, left, right, grid });
+  res.json({ breakingNews, main, left, right, grid, videos });
 });
 
+export default getAllNewsPosts;
 /**
  * @desc Get all news posts
  * @route GET /api/news

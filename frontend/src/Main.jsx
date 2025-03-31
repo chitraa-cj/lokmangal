@@ -24,6 +24,7 @@ import NewsArticlePage from "./Pages/NewsArticlePage.jsx";
 
 import AdminHome from "./Pages/Admin/DashBoard.jsx";
 import AddNewPage from "./Pages/Admin/AddNewPage.jsx";
+import ManageVideoLinks from "./Pages/Admin/ManageVideoLinks.jsx";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,8 @@ const router = createBrowserRouter(
       <Route element={<AdminRoute />} errorElement={<ErrorPage />}>
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/add-new" element={<AddNewPage />} />
+        <Route path="/admin/video" element={<ManageVideoLinks />} />
+        <Route path="/admin/writers" element={<ManageVideoLinks />} />
       </Route>
     </Route>,
   ),

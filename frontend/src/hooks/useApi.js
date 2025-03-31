@@ -121,3 +121,10 @@ export const useNewsPostsByCategory = (category) => {
     enabled: !!category,
   });
 };
+
+export const useVideos = () => {
+  return useQuery("videos", async () => {
+    const { data } = await axios.get("/api/videos");
+    return data;
+  });
+};

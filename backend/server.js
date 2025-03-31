@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import newsPostRoute from "./routes/newsPostRoutes.js";
+import videoRoutes from "./routes/videoRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 // Connect to database
@@ -23,6 +24,7 @@ app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 app.use("/api/news", newsPostRoute);
+app.use("/api/videos", videoRoutes);
 
 const __dirname = path.resolve();
 
