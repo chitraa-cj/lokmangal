@@ -21,7 +21,7 @@ import { protect, isAdmin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // General routes
-router.route("/").get(getAllNewsPosts).post(protect, isAdmin, createNewsPost);
+router.route("/").get(getAllNewsPosts).post(protect, createNewsPost);
 router.route("/weather").get(getWeather);
 router.get("/hashtags", getAllHashtags);
 router.route("/all").get(getAllNewsPostsAdmin);
@@ -29,8 +29,8 @@ router.route("/all").get(getAllNewsPostsAdmin);
 // ID-based routes (generic) - Place AFTER specific routes
 router
   .route("/:id")
-  .put(protect, isAdmin, updateNewsPost)
-  .delete(protect, isAdmin, deleteNewsPost);
+  .put(protect, updateNewsPost)
+  .delete(protect, deleteNewsPost);
 
 router.route("/category/:category").get(getNewsPostsByCategory);
 router.route("/hashtag/:hashtag").get(getNewsPostsByHashtag);
