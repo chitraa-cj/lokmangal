@@ -177,7 +177,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
     );
   }
 
-  console.log(req.user.name);
+  // console.log(req.user.name);
   // Create new news post
   const newsPost = new News({
     user: req.user._id,
@@ -525,29 +525,29 @@ const viewCache = new Map(); // { "articleId:visitorHash": timestamp }
 const trackArticleView = async (req, res) => {
   try {
     const { articleId } = req.params;
-    console.log("Tracking view for article:", articleId);
+    // console.log("Tracking view for article:", articleId);
 
     const clientIP = getClientIP(req);
-    console.log("Client IP:", clientIP);
+    // console.log("Client IP:", clientIP);
 
     const userAgent = req.headers["user-agent"];
-    console.log("User-Agent:", userAgent);
+    // console.log("User-Agent:", userAgent);
 
     const visitorId = generateHash(clientIP + userAgent);
-    console.log("Generated Visitor ID:", visitorId);
+    // console.log("Generated Visitor ID:", visitorId);
 
     const timeNow = Date.now();
-    console.log("Current Timestamp:", timeNow);
+    // console.log("Current Timestamp:", timeNow);
 
     const cacheKey = `${articleId}:${visitorId}`;
-    console.log("Cache Key:", cacheKey);
+    // console.log("Cache Key:", cacheKey);
 
     // Check if this user already viewed the article today
     if (
       viewCache.has(cacheKey) &&
       timeNow - viewCache.get(cacheKey) < 24 * 60 * 60 * 1000
     ) {
-      console.log("View already counted today for:", cacheKey);
+      // console.log("View already counted today for:", cacheKey);
       return res
         .status(200)
         .json({ success: true, message: "View already counted today" });
@@ -555,13 +555,13 @@ const trackArticleView = async (req, res) => {
 
     // Update cache
     viewCache.set(cacheKey, timeNow);
-    console.log("View cached for:", cacheKey);
+    // console.log("View cached for:", cacheKey);
 
     // Increment view count in DB
-    const updateResult = await NewsArticle.findByIdAndUpdate(articleId, {
+    const updateResult = await News.findByIdAndUpdate(articleId, {
       $inc: { views: 1 },
     });
-    console.log("DB Update Result:", updateResult);
+    // console.log("DB Update Result:", updateResult);
 
     res.status(200).json({ success: true, message: "View tracked" });
   } catch (error) {

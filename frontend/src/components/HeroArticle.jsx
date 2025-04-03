@@ -77,7 +77,7 @@ const HeroArticle = ({ article }) => {
         </span>
       </div>
       <div className="px-4">
-        <Share />
+        <Share title={article.title} />
       </div>
     </div>
   );

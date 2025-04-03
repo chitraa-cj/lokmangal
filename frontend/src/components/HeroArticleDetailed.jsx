@@ -18,7 +18,7 @@ const HeroArticle = ({ article }) => {
       {/* </div> */}
 
       {/* Share Buttons */}
-      <Share />
+      <Share title={article.title} />
 
       {/* Article Content */}
       <div className="prose mx-[34px] mt-6 max-w-none text-black">
@@ -28,13 +28,13 @@ const HeroArticle = ({ article }) => {
   );
 };
 
-const Share = ({ heading, description }) => {
+const Share = ({ title }) => {
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: heading,
-          text: description?.replace(/<[^>]*>/g, ""),
+          title: title,
+          // text: description?.replace(/<[^>]*>/g, ""),
           url: window.location.href,
         });
       } catch (error) {
@@ -53,13 +53,13 @@ const Share = ({ heading, description }) => {
   };
 
   const shareToWhatsApp = () => {
-    const text = `${heading}\n${window.location.href}`;
+    const text = `${title}\n${window.location.href}`;
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
 
   const shareToTwitter = () => {
-    const text = `${heading}\n`;
+    const text = `${title}\n`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
     window.open(url, "_blank", "width=600,height=400");
   };

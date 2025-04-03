@@ -49,7 +49,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
     return doc.body.textContent || "";
   };
 
-  console.log(news);
+  // console.log(news);
   return (
     <div className="mt-8">
       <div className="mb-4 flex items-center justify-between">

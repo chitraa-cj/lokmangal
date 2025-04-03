@@ -1,12 +1,11 @@
 import { Send } from "lucide-react";
-
-const Share = ({ heading, description }) => {
+const Share = ({ title }) => {
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: heading,
-          text: description?.replace(/<[^>]*>/g, ""),
+          title: title,
+          // text: description?.replace(/<[^>]*>/g, ""),
           url: window.location.href,
         });
       } catch (error) {
@@ -25,19 +24,19 @@ const Share = ({ heading, description }) => {
   };
 
   const shareToWhatsApp = () => {
-    const text = `${heading}\n${window.location.href}`;
+    const text = `${title}\n${window.location.href}`;
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
 
   const shareToTwitter = () => {
-    const text = `${heading}\n`;
+    const text = `${title}\n`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
     window.open(url, "_blank", "width=600,height=400");
   };
 
   const shareToTelegram = () => {
-    const text = `${heading}\n`;
+    const text = `${title}\n`;
     const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "width=600,height=400");
   };
@@ -154,7 +153,7 @@ export default Share;
 //     if (navigator.share) {
 //       try {
 //         await navigator.share({
-//           title: heading,
+//           title: title,
 //           text: description?.replace(/<[^>]*>/g, ""),
 //           url: window.location.href,
 //         });
@@ -170,13 +169,13 @@ export default Share;
 //   };
 
 //   const shareToTwitter = () => {
-//     const text = `${heading}\n`;
+//     const text = `${title}\n`;
 //     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
 //     window.open(url, "_blank", "width=600,height=400");
 //   };
 
 //   const shareToTelegram = () => {
-//     const text = `${heading}\n`;
+//     const text = `${title}\n`;
 //     const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
 //     window.open(url, "_blank", "width=600,height=400");
 //   };
