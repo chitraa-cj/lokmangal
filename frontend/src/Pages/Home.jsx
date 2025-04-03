@@ -426,6 +426,7 @@
 // };
 
 // export default HomePage;
+
 import { useNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
 import BreakingNews from "../components/BreakingNews";
@@ -464,7 +465,7 @@ const HomePage = () => {
     <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
       <BreakingNews breakingNews={breakingNews} />
 
-      <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
+      <main className="relative flex items-start justify-center lg:space-x-6">
         <div className="hidden lg:sticky lg:top-4 lg:flex lg:flex-col lg:items-end lg:gap-y-6">
           {leftPosts?.length > 0 && <LeftSideBar leftNews={leftPosts} />}
           <FollowUs />
@@ -481,13 +482,13 @@ const HomePage = () => {
             </div>
           )}
 
-          <div
-            className={`mt-4 sm:mt-8 ${gridPosts?.length === 0 ? "mt-4 sm:mt-8" : ""}`}
-          >
-            {gridPosts?.length > 0 && (
+          {gridPosts?.length > 0 && (
+            <div className="my-4 sm:my-8">
               <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-            )}
-          </div>
+            </div>
+          )}
+
+          {gridPosts?.length === 0 && <div className="mt-4 sm:mt-8"></div>}
 
           {mainPosts?.slice(1, 2).map((post) => (
             <div key={post._id}>
@@ -495,15 +496,13 @@ const HomePage = () => {
             </div>
           ))}
 
-          <div
-            className={`mt-4 sm:mt-8 ${gridPosts?.length === 0 ? "mt-4 sm:mt-8" : ""}`}
-          >
-            {gridPosts?.length > 6 && (
-              <div className="my-4 sm:my-8">
-                <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-              </div>
-            )}
-          </div>
+          {gridPosts?.length > 6 && (
+            <div className="my-4 sm:my-8">
+              <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+            </div>
+          )}
+
+          {gridPosts?.length < 6 && <div className="mt-4 sm:mt-8"></div>}
 
           <div className="space-y-4 sm:space-y-8">
             {mainPosts?.slice(2).map((post) => (

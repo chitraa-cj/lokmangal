@@ -3,7 +3,7 @@ const HeroArticle = ({ article }) => {
     <div className="min-w-3xl unselectable mb-2">
       {/* Article Header */}
       <div className="mb-3 pt-2">
-        <h1 className="mx-[34px] text-xl font-bold">
+        <h1 className="mx-3 text-xl font-bold md:mx-5 lg:mx-8">
           <div dangerouslySetInnerHTML={{ __html: article.title }} />
         </h1>
       </div>
@@ -21,7 +21,7 @@ const HeroArticle = ({ article }) => {
       <Share title={article.title} />
 
       {/* Article Content */}
-      <div className="prose mx-[34px] mt-6 max-w-none text-black">
+      <div className="prose mx-3 mt-6 max-w-none text-black md:mx-5 lg:mx-8">
         <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </div>
     </div>
