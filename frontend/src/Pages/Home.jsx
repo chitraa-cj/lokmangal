@@ -426,7 +426,6 @@
 // };
 
 // export default HomePage;
-
 import { useNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
 import BreakingNews from "../components/BreakingNews";
@@ -482,11 +481,13 @@ const HomePage = () => {
             </div>
           )}
 
-          {gridPosts?.length > 0 && (
-            <div className="my-4 sm:my-8">
+          <div
+            className={`mt-4 sm:mt-8 ${gridPosts?.length === 0 ? "mt-4 sm:mt-8" : ""}`}
+          >
+            {gridPosts?.length > 0 && (
               <ScrollableGrid gridPosts={gridPosts.slice(0, 6)} />
-            </div>
-          )}
+            )}
+          </div>
 
           {mainPosts?.slice(1, 2).map((post) => (
             <div key={post._id}>
@@ -494,11 +495,15 @@ const HomePage = () => {
             </div>
           ))}
 
-          {gridPosts?.length > 6 && (
-            <div className="my-4 sm:my-8">
-              <ScrollableGrid gridPosts={gridPosts.slice(6)} />
-            </div>
-          )}
+          <div
+            className={`mt-4 sm:mt-8 ${gridPosts?.length === 0 ? "mt-4 sm:mt-8" : ""}`}
+          >
+            {gridPosts?.length > 6 && (
+              <div className="my-4 sm:my-8">
+                <ScrollableGrid gridPosts={gridPosts.slice(6)} />
+              </div>
+            )}
+          </div>
 
           <div className="space-y-4 sm:space-y-8">
             {mainPosts?.slice(2).map((post) => (

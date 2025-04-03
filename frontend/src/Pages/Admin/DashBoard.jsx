@@ -88,7 +88,7 @@ const NewsTable = ({ news, onEdit, onDelete }) => {
                     <div dangerouslySetInnerHTML={{ __html: item.title }} />
                   </Link>
                 </td>
-                <td className="px-4 py-3">{item.userName}</td>
+                <td className="whitespace-nowrap px-4 py-3">{item.userName}</td>
                 <td className="px-4 py-3 font-semibold uppercase">
                   {item.articleType}
                 </td>

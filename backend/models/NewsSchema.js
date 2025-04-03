@@ -5,9 +5,9 @@ const NewsSchema = mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     userName: { type: String, ref: "User", required: true },
     title: { type: String, required: true },
-    conclusion: { type: String, required: true },
+    conclusion: { type: String },
     imgUrl: { type: String },
-    content: { type: String, required: true },
+    content: { type: String },
     articleType: {
       type: String,
       required: true,
@@ -16,7 +16,9 @@ const NewsSchema = mongoose.Schema(
     navbarCategories: { type: String },
     hashtags: { type: [String] },
     footerTags: { type: String },
-    views: { type: Number, default: 0 }, // Add views counter
+    views: { type: Number, default: 0 },
+    // createdAt: { type: Date, default: Date.now },
+    // updatedAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );
