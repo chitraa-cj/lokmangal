@@ -164,7 +164,7 @@ const createNewsPost = asyncHandler(async (req, res) => {
     footerTags,
   } = req.body;
 
-  console.log(req.user);
+  // console.log(req.user);
 
   // Check if articleType is provided and valid
   const validTypes = ["breakingNews", "main", "left", "right", "grid"];
@@ -177,18 +177,19 @@ const createNewsPost = asyncHandler(async (req, res) => {
     );
   }
 
+  console.log(req.user.name);
   // Create new news post
   const newsPost = new News({
+    user: req.user._id,
+    userName: req.user.name,
     articleType,
     title,
     conclusion,
     imgUrl,
     content,
-    navbarCategories: navbarCategories || [],
+    navbarCategories: navbarCategories || "",
     hashtags: hashtags || [],
-    footerTags: footerTags || [],
-    user: req.user._id,
-    usersName: req.user.name,
+    footerTags: footerTags || "",
   });
 
   const createdNewsPost = await newsPost.save();
