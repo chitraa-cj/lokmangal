@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, Search, MapPin, X } from "lucide-react";
 import { useState } from "react";
 
@@ -14,6 +14,7 @@ const fetchHashtags = async () => {
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState(""); // Added state for search
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Use TanStack Query to fetch hashtags
   const {
@@ -61,6 +62,28 @@ export default function Navbar() {
     // "#यात्रा",
   ];
 
+  // Get current path and determine active category
+  const currentPath = location.pathname;
+  const categories = [
+    "होम",
+    "देश",
+    "दुनियाँ",
+    "प्रदेशक ख़बरें",
+    "राजनीति",
+    "अपराध",
+    "खेल",
+    "हमारा शहर",
+    "मनोरंजन",
+  ];
+
+  const getActiveClass = (category) => {
+    const isHome = category === "होम" && currentPath === "/";
+    const isCategory =
+      category !== "होम" &&
+      currentPath === `/category/${encodeURIComponent(category)}`;
+    return isHome || isCategory ? "md:bg-[#e31e25]" : "";
+  };
+
   return (
     <nav className="border-b-2 border-gray-300 shadow-sm">
       <div className="flex items-center justify-center bg-white">
@@ -71,7 +94,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center bg-gray-800">
+      <div className="flex h-11 items-center justify-center bg-gray-800">
         <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute left-40 hidden lg:block">
@@ -89,39 +112,27 @@ export default function Navbar() {
                 className="ml-8 w-16 lg:hidden"
               />
 
-              {[
-                "होम",
-                "देश",
-                "दुनियाँ",
-                "प्रदेशक ख़बरें",
-                "राजनीति",
-                "अपराध",
-                "खेल",
-                "हमारा शहर",
-                "मनोरंजन",
-              ].map((item) => (
+              {categories.map((item) => (
                 <div
                   key={item}
-                  className="flex cursor-pointer items-center whitespace-nowrap p-2 px-3 text-sm font-semibold transition-all duration-200 ease-in-out hover:scale-105 hover:text-blue-300 focus:text-blue-300"
+                  className={`flex cursor-pointer items-center whitespace-nowrap p-2 pb-3 font-semibold tracking-wide transition-all duration-200 ease-in-out md:pb-2 lg:text-lg ${getActiveClass(item)}`}
                   onClick={() => handleCategoryClick(item)}
                 >
                   {item}
                 </div>
               ))}
             </div>
+
             <div className="ml-16 flex items-center justify-center md:ml-0">
               {/* Search Box */}
-              <form
-                onSubmit={handleSearch}
-                className="flex items-center py-2 pr-1"
-              >
+              <form onSubmit={handleSearch} className="flex items-center">
                 <div className="relative">
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search..."
-                    className="rounded-md bg-gray-700 px-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="rounded-md bg-gray-700 p-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="submit"
