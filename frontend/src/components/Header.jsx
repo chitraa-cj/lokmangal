@@ -81,7 +81,7 @@ export default function Navbar() {
     const isCategory =
       category !== "होम" &&
       currentPath === `/category/${encodeURIComponent(category)}`;
-    return isHome || isCategory ? "md:bg-[#e31e25]" : "";
+    return isHome || isCategory ? "lg:bg-[#e31e25]" : "";
   };
 
   return (
@@ -94,7 +94,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="flex h-11 items-center justify-center bg-gray-800">
+      <div className="flex items-center justify-center bg-gray-800 lg:h-11">
         <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute left-40 hidden lg:block">
@@ -115,7 +115,7 @@ export default function Navbar() {
               {categories.map((item) => (
                 <div
                   key={item}
-                  className={`flex cursor-pointer items-center whitespace-nowrap p-2 pb-3 font-semibold tracking-wide transition-all duration-200 ease-in-out md:pb-2 lg:text-lg ${getActiveClass(item)}`}
+                  className={`flex cursor-pointer items-center whitespace-nowrap p-2 pb-3 text-lg font-semibold tracking-wide transition-all duration-200 ease-in-out md:pb-2 ${getActiveClass(item)}`}
                   onClick={() => handleCategoryClick(item)}
                 >
                   {item}
