@@ -14,8 +14,8 @@ import {
   getWeather,
   getAllNewsPostsAdmin,
   getAllHashtags,
-  // incrementArticleViews,
   trackArticleView,
+  getTotalArticleViews,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -28,7 +28,7 @@ router.route("/weather").get(getWeather);
 router.get("/hashtags", getAllHashtags);
 router.route("/all").get(getAllNewsPostsAdmin);
 
-// ID-based routes (generic) - Place AFTER specific routes
+// ID-based routes
 router
   .route("/:id")
   .put(protect, updateNewsPost)
@@ -39,8 +39,9 @@ router.route("/hashtag/:hashtag").get(getNewsPostsByHashtag);
 router.route("/footertag/:footertag").get(getNewsPostsByFooterTag);
 router.route("/search").get(searchNewsPosts);
 
-// Route for incrementing views
+// View tracking and total views
 router.route("/:id/views").post(trackArticleView);
+router.route("/total-views").get(protect, getTotalArticleViews);
 
 // Type/ID route
 router.route("/:type/:id").get(getNewsPostById);

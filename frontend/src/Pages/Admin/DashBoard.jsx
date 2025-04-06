@@ -133,11 +133,25 @@ const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [totalSearchResults, setTotalSearchResults] = useState(null); // New state for total search results
+  const [totalViews, setTotalViews] = useState(0); // New state for total views
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const deleteNewsMutation = useDeleteNewsPostMutation();
   const { data: newsData, refetch } = useAdminNewsPosts({ page });
+
+  // Fetch total views
+  useEffect(() => {
+    const fetchTotalViews = async () => {
+      try {
+        const response = await axios.get("/api/news/total-views");
+        setTotalViews(response.data.totalViews || 0);
+      } catch (err) {
+        console.error("Error fetching total views:", err);
+      }
+    };
+    fetchTotalViews();
+  }, []);
 
   const fetchSearchResults = async (query, pageNum) => {
     if (!query.trim()) return; // Don't search if query is empty
@@ -175,9 +189,10 @@ const Dashboard = () => {
 
   const stats = {
     totalNews: newsData?.pagination?.totalItems || 0,
-    activeNews: newsData?.pagination?.totalItems || 0,
+    // activeNews: newsData?.pagination?.totalItems || 0,
     searchResults: totalSearchResults !== null ? totalSearchResults : null,
     writers: 1,
+    totalViews: totalViews, // Add totalViews to stats
   };
 
   const handleEdit = (news) => {
@@ -241,13 +256,15 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         <StatCard title="Total News" value={stats.totalNews} />
-        <StatCard title="Active News" value={stats.activeNews} />
+        {/* <StatCard title="Active News" value={stats.activeNews} /> */}
         <StatCard title="Search Results" value={stats.searchResults || 0} />
         <StatCard
           title="Writers"
           value={stats.writers}
           className="bg-blue-50"
         />
+        <StatCard title="Total Views" value={stats.totalViews} />{" "}
+        {/* New StatCard for Total Views */}
         {/* <StatCard
           title="Pending News"
           value={stats.pendingNews}

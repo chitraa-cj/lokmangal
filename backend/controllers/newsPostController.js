@@ -537,26 +537,6 @@ const getAllHashtags = asyncHandler(async (req, res) => {
   }
 });
 
-// const incrementArticleViews = async (req, res) => {
-//   try {
-//     const { type, id } = req.params;
-
-//     const newsPost = await News.findOneAndUpdate(
-//       { _id: id, articleType: type },
-//       { $inc: { views: 1 } },
-//       { new: true }
-//     );
-
-//     if (!newsPost) {
-//       return res.status(404).json({ message: "Article not found" });
-//     }
-
-//     res.status(200).json({ views: newsPost.views });
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error", error: error.message });
-//   }
-// };
-
 const getClientIP = (req) => {
   return (
     req.headers["x-forwarded-for"]?.split(",")[0] ||
@@ -564,60 +544,71 @@ const getClientIP = (req) => {
   );
 };
 
-const generateHash = (data) => {
-  return crypto.createHash("sha256").update(data).digest("hex");
-};
+// Simple rate limiting per IP
+const requestCounts = new Map(); // { ip: { count, lastReset } }
 
-// In-memory cache (cleared on server restart)
-const viewCache = new Map(); // { "articleId:visitorHash": timestamp }
+const trackArticleView = asyncHandler(async (req, res) => {
+  const { id: articleId } = req.params;
+  const clientIP = getClientIP(req);
 
-const trackArticleView = async (req, res) => {
-  try {
-    const { articleId } = req.params;
-    // console.log("Tracking view for article:", articleId);
+  // Basic rate limiting: max 50 requests per IP per hour
+  const now = Date.now();
+  const hourInMs = 60 * 60 * 1000;
+  let ipData = requestCounts.get(clientIP) || { count: 0, lastReset: now };
 
-    const clientIP = getClientIP(req);
-    // console.log("Client IP:", clientIP);
-
-    const userAgent = req.headers["user-agent"];
-    // console.log("User-Agent:", userAgent);
-
-    const visitorId = generateHash(clientIP + userAgent);
-    // console.log("Generated Visitor ID:", visitorId);
-
-    const timeNow = Date.now();
-    // console.log("Current Timestamp:", timeNow);
-
-    const cacheKey = `${articleId}:${visitorId}`;
-    // console.log("Cache Key:", cacheKey);
-
-    // Check if this user already viewed the article today
-    if (
-      viewCache.has(cacheKey) &&
-      timeNow - viewCache.get(cacheKey) < 24 * 60 * 60 * 1000
-    ) {
-      // console.log("View already counted today for:", cacheKey);
-      return res
-        .status(200)
-        .json({ success: true, message: "View already counted today" });
-    }
-
-    // Update cache
-    viewCache.set(cacheKey, timeNow);
-    // console.log("View cached for:", cacheKey);
-
-    // Increment view count in DB
-    const updateResult = await News.findByIdAndUpdate(articleId, {
-      $inc: { views: 1 },
-    });
-    // console.log("DB Update Result:", updateResult);
-
-    res.status(200).json({ success: true, message: "View tracked" });
-  } catch (error) {
-    console.error("Error tracking view:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+  if (now - ipData.lastReset > hourInMs) {
+    ipData = { count: 0, lastReset: now };
   }
-};
+
+  if (ipData.count >= 50) {
+    return res
+      .status(429)
+      .json({ success: false, message: "Too many requests" });
+  }
+
+  ipData.count += 1;
+  requestCounts.set(clientIP, ipData);
+
+  // Update article views
+  const newsPost = await News.findByIdAndUpdate(
+    articleId,
+    { $inc: { views: 1 } },
+    { new: true }
+  );
+
+  if (!newsPost) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Article not found" });
+  }
+
+  // Update totalViews in Video model (assuming one video per article for simplicity)
+  await Video.updateOne(
+    { type: "main" }, // Adjust this condition based on your logic
+    { $inc: { totalViews: 1 } },
+    { upsert: true } // Creates if doesn't exist
+  );
+
+  res.status(200).json({ success: true, message: "View tracked" });
+});
+
+const getTotalArticleViews = asyncHandler(async (req, res) => {
+  const totalViews = await Video.aggregate([
+    {
+      $group: {
+        _id: null,
+        total: { $sum: "$totalViews" },
+      },
+    },
+  ]);
+
+  const viewsCount = totalViews.length > 0 ? totalViews[0].total : 0;
+
+  res.status(200).json({
+    success: true,
+    totalViews: viewsCount,
+  });
+});
 
 export {
   getAllNewsPosts,
@@ -634,8 +625,8 @@ export {
   getWeather,
   getAllNewsPostsAdmin,
   getAllHashtags,
-  // incrementArticleViews,
   trackArticleView,
+  getTotalArticleViews,
 };
 
 // const migrateNews = async () => {

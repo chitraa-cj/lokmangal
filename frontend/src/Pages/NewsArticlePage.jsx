@@ -28,20 +28,28 @@ const NewsArticlePage = () => {
     let timeoutId;
 
     const trackView = async () => {
-      try {
-        const response = await fetch(`/api/news/${id}/views`, {
-          method: "POST",
-        });
-        if (!response.ok) {
-          console.error("Failed to track view:", await response.text());
+      const viewKey = `article_view_${id}`;
+      const today = new Date().toDateString();
+      const lastViewed = localStorage.getItem(viewKey);
+
+      if (lastViewed !== today) {
+        try {
+          const response = await fetch(`/api/news/${id}/views`, {
+            method: "POST",
+          });
+          if (response.ok) {
+            localStorage.setItem(viewKey, today);
+          } else {
+            console.error("Failed to track view:", await response.text());
+          }
+        } catch (err) {
+          console.error("View tracking error:", err.message || err);
         }
-      } catch (err) {
-        console.error("View tracking error:", err.message || err);
       }
     };
 
     if (!isLoading && newsPost) {
-      timeoutId = setTimeout(trackView, 1000); // 1s delay for testing in prod 5 at least
+      timeoutId = setTimeout(trackView, 5000); // 5 seconds delay
     }
 
     return () => clearTimeout(timeoutId); // Cleanup on unmount
