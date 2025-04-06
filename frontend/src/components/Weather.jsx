@@ -67,7 +67,7 @@ const Weather = () => {
     if (uv < 0) {
       return { text: "Invalid", color: "bg-gray-500", range: "N/A" };
     } else if (uv === 0) {
-      return { text: "Night / No UV", color: "bg-gray-700", range: "0" }; // Gray for night
+      return { text: "Night / No UV", color: "bg-gray-700", range: "0" };
     } else if (uv <= 2) {
       return { text: "Low", color: "bg-green-500", range: "0-2" };
     } else if (uv <= 5) {
@@ -81,7 +81,6 @@ const Weather = () => {
     }
   };
 
-  // Existing getAirQualityStatus function (unchanged)
   const getAirQualityStatus = (index) => {
     const statuses = {
       1: { text: "Good", color: "text-green-600" },
@@ -120,6 +119,18 @@ const Weather = () => {
   const { location: loc, current, air_quality } = weatherData;
   const airQualityStatus = getAirQualityStatus(air_quality.usEpaIndex);
 
+  // Add console logs to debug country code
+  // console.log("Weather data location:", loc);
+  // console.log("Country code:", loc.countryCode);
+  // console.log("Country name:", loc.country);
+
+  // Fallback to 'IN' if country code is incorrect or missing
+  const countryCode =
+    loc.countryCode?.toUpperCase() === "US" &&
+    loc.country.toLowerCase().includes("india")
+      ? "IN"
+      : loc.countryCode?.toUpperCase() || "IN";
+
   return (
     <div className="mx-auto mb-4 flex min-h-60 w-[300px] flex-col justify-center rounded-lg bg-white p-3 shadow-lg">
       {error && (
@@ -140,10 +151,10 @@ const Weather = () => {
             className="h-4 w-6"
             /> */}
           <ReactCountryFlag
-            countryCode={loc.countryCode}
+            countryCode={countryCode}
             svg
             style={{ width: "24px", height: "24px" }}
-            title={loc.countryCode}
+            title={loc.country}
           />
         </div>
         <p className="text-xs text-gray-500">{loc.localtime}</p>

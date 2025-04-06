@@ -427,7 +427,12 @@
 
 // export default HomePage;
 
-import { useNewsPosts } from "../hooks/useApi";
+// pages/HomePage.js
+
+// pages/HomePage.js
+
+import { useState, useEffect } from "react";
+import { useNewsPosts, usePaginatedMainNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
 import BreakingNews from "../components/BreakingNews";
 import ScrollableGrid from "../components/ScrollableGrid";
@@ -441,12 +446,33 @@ import FollowUs from "../components/FollowUs";
 
 const HomePage = () => {
   const { data, isLoading, error } = useNewsPosts();
+  const [page, setPage] = useState(1);
+  const [allMainPosts, setAllMainPosts] = useState([]);
+
+  const {
+    data: paginatedData,
+    isLoading: isPaginatedLoading,
+    error: paginatedError,
+  } = usePaginatedMainNewsPosts(page);
+
+  // Effect to initialize allMainPosts with initial data
+  useEffect(() => {
+    if (data?.main && allMainPosts.length === 0) {
+      setAllMainPosts(data.main);
+    }
+  }, [data, allMainPosts.length]);
+
+  // Effect to append paginated main posts
+  useEffect(() => {
+    if (paginatedData?.mainPosts && page > 1) {
+      setAllMainPosts((prev) => [...prev, ...paginatedData.mainPosts]);
+    }
+  }, [paginatedData, page]);
 
   if (isLoading) return <Loader />;
   if (error) return <Error />;
 
   let breakingNews,
-    mainPosts = [],
     leftPosts = [],
     rightPosts = [],
     gridPosts = [];
@@ -454,12 +480,15 @@ const HomePage = () => {
   if (data) {
     ({
       breakingNews,
-      main: mainPosts,
       left: leftPosts,
       right: rightPosts,
       grid: gridPosts,
     } = data);
   }
+
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
   return (
     <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
@@ -476,9 +505,9 @@ const HomePage = () => {
             <Weather />
           </div>
 
-          {mainPosts?.length > 0 && (
+          {allMainPosts?.length > 0 && (
             <div className="">
-              <HeroArticle id={mainPosts[0]._id} article={mainPosts[0]} />
+              <HeroArticle id={allMainPosts[0]._id} article={allMainPosts[0]} />
             </div>
           )}
 
@@ -490,7 +519,7 @@ const HomePage = () => {
 
           {gridPosts?.length === 0 && <div className="mt-4 sm:mt-8"></div>}
 
-          {mainPosts?.slice(1, 2).map((post) => (
+          {allMainPosts?.slice(1, 2).map((post) => (
             <div key={post._id}>
               <HeroArticle id={post._id} article={post} />
             </div>
@@ -505,12 +534,24 @@ const HomePage = () => {
           {gridPosts?.length < 6 && <div className="mt-4 sm:mt-8"></div>}
 
           <div className="space-y-4 sm:space-y-8">
-            {mainPosts?.slice(2).map((post) => (
+            {allMainPosts?.slice(2).map((post) => (
               <div key={post._id}>
                 <HeroArticle id={post._id} article={post} />
               </div>
             ))}
           </div>
+
+          {isPaginatedLoading && <Loader />}
+          {paginatedError && <Error />}
+          {paginatedData?.hasMore && (
+            <button
+              onClick={handleLoadMore}
+              className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              disabled={isPaginatedLoading}
+            >
+              {isPaginatedLoading ? "Loading..." : "Load More"}
+            </button>
+          )}
 
           <VideoCard link={data.videos[0].url} />
         </div>

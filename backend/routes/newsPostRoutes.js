@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllNewsPosts,
+  getPaginatedMainNewsPosts,
   getNewsPostById,
   createNewsPost,
   updateNewsPost,
@@ -22,6 +23,7 @@ const router = express.Router();
 
 // General routes
 router.route("/").get(getAllNewsPosts).post(protect, createNewsPost);
+router.route("/main/paginated").get(getPaginatedMainNewsPosts);
 router.route("/weather").get(getWeather);
 router.get("/hashtags", getAllHashtags);
 router.route("/all").get(getAllNewsPostsAdmin);

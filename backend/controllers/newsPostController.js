@@ -23,7 +23,32 @@ const getAllNewsPosts = asyncHandler(async (req, res) => {
   res.json({ breakingNews, main, left, right, grid, videos });
 });
 
-export default getAllNewsPosts;
+/**
+ * @desc Get paginated main news posts
+ * @route GET /api/news/main/paginated
+ * @access Public
+ */
+const getPaginatedMainNewsPosts = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = 20; // Number of posts per page
+  const skip = (page - 1) * limit;
+
+  const mainPosts = await News.find({ articleType: "main" })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPosts = await News.countDocuments({ articleType: "main" });
+  const hasMore = skip + mainPosts.length < totalPosts;
+
+  res.json({
+    mainPosts,
+    page,
+    hasMore,
+    totalPages: Math.ceil(totalPosts / limit),
+  });
+});
+
 /**
  * @desc Get all news posts
  * @route GET /api/news
@@ -80,16 +105,36 @@ const getWeather = async (req, res) => {
     const weatherResponse = await axios.get(weatherUrl);
     const weatherData = weatherResponse.data;
 
-    // Get country code from country name using rest countries API
+    // Optimize country code handling
     let countryCode;
-    try {
-      const countryRes = await axios.get(
-        `https://restcountries.com/v3.1/name/${weatherData.location.country}?fields=cca2`
-      );
-      countryCode = countryRes.data[0]?.cca2 || "US"; // Default to 'US' if lookup fails
-    } catch (error) {
-      console.error("Error fetching country code:", error);
-      countryCode = "US"; // Fallback
+    const countryName = weatherData.location.country.trim().toLowerCase();
+
+    // If country is India, set code to "IN" directly
+    if (countryName === "india" || countryName.includes("india")) {
+      countryCode = "IN";
+    } else {
+      // For non-India countries, use Rest Countries API
+      try {
+        const countryRes = await axios.get(
+          `https://restcountries.com/v3.1/name/${encodeURIComponent(
+            weatherData.location.country
+          )}?fields=cca2`
+        );
+        if (countryRes.data && countryRes.data.length > 0) {
+          countryCode = countryRes.data[0].cca2;
+        } else {
+          console.warn(
+            `No country code found for: ${weatherData.location.country}`
+          );
+          countryCode = "IN"; // Fallback to India for unknown countries
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching country code from Rest Countries API:",
+          error.message
+        );
+        countryCode = "IN"; // Fallback to India if API fails
+      }
     }
 
     const processedData = {
@@ -97,7 +142,7 @@ const getWeather = async (req, res) => {
         name: weatherData.location.name,
         region: weatherData.location.region,
         country: weatherData.location.country,
-        countryCode: countryCode, // Use the fetched country code
+        countryCode: countryCode,
         localtime: weatherData.location.localtime,
       },
       current: {
@@ -110,7 +155,6 @@ const getWeather = async (req, res) => {
         wind_dir: weatherData.current.wind_dir,
         feelslike_c: weatherData.current.feelslike_c,
         uv: weatherData.current.uv,
-        // uv: 5,
       },
       air_quality: {
         usEpaIndex: weatherData.current.air_quality["us-epa-index"],
@@ -119,7 +163,12 @@ const getWeather = async (req, res) => {
       },
     };
 
-    // console.log(processedData);
+    // Log for debugging (optional, can be removed in production)
+    // console.log("Processed weather data:", {
+    //   country: processedData.location.country,
+    //   countryCode: processedData.location.countryCode,
+    // });
+
     res.status(200).json(processedData);
   } catch (error) {
     console.error("Weather API Error:", error);
@@ -572,6 +621,7 @@ const trackArticleView = async (req, res) => {
 
 export {
   getAllNewsPosts,
+  getPaginatedMainNewsPosts,
   getNewsPostById,
   createNewsPost,
   updateNewsPost,

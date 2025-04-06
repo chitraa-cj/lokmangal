@@ -13,6 +13,17 @@ export const useNewsPosts = () => {
   });
 };
 
+export const usePaginatedMainNewsPosts = (page) => {
+  return useQuery({
+    queryKey: ["mainNews", page],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/news/main/paginated?page=${page}`);
+      return data;
+    },
+    keepPreviousData: true, // Keeps previous data while fetching new page
+  });
+};
+
 export const useAdminNewsPosts = ({ page = 1, limit } = {}) => {
   return useQuery({
     queryKey: ["newsPosts", page],
