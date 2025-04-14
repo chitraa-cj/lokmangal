@@ -86,20 +86,20 @@ export default function Navbar() {
 
   return (
     <nav className="border-b-2 border-gray-300 shadow-sm">
-      <div className="flex items-center justify-center bg-white">
+      {/* <div className="flex items-center justify-center bg-white">
         <div className="py-3">
           <Link to="/">
             <img src="./lokmangallogo_00.png" alt="logo" className="" />
           </Link>
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex items-center justify-center bg-gray-800 lg:h-11">
+      <div className="flex items-center justify-center bg-gray-800 md:mt-6 lg:mt-8 lg:h-11">
         <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute left-40 hidden lg:block">
               <Link to="/">
-                <img src="./logo.gif" alt="logo" className="w-28" />
+                <img src="./logo.gif" alt="logo" className="w-28 lg:w-32" />
               </Link>
             </div>
 

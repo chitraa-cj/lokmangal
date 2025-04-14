@@ -562,7 +562,7 @@ const HomePage = () => {
         </div>
       </main>
 
-      <div className="fixed bottom-8 right-3 hidden lg:block">
+      <div className="fixed bottom-10 left-8 hidden lg:block">
         <iframe
           className="h-40 w-40 rounded-lg shadow-lg"
           src={data.videos[1].url}
