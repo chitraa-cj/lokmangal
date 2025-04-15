@@ -27,9 +27,9 @@ const PrivateRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (data?.isAuthenticated && data.user?.isAdmin) {
-    return <Navigate to="/admin" replace />;
-  }
+  // if (data?.isAuthenticated && data.user?.isAdmin) {
+  //   return <Navigate to="/admin" replace />;
+  // }
 
   return <Outlet />;
 };

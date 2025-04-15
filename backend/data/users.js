@@ -5,7 +5,7 @@ const users = [
     username: "Admin",
     password: bcrypt.hashSync("qwerty", 10),
     name: "Admin",
-    isAdmin: true,
+    isAdmin: false,
   },
   {
     username: "test",
