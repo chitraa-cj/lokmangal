@@ -8,8 +8,8 @@ import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").get(getVideos).post(protect, isAdmin, createVideo);
+router.route("/").get(getVideos).post(protect, createVideo);
 
-router.route("/:type").delete(protect, isAdmin, deleteVideo);
+router.route("/:type").delete(protect, deleteVideo);
 
 export default router;
