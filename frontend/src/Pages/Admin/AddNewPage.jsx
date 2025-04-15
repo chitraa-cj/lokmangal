@@ -147,7 +147,7 @@ const AddNewPage = () => {
       [{ list: "ordered" }, { list: "bullet" }],
       [{ script: "sub" }, { script: "super" }],
       [{ indent: "-1" }, { indent: "+1" }],
-      // ["link", "image", "video"],
+      ["link", "image", "video"],
       ["clean"],
     ],
   };
