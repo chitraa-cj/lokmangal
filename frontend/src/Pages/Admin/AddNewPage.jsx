@@ -107,7 +107,7 @@ const AddNewPage = () => {
     "Madhya Pradesh News",
     "Uttar Pradesh News",
     "Rajasthan News",
-    "Haryana News",
+    "Global News",
     "Health News",
     "Fitness News",
     "Fashion News",

@@ -8,7 +8,7 @@ const Footer = () => {
         "Madhya Pradesh News",
         "Uttar Pradesh News",
         "Rajasthan News",
-        "Haryana News",
+        "Global News",
       ],
     },
     {
