@@ -553,7 +553,7 @@ const HomePage = () => {
             </button>
           )}
 
-          <VideoCard link={data.videos[0].url} />
+          <VideoCard link={data?.videos[0]?.url} />
         </div>
 
         <div className="hidden lg:sticky lg:top-4 lg:flex lg:flex-col lg:items-start">
@@ -565,7 +565,7 @@ const HomePage = () => {
       <div className="fixed bottom-10 left-8 hidden lg:block">
         <iframe
           className="h-auto w-48 rounded-lg shadow-lg"
-          src={data.videos[1].url}
+          src={data?.videos[1]?.url}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

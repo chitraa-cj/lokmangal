@@ -18,6 +18,7 @@ const importData = async () => {
     // Clear existing data
     await User.deleteMany();
     await News.deleteMany();
+    await Video.deleteMany();
 
     // Insert users
     const createdUsers = await User.insertMany(users);
@@ -93,6 +94,7 @@ const destroyData = async () => {
   try {
     await User.deleteMany();
     await News.deleteMany();
+    await Video.deleteMany();
 
     console.log("Data Destroyed!".red.inverse);
     process.exit();
