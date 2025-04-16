@@ -24,6 +24,14 @@ const NewsArticlePage = () => {
   // console.log(newsPost);
   // console.log(videos, isLinkLoading, isError);
 
+  // Scroll to top when the component mounts
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Smooth scrolling
+    });
+  }, []); // Empty dependency array to run only on mount
+
   useEffect(() => {
     let timeoutId;
 
