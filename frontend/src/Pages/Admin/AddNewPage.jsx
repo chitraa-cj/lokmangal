@@ -181,11 +181,11 @@ const AddNewPage = () => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "LOK_MANGAL");
-    data.append("cloud_name", "drp32fxif");
+    data.append("cloud_name", "dwhtm8byj");
 
     try {
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/drp32fxif/image/upload",
+        "https://api.cloudinary.com/v1_1/dwhtm8byj/image/upload",
         {
           method: "POST",
           body: data,
