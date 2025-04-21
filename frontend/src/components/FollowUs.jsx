@@ -15,7 +15,7 @@ const FollowUs = () => {
       <div className="py-2">
         <Link to="/">
           <img
-            src="./lokmangallogo_00.png"
+            src="/lokmangallogo_00.png"
             alt="Lok Mangal Logo"
             // className="mx-auto h-12 w-auto"
           />

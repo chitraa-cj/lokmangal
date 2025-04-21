@@ -99,7 +99,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between overflow-x-auto">
             <div className="absolute left-40 hidden lg:block">
               <Link to="/">
-                <img src="./logo.gif" alt="logo" className="w-28 lg:w-32" />
+                <img src="/logo.gif" alt="logo" className="w-28 lg:w-32" />
               </Link>
             </div>
 
@@ -107,9 +107,10 @@ export default function Navbar() {
 
             <div className={`flex items-center justify-center`}>
               <img
-                src="./logo.gif"
-                alt="logo"
-                className="ml-8 w-16 lg:hidden"
+                src="/logo.gif"
+                alt="Company Logo"
+                onClick={() => navigate("/")}
+                className="ml-8 w-16 cursor-pointer lg:hidden"
               />
 
               {categories.map((item) => (

@@ -130,9 +130,9 @@ const AddNewPage = () => {
     _id: existingNews?._id || undefined,
   });
 
-  const [imagePreview, setImagePreview] = useState(
-    existingNews?.imgUrl || null,
-  );
+  // const [imagePreview, setImagePreview] = useState(
+  //   existingNews?.imgUrl || null,
+  // );
   const [errors, setErrors] = useState({});
 
   const quillModules = {
@@ -159,15 +159,15 @@ const AddNewPage = () => {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result);
-      reader.readAsDataURL(file);
-      setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
-    }
-  };
+  // const handleImageChange = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => setImagePreview(reader.result);
+  //     reader.readAsDataURL(file);
+  //     setFormData((prev) => ({ ...prev, imgUrl: URL.createObjectURL(file) }));
+  //   }
+  // };
 
   const handleEditorChange = (name) => (content) => {
     setFormData((prev) => ({ ...prev, [name]: content }));
@@ -298,15 +298,38 @@ const AddNewPage = () => {
   };
 
   const [hashtagInput, setHashtagInput] = useState("");
+  // const handleHashtagKeyDown = (e) => {
+  //   if (e.key === "Enter" && hashtagInput.trim()) {
+  //     e.preventDefault();
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       hashtags: [...prev.hashtags, hashtagInput.trim()],
+  //     }));
+  //     setHashtagInput("");
+  //     if (errors.hashtags) setErrors((prev) => ({ ...prev, hashtags: "" }));
+  //   }
+  // };
+
   const handleHashtagKeyDown = (e) => {
     if (e.key === "Enter" && hashtagInput.trim()) {
       e.preventDefault();
+
+      // Trim the input and add '#' if it's not already there
+      const trimmedHashtag = hashtagInput.trim();
+      const formattedHashtag = trimmedHashtag.startsWith("#")
+        ? trimmedHashtag
+        : `#${trimmedHashtag}`;
+
       setFormData((prev) => ({
         ...prev,
-        hashtags: [...prev.hashtags, hashtagInput.trim()],
+        hashtags: [...prev.hashtags, formattedHashtag],
       }));
+
       setHashtagInput("");
-      if (errors.hashtags) setErrors((prev) => ({ ...prev, hashtags: "" }));
+
+      if (errors.hashtags) {
+        setErrors((prev) => ({ ...prev, hashtags: "" }));
+      }
     }
   };
 
@@ -479,7 +502,7 @@ const AddNewPage = () => {
               name="imgUrl"
               onChange={handleFileUpload}
               className="w-full rounded-lg border border-gray-200 px-4 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-              required
+              required={!existingNews}
             />
             {formData.imgUrl && (
               <div className="flex justify-center">
