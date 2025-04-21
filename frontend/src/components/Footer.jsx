@@ -74,7 +74,7 @@ const Footer = () => {
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-400">
-              © {currentYear}-25 Lok Mangal Limited
+              © {currentYear} Lok Mangal News & Developed by Gradmarc
             </p>
           </div>
         </div>

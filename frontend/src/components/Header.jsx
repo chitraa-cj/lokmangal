@@ -18,6 +18,7 @@ export default function Navbar() {
   const location = useLocation();
   const cityRef = useRef(null); // Ref for "हमारा शहर" element
   const navbarRef = useRef(null); // Ref for the navbar
+  const dropdownRef = useRef(null); // Ref for the dropdown
 
   // Use TanStack Query to fetch hashtags
   const {
@@ -119,6 +120,8 @@ export default function Navbar() {
       if (
         navbarRef.current &&
         !navbarRef.current.contains(event.target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
         isCityDropdownOpen
       ) {
         setIsCityDropdownOpen(false);
@@ -255,6 +258,7 @@ export default function Navbar() {
 
       {isCityDropdownOpen && (
         <div
+          ref={dropdownRef}
           className="absolute z-10 rounded-md bg-gray-700 shadow-lg"
           style={dropdownStyle}
         >
