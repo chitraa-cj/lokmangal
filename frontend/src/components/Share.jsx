@@ -5,11 +5,12 @@ const sanitizeTitle = (html) => {
   return div.textContent || div.innerText || "";
 };
 
-const Share = ({ title, articleId }) => {
+const Share = ({ title, articleId, articleType }) => {
   const sanitizedTitle = sanitizeTitle(title);
-  const articleUrl = articleId
-    ? `https://www.thelokmangal.com/main/${articleId}`
-    : window.location.href;
+  const articleUrl =
+    articleId && articleType
+      ? `https://www.thelokmangal.com/${articleType}/${articleId}`
+      : window.location.href;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -46,7 +47,11 @@ const Share = ({ title, articleId }) => {
   };
 
   return (
-    <div className="ml-[34px] flex h-12 items-center justify-start gap-x-4">
+    <div
+      className={`flex h-12 items-center justify-start gap-x-4 ${
+        !articleId && !articleType ? "mx-3 md:mx-5 lg:mx-8" : ""
+      }`}
+    >
       <div>
         <button onClick={shareToFacebook} className="flex items-center">
           <svg
@@ -67,6 +72,7 @@ const Share = ({ title, articleId }) => {
               d="M13.5 8H11V6c0-.552.448-.5 1-.5h1V3h-2a3 3 0 0 0-3 3v2H6v2.5h2V16h3v-5.5h1.5l1-2.5z"
               clipRule="evenodd"
             ></path>
+            {/* <span className="text-sm font-medium">Facebook</span> */}
           </svg>
         </button>
       </div>
@@ -115,6 +121,7 @@ const Share = ({ title, articleId }) => {
               d="M461.114,477.413a12.631,12.631,0,1,1,12.629,12.632,12.631,12.631,0,0,1-12.629-12.632m-6.829,0a19.458,19.458,0,1,0,19.458-19.458,19.457,19.457,0,0,0-19.458,19.458m35.139-20.229a4.547,4.547,0,1,0,4.549-4.545h0a4.549,4.549,0,0,0-4.547,4.545m-30.99,51.074a20.943,20.943,0,0,1-7.037-1.3,12.547,12.547,0,0,1-7.193-7.19,20.923,20.923,0,0,1-1.3-7.037c-.184-3.994-.22-5.194-.22-15.313s.04-11.316.22-15.314a21.082,21.082,0,0,1,1.3-7.037,12.54,12.54,0,0,1,7.193-7.193,20.924,20.924,0,0,1,7.037-1.3c3.994-.184,5.194-.22,15.309-.22s11.316.039,15.314.221a21.082,21.082,0,0,1,7.037,1.3,12.541,12.541,0,0,1,7.193,7.193,20.926,20.926,0,0,1,1.3,7.037c.184,4,.22,5.194.22,15.314s-.037,11.316-.22,15.314a21.023,21.023,0,0,1-1.3,7.037,12.547,12.547,0,0,1-7.193,7.19,20.925,20.925,0,0,1-7.037,1.3c-3.994.184-5.194.22-15.314.22s-11.316-.037-15.309-.22m-.314-68.509a27.786,27.786,0,0,0-9.2,1.76,19.373,19.373,0,0,0-11.083,11.083,27.794,27.794,0,0,0-1.76,9.2c-.187,4.04-.229,5.332-.229,15.623s.043,11.582.229,15.623a27.793,27.793,0,0,0,1.76,9.2,19.374,19.374,0,0,0,11.083,11.083,27.813,27.813,0,0,0,9.2,1.76c4.042.184,5.332.229,15.623.229s11.582-.043,15.623-.229a27.8,27.8,0,0,0,9.2-1.76,19.374,19.374,0,0,0,11.083-11.083,27.716,27.716,0,0,0,1.76-9.2c.184-4.043.226-5.332.226-15.623s-.043-11.582-.226-15.623a27.786,27.786,0,0,0-1.76-9.2,19.379,19.379,0,0,0-11.08-11.083,27.748,27.748,0,0,0-9.2-1.76c-4.041-.185-5.332-.229-15.621-.229s-11.583.043-15.626.229"
               transform="translate(-422.637 -426.196)"
             ></path>
+            {/* <span className="text-sm font-medium">Instagram</span> */}
           </svg>
         </button>
       </div>
@@ -133,6 +140,7 @@ const Share = ({ title, articleId }) => {
             <rect width="512" height="512" fill="#45d354" rx="15%"></rect>
             <path d="M308 273c-3-2-6-3-9 1l-12 16c-3 2-5 3-9 1-15-8-36-17-54-47-1-4 1-6 3-8l9-14c2-2 1-4 0-6l-12-29c-3-8-6-7-9-7h-8c-2 0-6 1-10 5-22 22-13 53 3 73 3 4 23 40 66 59 32 14 39 12 48 10 11-1 22-10 27-19 1-3 6-16 2-18"></path>
             <path d="M264 384c-41 0-72-22-72-22l-49 13 12-48s-20-31-20-70c0-72 59-132 132-132 68 0 126 53 126 127 0 72-58 131-129 132m-159 29l83-23a158 158 0 0 0 230-140c0-86-68-155-154-155a158 158 0 0 0-137 236"></path>
+            {/* <span className="text-sm font-medium">WhatsApp</span> */}
           </svg>
         </button>
       </div>
@@ -159,6 +167,7 @@ const Share = ({ title, articleId }) => {
                 <rect width="512" height="512" fill="#fff"></rect>
               </clipPath>
             </defs>
+            {/* <span className="text-sm font-medium">Twitter</span> */}
           </svg>
         </button>
       </div>
@@ -174,6 +183,7 @@ const Share = ({ title, articleId }) => {
           >
             <path fill="none" d="M0 0h24v24H0V0z"></path>
             <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"></path>
+            {/* <span className="text-sm font-medium text-gray-600">Share</span> */}
           </svg>
         </button>
       </div>
