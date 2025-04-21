@@ -92,10 +92,10 @@ const AddNewPage = () => {
 
   const categories = [
     "देश",
-    "दुनिया",
+    "दुनियाँ",
     "प्रदेशक ख़बरें",
     "राजनीति",
-    "अप्राध",
+    "अपराध",
     "खेल",
     "हमारा शहर Bhopal",
     "हमारा शहर Jabalpur",
@@ -348,7 +348,7 @@ const AddNewPage = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Title */}
-          <div className="h-36 rounded-lg bg-white p-4 shadow-lg">
+          <div className="h-60 rounded-lg bg-white p-4 shadow-lg">
             <label className="mb-2 block text-sm font-medium text-gray-700">
               Title <span className="text-red-500">*</span>
             </label>
@@ -356,7 +356,7 @@ const AddNewPage = () => {
               value={formData.title}
               onChange={handleEditorChange("title")}
               modules={quillModules}
-              className={`h-12 bg-white ${errors.title ? "border-red-500" : ""}`}
+              className={`h-32 bg-white ${errors.title ? "border-red-500" : ""}`}
             />
             {errors.title && (
               <p className="mt-2 text-sm text-red-500">{errors.title}</p>

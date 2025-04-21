@@ -17,6 +17,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const cityRef = useRef(null); // Ref for "हमारा शहर" element
+  const navbarRef = useRef(null); // Ref for the navbar
 
   // Use TanStack Query to fetch hashtags
   const {
@@ -112,9 +113,27 @@ export default function Navbar() {
     }
   }, [isCityDropdownOpen]);
 
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target) &&
+        isCityDropdownOpen
+      ) {
+        setIsCityDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCityDropdownOpen]);
+
   return (
     <>
-      <nav className="border-b-2 border-gray-300 shadow-sm">
+      <nav ref={navbarRef} className="border-b-2 border-gray-300 shadow-sm">
         {/* <div className="flex items-center justify-center bg-white">
           <div className="py-3">
             <Link to="/">

@@ -7,11 +7,13 @@ import Weather from "../components/Weather";
 import FollowUs from "../components/FollowUs";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import { useVideos } from "../hooks/useApi";
 
 const FilteredResultPage = () => {
   const { category, hashtag, footertag } = useParams(); // Add hashtag and footertag
   const navigate = useNavigate();
   const location = useLocation();
+  const { data, isLoading: videosLoading, error: videosError } = useVideos();
 
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
@@ -133,7 +135,7 @@ const FilteredResultPage = () => {
               </div>
             ))}
 
-          <VideoCard />
+          <VideoCard link={data[0]?.url} />
         </div>
 
         <div className="sticky top-4 hidden w-80 flex-col items-start lg:flex">
@@ -186,7 +188,7 @@ const FilteredResultPage = () => {
       <div className="fixed bottom-10 left-8 hidden lg:block">
         <iframe
           className="h-auto w-48 rounded-lg shadow-lg"
-          // src={data?.videos[1]?.url}
+          src={data[1]?.url}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

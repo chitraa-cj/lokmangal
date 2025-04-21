@@ -7,6 +7,7 @@ import Weather from "../components/Weather";
 import FollowUs from "../components/FollowUs";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import { useVideos } from "../hooks/useApi";
 
 const SearchPage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const SearchPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { data, isLoading: videosLoading, error: videosError } = useVideos();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -98,7 +101,7 @@ const SearchPage = () => {
               <HeroArticle id={post._id} article={post} />
             </div>
           ))}
-          <VideoCard />
+          <VideoCard link={data[0]?.url} />
         </div>
 
         <div className="sticky top-4 hidden w-80 flex-col items-start lg:flex">
@@ -107,7 +110,7 @@ const SearchPage = () => {
         <div className="fixed bottom-10 left-8 hidden lg:block">
           <iframe
             className="h-auto w-48 rounded-lg shadow-lg"
-            // src={data?.videos[1]?.url}
+            src={data[1]?.url}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
