@@ -81,7 +81,8 @@ const Sidebar = () => {
       {/* Logo */}
       <div className="flex items-center justify-center p-4">
         <Link to="/admin">
-          <img src="./image.png" alt="logo" className="h-20 w-20" />
+          {/* <img src="/image.png" alt="logo" className="h-20 w-20" /> */}
+          <img src="/logo.gif" alt="logo" className="h-40" />
         </Link>
       </div>
 

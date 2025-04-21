@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, Search, MapPin, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, Search, MapPin, X, ChevronDown, ChevronUp } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
 //cspell:disable
 // Fetch function for hashtags
@@ -13,8 +13,10 @@ const fetchHashtags = async () => {
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState(""); // Added state for search
+  const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // State for dropdown
   const navigate = useNavigate();
   const location = useLocation();
+  const cityRef = useRef(null); // Ref for "हमारा शहर" element
 
   // Use TanStack Query to fetch hashtags
   const {
@@ -37,6 +39,7 @@ export default function Navbar() {
     } else {
       navigate(`/category/${encodeURIComponent(category)}`);
     }
+    setIsCityDropdownOpen(false); // Close dropdown after selection
   };
 
   const handleSearch = (e) => {
@@ -76,95 +79,121 @@ export default function Navbar() {
     "मनोरंजन",
   ];
 
+  const cityOptions = [
+    "हमारा शहर Bhopal",
+    "हमारा शहर Jabalpur",
+    "हमारा शहर Indore",
+  ];
+
   const getActiveClass = (category) => {
     const isHome = category === "होम" && currentPath === "/";
     const isCategory =
       category !== "होम" &&
+      category !== "हमारा शहर" &&
       currentPath === `/category/${encodeURIComponent(category)}`;
-    return isHome || isCategory ? "lg:bg-[#e31e25]" : "";
+    const isCityCategory =
+      category === "हमारा शहर" &&
+      cityOptions.some(
+        (city) => currentPath === `/category/${encodeURIComponent(city)}`,
+      );
+    return isHome || isCategory || isCityCategory ? "lg:bg-[#e31e25]" : "";
   };
 
+  // Calculate dropdown position
+  const [dropdownStyle, setDropdownStyle] = useState({});
+  useEffect(() => {
+    if (isCityDropdownOpen && cityRef.current) {
+      const rect = cityRef.current.getBoundingClientRect();
+      setDropdownStyle({
+        top: rect.bottom + window.scrollY + "px",
+        left: rect.left + window.scrollX + "px",
+        width: rect.width + "px",
+      });
+    }
+  }, [isCityDropdownOpen]);
+
   return (
-    <nav className="border-b-2 border-gray-300 shadow-sm">
-      {/* <div className="flex items-center justify-center bg-white">
-        <div className="py-3">
-          <Link to="/">
-            <img src="./lokmangallogo_00.png" alt="logo" className="" />
-          </Link>
-        </div>
-      </div> */}
+    <>
+      <nav className="border-b-2 border-gray-300 shadow-sm">
+        {/* <div className="flex items-center justify-center bg-white">
+          <div className="py-3">
+            <Link to="/">
+              <img src="/lokmangallogo_00.png" alt="logo" className="" />
+            </Link>
+          </div>
+        </div> */}
 
-      <div className="flex items-center justify-center bg-gray-800 md:mt-6 lg:mt-8 lg:h-11">
-        <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
-          <div className="flex items-center justify-between overflow-x-auto">
-            <div className="absolute left-40 hidden lg:block">
-              <Link to="/">
-                <img src="/logo.gif" alt="logo" className="w-28 lg:w-32" />
-              </Link>
-            </div>
+        <div className="flex items-center justify-center bg-gray-800 md:mt-6 lg:mt-8 lg:h-11">
+          <div className="relative w-full px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
+            <div className="flex items-center justify-between overflow-x-auto">
+              <div className="absolute left-40 hidden lg:block">
+                <Link to="/">
+                  <img src="/logo.gif" alt="logo" className="w-28 lg:w-32" />
+                </Link>
+              </div>
 
-            <div className="block lg:w-[211px]"></div>
+              <div className="block lg:w-[211px]"></div>
 
-            <div className={`flex items-center justify-center`}>
-              <img
-                src="/logo.gif"
-                alt="Company Logo"
-                onClick={() => navigate("/")}
-                className="ml-8 w-16 cursor-pointer lg:hidden"
-              />
+              <div className={`flex items-center justify-center`}>
+                <img
+                  src="/logo.gif"
+                  alt="Company Logo"
+                  onClick={() => navigate("/")}
+                  className="ml-8 w-16 cursor-pointer lg:hidden"
+                />
 
-              {categories.map((item) => (
-                <div
-                  key={item}
-                  className={`flex cursor-pointer items-center whitespace-nowrap p-2 pb-3 text-lg font-semibold tracking-wide transition-all duration-200 ease-in-out md:pb-2 ${getActiveClass(item)}`}
-                  onClick={() => handleCategoryClick(item)}
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="ml-16 flex items-center justify-center md:ml-0">
-              {/* Search Box */}
-              <form onSubmit={handleSearch} className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="rounded-md bg-gray-700 p-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2"
+                {categories.map((item) => (
+                  <div
+                    key={item}
+                    ref={item === "हमारा शहर" ? cityRef : null}
+                    className={`flex cursor-pointer items-center whitespace-nowrap p-2 pb-3 text-lg font-semibold tracking-wide transition-all duration-200 ease-in-out md:pb-2 ${getActiveClass(item)}`}
+                    onClick={() => {
+                      if (item === "हमारा शहर") {
+                        setIsCityDropdownOpen(!isCityDropdownOpen);
+                      } else {
+                        handleCategoryClick(item);
+                      }
+                    }}
                   >
-                    <Search size={16} className="text-gray-400" />
-                  </button>
-                </div>
-              </form>
+                    {item}
+                    {item === "हमारा शहर" &&
+                      (isCityDropdownOpen ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      ))}
+                  </div>
+                ))}
+              </div>
+
+              <div className="ml-16 flex items-center justify-center md:ml-0">
+                {/* Search Box */}
+                <form onSubmit={handleSearch} className="flex items-center">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search..."
+                      className="rounded-md bg-gray-700 p-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                      <Search size={16} className="text-gray-400" />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
-        <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-medium">
-          {isLoading
-            ? // Show loading state or fallback while fetching
-              fallbackHashtags.map((topic) => (
-                <span
-                  key={topic}
-                  className="cursor-pointer text-red-600 transition-all"
-                  onClick={() =>
-                    navigate(`/hashtag/${encodeURIComponent(topic)}`)
-                  }
-                >
-                  {topic}
-                </span>
-              ))
-            : error
-              ? // Show fallback on error
+        <div className="flex items-center justify-between overflow-x-auto bg-gray-100">
+          <div className="mx-auto flex max-w-6xl items-center space-x-4 whitespace-nowrap px-4 py-2 text-sm font-medium">
+            {isLoading
+              ? // Show loading state or fallback while fetching
                 fallbackHashtags.map((topic) => (
                   <span
                     key={topic}
@@ -176,20 +205,54 @@ export default function Navbar() {
                     {topic}
                   </span>
                 ))
-              : // Show fetched hashtags
-                hashtags?.map((topic) => (
-                  <span
-                    key={topic}
-                    className="cursor-pointer text-red-600 transition-all"
-                    onClick={() =>
-                      navigate(`/hashtag/${encodeURIComponent(topic)}`)
-                    }
-                  >
-                    {topic}
-                  </span>
-                ))}
+              : error
+                ? // Show fallback on error
+                  fallbackHashtags.map((topic) => (
+                    <span
+                      key={topic}
+                      className="cursor-pointer text-red-600 transition-all"
+                      onClick={() =>
+                        navigate(`/hashtag/${encodeURIComponent(topic)}`)
+                      }
+                    >
+                      {topic}
+                    </span>
+                  ))
+                : // Show fetched hashtags
+                  hashtags?.map((topic) => (
+                    <span
+                      key={topic}
+                      className="cursor-pointer text-red-600 transition-all"
+                      onClick={() =>
+                        navigate(`/hashtag/${encodeURIComponent(topic)}`)
+                      }
+                    >
+                      {topic}
+                    </span>
+                  ))}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {isCityDropdownOpen && (
+        <div
+          className="absolute z-10 rounded-md bg-gray-700 shadow-lg"
+          style={dropdownStyle}
+        >
+          {cityOptions.map((city) => (
+            <div
+              key={city}
+              className="cursor-pointer px-4 py-2 text-sm text-white hover:bg-gray-600"
+              onClick={() => {
+                handleCategoryClick(city);
+                setIsCityDropdownOpen(false);
+              }}
+            >
+              {city}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
