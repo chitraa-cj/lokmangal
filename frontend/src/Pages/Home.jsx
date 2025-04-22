@@ -427,10 +427,6 @@
 
 // export default HomePage;
 
-// pages/HomePage.js
-
-// pages/HomePage.js
-
 import { useState, useEffect } from "react";
 import { useNewsPosts, usePaginatedMainNewsPosts } from "../hooks/useApi";
 import HeroArticle from "../components/HeroArticle";
