@@ -73,8 +73,18 @@ const Footer = () => {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-400">
-              © {currentYear} Lok Mangal News & Developed by Gradmarc
+            <p className="flex text-sm text-gray-400">
+              © {currentYear} Lok Mangal News & Developed by
+              <a
+                href="http://www.gradmarc.com"
+                target="_blank"
+                rel="noreferrer"
+                className="ml-1 text-orange-500"
+              >
+                <div class="relative cursor-pointer text-orange-500 transition-all ease-in-out before:absolute before:bottom-0 before:left-[50%] before:h-[1px] before:w-0 before:origin-center before:bg-gray-400 before:transition-[width] before:duration-700 before:ease-in-out after:absolute after:bottom-0 after:right-[50%] after:h-[1px] after:w-0 after:origin-center after:bg-gray-400 after:transition-[width] after:duration-700 after:ease-in-out hover:before:w-[50%] hover:after:w-[50%]">
+                  <span>Gradmarc Adtech LLP</span>
+                </div>
+              </a>
             </p>
           </div>
         </div>
