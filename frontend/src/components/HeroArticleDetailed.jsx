@@ -42,10 +42,7 @@ const HeroArticleDetailed = ({ article }) => {
     return div.textContent || div.innerText || "";
   };
 
-  const baseUrl = "https://www.thelokmangal.com";
-  const imageUrl = article.imgUrl.startsWith("http")
-    ? article.imgUrl
-    : `${baseUrl}${article.imgUrl}`;
+  const imageUrl = article.imgUrl;
   const description = article.conclusion || "Read more on The Lok Mangal News";
 
   return (
