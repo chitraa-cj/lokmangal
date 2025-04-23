@@ -58,7 +58,7 @@ const HeroArticleDetailed = ({ article }) => {
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content={description} />
         <meta name="twitter:title" content={sanitizeTitle(article.title)} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
@@ -73,7 +73,7 @@ const HeroArticleDetailed = ({ article }) => {
       <img
         src={article.imgUrl}
         alt={article.title}
-        className="mx-auto mb-6 h-96 w-[700px] rounded bg-gray-300 object-cover"
+        className="mx-auto mb-6 h-auto max-h-96 w-[700px] rounded bg-gray-300 object-cover"
       />
 
       <Share title={article.title} />
