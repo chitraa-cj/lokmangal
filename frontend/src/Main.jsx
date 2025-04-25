@@ -1,3 +1,4 @@
+// frontend/src/Main.jsx
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -7,7 +8,7 @@ import {
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { HelmetProvider } from "react-helmet-async"; // Import HelmetProvider
+import { HelmetProvider } from "react-helmet-async";
 import "./assets/index.css";
 
 import PrivateRoute from "./Utils/PrivateRoute.jsx";
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="/footer/:footertag" element={<FilteredResultPage />} />
       <Route path="/search" element={<SearchResultPage />} />
       <Route path="/:type/:id" element={<NewsArticlePage />} />
+      <Route path="/api/news/:type/:id" element={<NewsArticlePage />} />
 
       {/* Admin Routes */}
       <Route element={<PrivateRoute />} errorElement={<ErrorPage />}>
@@ -48,8 +50,8 @@ const router = createBrowserRouter(
         <Route path="/admin/video" element={<ManageVideoLinks />} />
         <Route path="/admin/writers" element={<ManageWriters />} />
       </Route>
-    </Route>,
-  ),
+    </Route>
+  )
 );
 
 createRoot(document.getElementById("root")).render(
@@ -58,5 +60,5 @@ createRoot(document.getElementById("root")).render(
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
-  </HelmetProvider>,
+  </HelmetProvider>
 );
