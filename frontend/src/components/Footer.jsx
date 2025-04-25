@@ -72,9 +72,12 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          <div className="text-right">
+          <div className="lg:text-right">
+            <div className="mx-auto flex items-center justify-center text-sm text-gray-400">
+              © {currentYear} Lok Mangal News
+            </div>
             <div className="flex text-sm text-gray-400">
-              © {currentYear} Lok Mangal News & Developed by
+              Developed by
               <a
                 href="http://www.gradmarc.com"
                 target="_blank"

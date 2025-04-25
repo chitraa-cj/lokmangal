@@ -25,7 +25,7 @@ const router = express.Router();
 router.route("/").get(getAllNewsPosts).post(protect, createNewsPost);
 router.route("/main/paginated").get(getPaginatedMainNewsPosts);
 router.route("/weather").get(getWeather);
-router.get("/hashtags", getAllHashtags);
+router.route("/hashtags").get(getAllHashtags);
 router.route("/all").get(getAllNewsPostsAdmin);
 
 // ID-based routes
