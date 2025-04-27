@@ -41,7 +41,6 @@ const router = createBrowserRouter(
       <Route path="/footer/:footertag" element={<FilteredResultPage />} />
       <Route path="/search" element={<SearchResultPage />} />
       <Route path="/:type/:id" element={<NewsArticlePage />} />
-      <Route path="/api/news/:type/:id" element={<NewsArticlePage />} />
 
       {/* Admin Routes */}
       <Route element={<PrivateRoute />} errorElement={<ErrorPage />}>
@@ -50,8 +49,8 @@ const router = createBrowserRouter(
         <Route path="/admin/video" element={<ManageVideoLinks />} />
         <Route path="/admin/writers" element={<ManageWriters />} />
       </Route>
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 createRoot(document.getElementById("root")).render(
@@ -60,5 +59,5 @@ createRoot(document.getElementById("root")).render(
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
-  </HelmetProvider>
+  </HelmetProvider>,
 );

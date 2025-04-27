@@ -1,4 +1,4 @@
-import Share from "../components/Share";
+// import Share from "../components/Share";
 
 // const HeroArticleDetailed = ({ article }) => {
 //   return (

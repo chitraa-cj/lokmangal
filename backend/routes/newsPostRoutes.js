@@ -44,21 +44,7 @@ router.route("/:id/views").post(trackArticleView);
 router.route("/total-views").get(protect, getTotalArticleViews);
 
 // Type/ID route
-// router.route("/:type/:id").get(getNewsPostById);
-router.get(
-  "/:type/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    console.log(`[API] Fetching article: id=${id}`);
-    const article = await News.findById(id);
-    if (article) {
-      res.json(article);
-    } else {
-      res.status(404);
-      throw new Error("Article not found");
-    }
-  })
-);
+router.route("/:type/:id").get(getNewsPostById);
 
 // User-specific route
 router.route("/user/:userId").get(protect, getNewsPostsByUser);

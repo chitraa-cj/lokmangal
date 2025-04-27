@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true, // Allow external access
+    allowedHosts: true,
     port: 3000,
     proxy: {
       "/api": {
@@ -12,12 +12,5 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
-  },
-  build: {
-    ssr: false, // Client-side build by default
-  },
-  ssr: {
-    // Ensure external dependencies are not bundled in SSR
-    noExternal: ["axios", "@tanstack/react-query"],
   },
 });
