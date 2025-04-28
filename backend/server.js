@@ -55,8 +55,8 @@ function modifyHtml(html, newsPost, requestPath) {
     sanitizeOptions
   );
 
-  console.log(sanitizedTitle);
-  console.log(sanitizedConclusion);
+  // console.log(sanitizedTitle);
+  // console.log(sanitizedConclusion);
 
   // Update title
   $("head title").text(sanitizedTitle);
