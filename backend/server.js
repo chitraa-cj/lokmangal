@@ -9,7 +9,6 @@ import newsPostRoute from "./routes/newsPostRoutes.js";
 import videoRoutes from "./routes/videoRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import fs from "fs"; // For reading/writing files
-// import cheerio from "cheerio"; // For parsing and modifying HTML
 import * as cheerio from "cheerio";
 import News from "./models/NewsSchema.js"; // Import News model to fetch article data
 
@@ -38,20 +37,21 @@ function modifyHtml(html, newsPost, requestPath) {
   const $ = cheerio.load(html);
 
   // Update title
-  $("head title").text(newsPost.title || "News Website");
+  $("head title").text(newsPost.title || "The Lok Mangal News");
 
   // Update Open Graph meta tags (for WhatsApp, Facebook, etc.)
   $('meta[property="og:title"]').attr(
     "content",
-    newsPost.title || "News Website"
+    `${newsPost.title} - The Lokmangal News` ||
+      "The Lokmangal News - Latest News Updates"
   );
   $('meta[property="og:description"]').attr(
     "content",
-    newsPost.summary || "Latest news updates"
+    newsPost.conclusion || "Get Latest news updates"
   );
   $('meta[property="og:image"]').attr(
     "content",
-    newsPost.imageUrl || "https://thelokmangal.com/default-image.jpg"
+    newsPost.imgUrl || "/image.png"
   );
   $('meta[property="og:url"]').attr(
     "content",
@@ -61,15 +61,16 @@ function modifyHtml(html, newsPost, requestPath) {
   // Update Twitter meta tags (optional, for Twitter)
   $('meta[name="twitter:title"]').attr(
     "content",
-    newsPost.title || "News Website"
+    `${newsPost.title} - The Lokmangal News` ||
+      "The Lokmangal News - Latest News Updates"
   );
   $('meta[name="twitter:description"]').attr(
     "content",
-    newsPost.summary || "Latest news updates"
+    newsPost.conclusion || "Get Latest news updates"
   );
   $('meta[name="twitter:image"]').attr(
     "content",
-    newsPost.imageUrl || "https://thelokmangal.com/default-image.jpg"
+    newsPost.imgUrl || "/image.png"
   );
 
   // Update canonical link
@@ -94,22 +95,30 @@ if (process.env.NODE_ENV === "production") {
       req.query.crawler === "true";
 
     // Log all requests for debugging
-    console.log(
-      `Request for ${req.path} | User-Agent: ${userAgent} | IsCrawler: ${isCrawler}`
-    );
+    // console.log(
+    //   `Request for ${req.path} | User-Agent: ${userAgent} | IsCrawler: ${isCrawler}`
+    // );
 
-    if (isCrawler && req.path.startsWith("/news/")) {
+    // console.log(req.path);
+    // console.log("\n");
+
+    if (isCrawler) {
       // Handle article URLs like /news/:type/:id
       const pathParts = req.path.split("/");
-      if (pathParts.length >= 4) {
-        const type = pathParts[2];
-        const id = pathParts[3];
+      // console.log("pathParts", pathParts);
+
+      if (pathParts.length >= 3) {
+        const type = pathParts[1];
+        const id = pathParts[2];
+
+        // console.log("type", type);
+        // console.log("id", id);
 
         try {
           // Fetch article data from database
           const newsPost = await News.findOne({ _id: id, articleType: type });
           if (newsPost) {
-            console.log(`Article found: ${newsPost.title}`);
+            // console.log(`Article found: ${newsPost.title}`);
 
             // Read the original index.html
             const html = fs.readFileSync(
@@ -117,21 +126,24 @@ if (process.env.NODE_ENV === "production") {
               "utf8"
             );
 
+            const websitePath = `/${type}/${id}`;
             // Modify HTML with article data
-            const modifiedHtml = modifyHtml(html, newsPost, req.path);
+            const modifiedHtml = modifyHtml(html, newsPost, websitePath);
+
+            // console.log(newsPost);
 
             // Send modified HTML to crawler
             res.send(modifiedHtml);
 
             // For checking: Save modified HTML to a temporary file (optional)
-            fs.writeFileSync(
-              path.resolve(__dirname, "backend", "modified-index.html"),
-              modifiedHtml,
-              "utf8"
-            );
-            console.log(
-              "Modified index.html saved to backend/modified-index.html"
-            );
+            // fs.writeFileSync(
+            //   path.resolve(__dirname, "backend", "modified-index.html"),
+            //   modifiedHtml,
+            //   "utf8"
+            // );
+            // console.log(
+            //   "Modified index.html saved to backend/modified-index.html"
+            // );
           } else {
             console.log(`Article not found for type: ${type}, id: ${id}`);
             // If article not found, send original index.html
