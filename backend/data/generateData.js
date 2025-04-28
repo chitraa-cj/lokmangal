@@ -34,7 +34,7 @@ const generateMainNewsData = (count) => {
 
   const navbarCategories = [
     "देश",
-    "दुनियाँ",
+    "दुनिया",
     "प्रदेशक ख़बरें",
     "राजनीति",
     "अपराध",

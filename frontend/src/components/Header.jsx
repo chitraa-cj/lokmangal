@@ -72,7 +72,7 @@ export default function Navbar() {
   const categories = [
     "होम",
     "देश",
-    "दुनियाँ",
+    "",
     "प्रदेशक ख़बरें",
     "राजनीति",
     "अपराध",
