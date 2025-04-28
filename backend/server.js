@@ -37,11 +37,26 @@ const __dirname = path.resolve();
 function modifyHtml(html, newsPost, requestPath) {
   const $ = cheerio.load(html);
 
-  // Sanitize title and conclusion
-  const sanitizedTitle = sanitizeHtml(newsPost.title || "The Lok Mangal News");
-  const sanitizedConclusion = sanitizeHtml(
-    newsPost.conclusion || "Get Latest news updates"
+  // Sanitize title and conclusion with explicit configuration
+  const sanitizeOptions = {
+    allowedTags: [], // Disallow all HTML tags
+    allowedAttributes: {}, // Disallow all attributes
+    textFilter: function (text) {
+      return text.replace(/[\n\r]+/g, " ").trim(); // Remove newlines and extra spaces
+    },
+  };
+
+  const sanitizedTitle = sanitizeHtml(
+    newsPost.title || "The Lok Mangal News",
+    sanitizeOptions
   );
+  const sanitizedConclusion = sanitizeHtml(
+    newsPost.conclusion || "Get Latest news updates",
+    sanitizeOptions
+  );
+
+  console.log(sanitizedTitle);
+  console.log(sanitizedConclusion);
 
   // Update title
   $("head title").text(sanitizedTitle);
