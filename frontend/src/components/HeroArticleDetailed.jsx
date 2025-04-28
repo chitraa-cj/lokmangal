@@ -73,7 +73,7 @@ const HeroArticleDetailed = ({ article }) => {
         className="mx-auto mb-6 h-auto max-h-96 w-[700px] rounded bg-gray-300 object-cover"
       />
 
-      <Share title={article.title} />
+      <Share />
 
       <div className="prose mx-3 mt-6 max-w-none text-black md:mx-5 lg:mx-8">
         <div dangerouslySetInnerHTML={{ __html: article.content }} />

@@ -77,11 +77,7 @@ const HeroArticle = ({ article }) => {
         </span>
       </div>
       <div className="px-4">
-        <Share
-          title={article.title}
-          articleId={article._id}
-          articleType={article.articleType}
-        />
+        <Share articleId={article._id} articleType={article.articleType} />
       </div>
     </div>
   );

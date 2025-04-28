@@ -10,6 +10,7 @@ import videoRoutes from "./routes/videoRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import fs from "fs"; // For reading/writing files
 import * as cheerio from "cheerio";
+import sanitizeHtml from "sanitize-html";
 import News from "./models/NewsSchema.js"; // Import News model to fetch article data
 
 // Connect to database
@@ -36,19 +37,21 @@ const __dirname = path.resolve();
 function modifyHtml(html, newsPost, requestPath) {
   const $ = cheerio.load(html);
 
+  // Sanitize title and conclusion
+  const sanitizedTitle = sanitizeHtml(newsPost.title || "The Lok Mangal News");
+  const sanitizedConclusion = sanitizeHtml(
+    newsPost.conclusion || "Get Latest news updates"
+  );
+
   // Update title
-  $("head title").text(newsPost.title || "The Lok Mangal News");
+  $("head title").text(sanitizedTitle);
 
   // Update Open Graph meta tags (for WhatsApp, Facebook, etc.)
   $('meta[property="og:title"]').attr(
     "content",
-    `${newsPost.title} - The Lokmangal News` ||
-      "The Lokmangal News - Latest News Updates"
+    `${sanitizedTitle} - The Lokmangal News`
   );
-  $('meta[property="og:description"]').attr(
-    "content",
-    newsPost.conclusion || "Get Latest news updates"
-  );
+  $('meta[property="og:description"]').attr("content", sanitizedConclusion);
   $('meta[property="og:image"]').attr(
     "content",
     newsPost.imgUrl || "/image.png"
@@ -61,13 +64,9 @@ function modifyHtml(html, newsPost, requestPath) {
   // Update Twitter meta tags (optional, for Twitter)
   $('meta[name="twitter:title"]').attr(
     "content",
-    `${newsPost.title} - The Lokmangal News` ||
-      "The Lokmangal News - Latest News Updates"
+    `${sanitizedTitle} - The Lokmangal News`
   );
-  $('meta[name="twitter:description"]').attr(
-    "content",
-    newsPost.conclusion || "Get Latest news updates"
-  );
+  $('meta[name="twitter:description"]').attr("content", sanitizedConclusion);
   $('meta[name="twitter:image"]').attr(
     "content",
     newsPost.imgUrl || "/image.png"
