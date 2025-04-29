@@ -1,4 +1,3 @@
-// frontend/src/Main.jsx
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -28,6 +27,9 @@ import AdminHome from "./Pages/Admin/DashBoard.jsx";
 import AddNewPage from "./Pages/Admin/AddNewPage.jsx";
 import ManageVideoLinks from "./Pages/Admin/ManageVideoLinks.jsx";
 import ManageWriters from "./Pages/Admin/ManageWriters.jsx";
+import AboutUsPage from "./Pages/AboutUs.jsx";
+import CareerPage from "./Pages/Career.jsx";
+import ContactUsPage from "./Pages/ContactUs.jsx";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,9 @@ const router = createBrowserRouter(
       <Route path="/footer/:footertag" element={<FilteredResultPage />} />
       <Route path="/search" element={<SearchResultPage />} />
       <Route path="/:type/:id" element={<NewsArticlePage />} />
+      <Route path="/about-us" element={<AboutUsPage />} />
+      <Route path="/career" element={<CareerPage />} />
+      <Route path="/contact-us" element={<ContactUsPage />} />
 
       {/* Admin Routes */}
       <Route element={<PrivateRoute />} errorElement={<ErrorPage />}>

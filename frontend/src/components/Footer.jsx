@@ -56,20 +56,23 @@ const Footer = () => {
         <div className="flex flex-col items-center justify-between lg:flex-row">
           <div>
             <div className="flex flex-wrap gap-2">
-              {["About Us", "Careers", "Contact Us"].map((link, index) => (
-                <span
-                  key={`quickLink-${index}`}
-                  className="my-2 flex items-center lg:my-0"
-                >
-                  <a
-                    href="#"
-                    className="text-sm text-gray-400 hover:text-gray-100"
+              {["About Us", "Careers", "Contact Us"].map((link, index) => {
+                const paths = ["/about-us", "/career", "/contact-us"];
+                return (
+                  <span
+                    key={`quickLink-${index}`}
+                    className="my-2 flex items-center lg:my-0"
                   >
-                    {link}
-                  </a>
-                  {index < 2 && <span className="mx-1 text-gray-300">|</span>}
-                </span>
-              ))}
+                    <Link
+                      to={paths[index]}
+                      className="text-sm text-gray-400 hover:text-gray-100"
+                    >
+                      {link}
+                    </Link>
+                    {index < 2 && <span className="mx-1 text-gray-300">|</span>}
+                  </span>
+                );
+              })}
             </div>
           </div>
           <div className="lg:text-right">
