@@ -166,7 +166,7 @@ const ContactUs = () => {
               Mumbai, Maharashtra
             </p>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.8151376913875!2d79.91087937477478!3d23.176946210550692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981b1cc1904c211%3A0x115334dc8f180683!2sThe%20LokMangal%20News!5e0!3m2!1sen!2sin!4v1746006558281!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4628.151517382092!2d72.82865197592984!3d19.13971284996787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b63ce0d2ed63%3A0x65d2d93ef25b54d!2sCluster_mumbai%20Suburban_692%20Royal%20Plaza%2C%20New%20Link%20Rd%2C%20Phase%20D%2C%20Shastri%20Nagar%2C%20Andheri%20West%2C%20Mumbai%2C%20Maharashtra%20400053!5e1!3m2!1sen!2sin!4v1746011017864!5m2!1sen!2sin"
               width="100%"
               height="450"
               allowfullscreen=""
