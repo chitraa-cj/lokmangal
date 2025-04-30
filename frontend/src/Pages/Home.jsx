@@ -558,9 +558,9 @@ const HomePage = () => {
         </div>
       </main>
 
-      <div className="fixed bottom-10 left-8 hidden lg:block">
+      <div className="fixed bottom-20 left-8 hidden lg:block">
         <iframe
-          className="h-auto w-48 rounded-lg shadow-lg"
+          className="h-auto w-56 rounded-lg shadow-lg"
           src={data?.videos[1]?.url}
           title="YouTube video player"
           frameBorder="0"

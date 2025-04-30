@@ -1,15 +1,10 @@
+import { Youtube, Newspaper, Users, Video } from "lucide-react";
+
 const AboutUs = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="absolute inset-0">
-          <img
-            src="https://picsum.photos/1920/1080?random=1"
-            alt="Newsroom"
-            className="h-full w-full object-cover opacity-30"
-          />
-        </div>
+      <section className="relative bg-gradient-to-r from-red-600 to-rose-700 text-white">
         <div className="relative mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             About Lokmangal News
@@ -40,18 +35,15 @@ const AboutUs = () => {
               being a trusted voice for the people.
             </p>
           </div>
-          <div>
-            <img
-              src="https://picsum.photos/600/400?random=2"
-              alt="Team at work"
-              className="w-full rounded-lg object-cover shadow-lg"
-            />
+          <div className="flex items-center justify-center">
+            <Users className="h-24 w-24 text-red-600" />
           </div>
         </div>
       </section>
 
       {/* Coverage Section */}
-      <section className="bg-gray-100 py-16">
+      {/* Uncomment and modify if needed */}
+      {/* <section className="bg-gray-100 py-16">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900">What We Cover</h2>
           <p className="mx-auto mt-4 max-w-3xl text-gray-600">
@@ -62,36 +54,31 @@ const AboutUs = () => {
             to them.
           </p>
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {["Politics", "Entertainment", "Sports", "Business"].map(
-              (category) => (
-                <div
-                  key={category}
-                  className="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-xl"
-                >
-                  <img
-                    src={`https://picsum.photos/300/200?random=${category.charCodeAt(0)}`}
-                    alt={category}
-                    className="mb-4 h-40 w-full rounded-md object-cover"
-                  />
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {category}
-                  </h3>
-                </div>
-              ),
-            )}
+            {[
+              { category: "Politics", icon: <Newspaper className="h-12 w-12 text-red-600" /> },
+              { category: "Entertainment", icon: <Video className="h-12 w-12 text-red-600" /> },
+              { category: "Sports", icon: <Video className="h-12 w-12 text-red-600" /> },
+              { category: "Business", icon: <Newspaper className="h-12 w-12 text-red-600" /> },
+            ].map(({ category, icon }) => (
+              <div
+                key={category}
+                className="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-xl"
+              >
+                <div className="mb-4 flex justify-center">{icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {category}
+                </h3>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Multimedia Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-          <div>
-            <img
-              src="https://picsum.photos/600/400?random=3"
-              alt="YouTube Channel"
-              className="w-full rounded-lg object-cover shadow-lg"
-            />
+          <div className="flex items-center justify-center">
+            <Youtube className="h-24 w-24 text-red-600" />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-gray-900">
@@ -104,10 +91,10 @@ const AboutUs = () => {
               stays informed through engaging multimedia content.
             </p>
             <a
-              href="https://youtube.com"
+              href="https://www.youtube.com/@TheLokMangalNews"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-block rounded-md bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
+              className="mt-6 inline-block rounded-md bg-red-600 px-6 py-3 text-white transition-colors hover:bg-red-700"
             >
               Visit Our YouTube Channel
             </a>
@@ -116,7 +103,7 @@ const AboutUs = () => {
       </section>
 
       {/* Footer Call to Action */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 py-16 text-center text-white">
+      <section className="bg-gradient-to-r from-red-600 to-rose-700 py-16 text-center text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Join Our Journey</h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg">
@@ -125,10 +112,11 @@ const AboutUs = () => {
             transparency.
           </p>
           <a
-            href="/news"
-            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-gray-100"
+            href="https://chat.whatsapp.com/LKUIQmrovb7HOcXIMipENc"
+            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-red-600 transition-colors hover:bg-gray-100"
+            target="_blank"
           >
-            Explore News
+            Explore Our Community
           </a>
         </div>
       </section>

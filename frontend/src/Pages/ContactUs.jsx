@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MapPin, Send } from "lucide-react";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -109,20 +111,13 @@ const ContactUs = () => {
   const getInputStatus = (field) => {
     return errors[field]
       ? "border-red-500 focus:ring-red-500"
-      : "border-gray-300 focus:ring-blue-500";
+      : "border-gray-300 focus:ring-red-500";
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-700 to-indigo-600 text-white">
-        <div className="absolute inset-0">
-          <img
-            src="https://picsum.photos/1920/1080?random=7"
-            alt="Contact Background"
-            className="h-full w-full object-cover opacity-30"
-          />
-        </div>
+      <section className="relative bg-gradient-to-r from-red-600 to-rose-700 text-white">
         <div className="relative mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             Contact Lokmangal News
@@ -141,48 +136,43 @@ const ContactUs = () => {
         <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
           {/* Headquarters */}
           <div className="rounded-lg bg-white p-6 shadow-md">
-            <h3 className="text-2xl font-semibold text-gray-900">
+            <h3 className="flex items-center text-2xl font-semibold text-gray-900">
+              <MapPin className="mr-2 h-6 w-6 text-red-600" />
               Headquarters
             </h3>
-            <p className="mt-4 h-40 leading-relaxed text-gray-600">
-              1 58, Vijay Nagar,
-              <br />
-              Shatabdipuram Phase 1,
-              <br />
-              Jabalpur, New Adaresh Colony,
-              <br />
-              Madhya Pradesh 482002
+            <p className="my-4 max-w-72 leading-relaxed text-gray-600">
+              1 58, Vijay Nagar, Shatabdipuram Phase 1, Jabalpur, New Adaresh
+              Colony, Madhya Pradesh 482002
             </p>
-            <img
-              src="https://picsum.photos/600/400?random=8"
-              alt="Headquarters"
-              className="mt-3 w-full rounded-lg object-cover shadow-lg"
-            />
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1125.8948021854605!2d79.91331059944437!3d23.17697881060062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981b1cc1904c211%3A0x115334dc8f180683!2sThe%20LokMangal%20News!5e1!3m2!1sen!2sin!4v1746006160591!5m2!1sen!2sin"
+              width="100%"
+              height="450"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
 
           {/* Corporate Office */}
           <div className="rounded-lg bg-white p-6 shadow-md">
-            <h3 className="text-2xl font-semibold text-gray-900">
+            <h3 className="flex items-center text-2xl font-semibold text-gray-900">
+              <MapPin className="mr-2 h-6 w-6 text-red-600" />
               Corporate Office
             </h3>
-            <p className="mt-4 h-40 leading-relaxed text-gray-600">
-              Vedant Kumar
-              <br />
-              PR & Entertainment Head
-              <br />
-              301b 3rd Floor, Royal Plaza,
-              <br />
-              Above TAP Restobar, Link Road,
-              <br />
-              Near Infiniti Mall, Andheri West,
-              <br />
+            <p className="my-4 max-w-[450px] leading-relaxed text-gray-600">
+              Vedant Kumar PR & Entertainment Head 301b 3rd Floor, Royal Plaza,
+              Above TAP Restobar, Link Road, Near Infiniti Mall, Andheri West,
               Mumbai, Maharashtra
             </p>
-            <img
-              src="https://picsum.photos/600/400?random=9"
-              alt="Corporate Office"
-              className="mt-3 w-full rounded-lg object-cover shadow-lg"
-            />
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.8151376913875!2d79.91087937477478!3d23.176946210550692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981b1cc1904c211%3A0x115334dc8f180683!2sThe%20LokMangal%20News!5e0!3m2!1sen!2sin!4v1746006558281!5m2!1sen!2sin"
+              width="100%"
+              height="450"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>
@@ -289,12 +279,13 @@ const ContactUs = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full rounded bg-blue-600 px-4 py-2 text-white ${
+              className={`flex w-full items-center justify-center rounded bg-red-600 px-4 py-2 text-white ${
                 isSubmitting
                   ? "cursor-not-allowed opacity-50"
-                  : "hover:bg-blue-700"
+                  : "hover:bg-red-700"
               }`}
             >
+              <Send className="mr-2 h-5 w-5" />
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </form>
@@ -302,19 +293,19 @@ const ContactUs = () => {
       </section>
 
       {/* Footer Call to Action */}
-      <section className="bg-gradient-to-r from-blue-700 to-indigo-600 py-16 text-center text-white">
+      <section className="bg-gradient-to-r from-red-600 to-rose-700 py-16 text-center text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Stay Connected</h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg">
             Follow Lokmangal News for the latest updates and join our mission to
             deliver truthful journalism across India.
           </p>
-          <a
-            href="/news"
-            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-blue-700 transition-colors hover:bg-gray-100"
+          <Link
+            to="/"
+            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-red-600 transition-colors hover:bg-gray-100"
           >
             Explore News
-          </a>
+          </Link>
         </div>
       </section>
     </div>

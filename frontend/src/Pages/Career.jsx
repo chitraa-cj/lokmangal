@@ -1,15 +1,10 @@
+import { Mail, Briefcase, Video, Edit } from "lucide-react";
+
 const Careers = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-indigo-600 to-blue-700 text-white">
-        <div className="absolute inset-0">
-          <img
-            src="https://picsum.photos/1920/1080?random=4"
-            alt="Newsroom"
-            className="h-full w-full object-cover opacity-30"
-          />
-        </div>
+      <section className="relative bg-gradient-to-r from-red-600 to-rose-700 text-white">
         <div className="relative mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             Careers at Lokmangal News
@@ -41,12 +36,8 @@ const Careers = () => {
               news.
             </p>
           </div>
-          <div>
-            <img
-              src="https://picsum.photos/600/400?random=5"
-              alt="Team Collaboration"
-              className="w-full rounded-lg object-cover shadow-lg"
-            />
+          <div className="flex items-center justify-center">
+            <Briefcase className="h-24 w-24 text-red-600" />
           </div>
         </div>
       </section>
@@ -66,19 +57,24 @@ const Careers = () => {
           </p>
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              "Ground Reporting",
-              "Digital Content Creation",
-              "Video Production",
-            ].map((role) => (
+              {
+                role: "Ground Reporting",
+                icon: <Briefcase className="h-12 w-12 text-red-600" />,
+              },
+              {
+                role: "Digital Content Creation",
+                icon: <Edit className="h-12 w-12 text-red-600" />,
+              },
+              {
+                role: "Video Production",
+                icon: <Video className="h-12 w-12 text-red-600" />,
+              },
+            ].map(({ role, icon }) => (
               <div
                 key={role}
                 className="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-xl"
               >
-                <img
-                  src={`https://picsum.photos/300/200?random=${role.charCodeAt(0)}`}
-                  alt={role}
-                  className="mb-4 h-40 w-full rounded-md object-cover"
-                />
+                <div className="mb-4 flex justify-center">{icon}</div>
                 <h3 className="text-xl font-semibold text-gray-900">{role}</h3>
               </div>
             ))}
@@ -99,23 +95,17 @@ const Careers = () => {
             To join our team, send your resume to:
           </p>
           <a
-            href="mailto:careers@lokmangalnews.com"
-            className="mt-4 inline-block text-xl text-blue-600 transition-colors hover:text-blue-800"
+            href="mailto:careers@thelokmangal.com"
+            className="mt-4 inline-block text-xl text-red-600 transition-colors hover:text-red-800"
           >
-            📧 careers@lokmangalnews.com
+            <Mail className="mr-2 inline-block h-6 w-6" />
+            careers@thelokmangal.com
           </a>
-          <div className="mt-8">
-            <img
-              src="https://picsum.photos/600/400?random=6"
-              alt="Work Environment"
-              className="mx-auto w-full max-w-2xl rounded-lg object-cover shadow-lg"
-            />
-          </div>
         </div>
       </section>
 
       {/* Footer Call to Action */}
-      <section className="bg-gradient-to-r from-indigo-600 to-blue-700 py-16 text-center text-white">
+      <section className="bg-gradient-to-r from-red-600 to-rose-700 py-16 text-center text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Be Part of Our Mission</h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg">
@@ -123,8 +113,8 @@ const Careers = () => {
             journalism that reaches millions across India.
           </p>
           <a
-            href="mailto:careers@lokmangalnews.com"
-            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-indigo-600 transition-colors hover:bg-gray-100"
+            href="mailto:careers@thelokmangal.com"
+            className="mt-8 inline-block rounded-md bg-white px-8 py-3 font-semibold text-red-600 transition-colors hover:bg-gray-100"
           >
             Apply Now
           </a>
