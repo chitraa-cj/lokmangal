@@ -20,7 +20,7 @@ const AboutUs = () => {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Our Story</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Know Us</h2>
             <p className="mt-4 leading-relaxed text-gray-600">
               Lokmangal News is a rising digital news platform based in
               Jabalpur, Madhya Pradesh, with a branch office in Mumbai,
