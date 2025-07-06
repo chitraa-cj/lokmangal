@@ -491,37 +491,27 @@ const searchNewsPosts = asyncHandler(async (req, res) => {
 
 const getAllHashtags = asyncHandler(async (req, res) => {
   try {
-    // Use aggregation to get unique hashtags
-    const hashtags = await News.aggregate([
-      // Unwind the hashtags array to process each hashtag individually
-      { $unwind: "$hashtags" },
-      // Group by hashtag to remove duplicates and sort them
-      {
-        $group: {
-          _id: "$hashtags",
-        },
-      },
-      // Project to reshape the output
-      {
-        $project: {
-          hashtag: "$_id",
-          _id: 0,
-        },
-      },
-      // Sort alphabetically
-      { $sort: { hashtag: 1 } },
-      // Limit the number of hashtags (optional, adjust as needed)
-      { $limit: 6 },
-    ]);
+    // Get latest News entries (adjust as needed)
+    const newsItems = await News.find({}, { hashtags: 1 })
+      .sort({ createdAt: -1 })
+      .limit(15);
 
-    // Map the results to add # prefix if not already present
-    const formattedHashtags = hashtags.map((item) => {
-      const hashtag = item.hashtag;
-      return hashtag.startsWith("#") ? hashtag : `#${hashtag}`;
-    });
+    const seen = new Set();
+    const uniqueHashtags = [];
 
-    // Remove any duplicates that might have slipped through (just in case)
-    const uniqueHashtags = [...new Set(formattedHashtags)];
+    // Extract hashtags while preserving order
+    for (const news of newsItems) {
+      for (let tag of news.hashtags || []) {
+        // Ensure hashtag starts with '#'
+        tag = tag.startsWith("#") ? tag : `#${tag}`;
+        if (!seen.has(tag)) {
+          seen.add(tag);
+          uniqueHashtags.push(tag);
+          if (uniqueHashtags.length === 6) break;
+        }
+      }
+      if (uniqueHashtags.length === 6) break;
+    }
 
     res.json({
       success: true,

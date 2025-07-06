@@ -18,15 +18,19 @@ import {
   getTotalArticleViews,
 } from "../controllers/newsPostController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
+import { rateLimiter5by5 } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
 
 // General routes
-router.route("/").get(getAllNewsPosts).post(protect, createNewsPost);
+router
+  .route("/")
+  .get(getAllNewsPosts)
+  .post(protect, rateLimiter5by5, createNewsPost);
 router.route("/main/paginated").get(getPaginatedMainNewsPosts);
-router.route("/weather").get(getWeather);
+router.route("/weather").get(rateLimiter5by5, getWeather);
 router.route("/hashtags").get(getAllHashtags);
-router.route("/all").get(getAllNewsPostsAdmin);
+router.route("/all").get(protect, getAllNewsPostsAdmin);
 
 // ID-based routes
 router

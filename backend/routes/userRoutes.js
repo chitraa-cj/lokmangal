@@ -11,10 +11,11 @@ import {
   verifyAdmin,
 } from "../controllers/userController.js";
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
+import { rateLimiter5by5 } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
 
-router.post("/login", loginUser);
+router.post("/login", rateLimiter5by5, loginUser);
 router.post("/logout", protect, logoutUser);
 router.get("/verify", protect, verifyToken);
 router.get("/verify-admin", protect, isAdmin, verifyAdmin);
