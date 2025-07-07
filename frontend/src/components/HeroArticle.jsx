@@ -19,17 +19,19 @@ const HeroArticle = ({ article }) => {
         <div dangerouslySetInnerHTML={{ __html: article.title }} />
       </h1>
 
-      <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
-        {article.hashtags.map((tag, index) => (
-          <span
-            key={index}
-            className="mr-2 cursor-pointer sm:mr-3"
-            onClick={() => navigate(`/hashtag/${encodeURIComponent(tag)}`)}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      {article.hashtags && (
+        <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
+          {article.hashtags.map((tag, index) => (
+            <span
+              key={index}
+              className="mr-2 cursor-pointer sm:mr-3"
+              onClick={() => navigate(`/hashtag/${encodeURIComponent(tag)}`)}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       <>
         <img
