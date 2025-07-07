@@ -25,7 +25,7 @@ const GridItem = ({ article }) => {
           </h3>
         </div>
      </div> */}
-      <div className="media-element">
+      <div className="media-element min-h-[225px]">
         <img
           src={article.imgUrl}
           alt={article.title}
