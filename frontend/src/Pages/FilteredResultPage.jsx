@@ -121,13 +121,13 @@ const FilteredResultPage = () => {
   }
 
   return (
-    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-4 pb-8 pt-2 sm:pb-12 sm:pt-4">
-      <main className="relative flex items-start justify-center md:space-x-4 lg:space-x-6">
+    <div className="flex w-full flex-col items-center overflow-x-hidden bg-gray-100 px-3 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
+      <main className="relative flex w-full max-w-3xl items-start justify-center md:space-x-4 lg:space-x-6">
         <div className="sticky top-4 hidden h-fit w-[300px] flex-col items-end justify-end gap-y-6 lg:flex">
           <FollowUs />
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-8">
+        <div className="flex w-full flex-col items-center justify-center space-y-4 sm:space-y-8">
           {posts.length > 0 &&
             posts.map((post) => (
               <div key={post._id}>

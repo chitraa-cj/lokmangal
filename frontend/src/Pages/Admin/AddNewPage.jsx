@@ -97,9 +97,10 @@ const AddNewPage = () => {
     "राजनीति",
     "अपराध",
     "खेल",
-    "हमारा शहर Bhopal",
-    "हमारा शहर Jabalpur",
-    "हमारा शहर Indore",
+    "Bhopal",
+    "Jabalpur",
+    "Indore",
+    "Maharashtra",
     "मनोरंजन",
   ];
 

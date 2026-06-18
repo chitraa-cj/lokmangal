@@ -487,22 +487,24 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex min-w-full flex-col items-center justify-center bg-gray-100 px-2 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
-      <BreakingNews breakingNews={breakingNews} />
+    <div className="flex w-full flex-col items-center overflow-x-hidden bg-gray-100 px-3 pb-8 pt-2 sm:px-4 sm:pb-12 sm:pt-4">
+      <div className="w-full max-w-3xl">
+        <BreakingNews breakingNews={breakingNews} />
+      </div>
 
-      <main className="relative flex items-start justify-center lg:space-x-6">
+      <main className="relative flex w-full max-w-3xl items-start justify-center lg:space-x-6">
         <div className="hidden lg:sticky lg:top-4 lg:flex lg:flex-col lg:items-end lg:gap-y-6">
           {leftPosts?.length > 0 && <LeftSideBar leftNews={leftPosts} />}
           <FollowUs />
         </div>
 
-        <div className="flex flex-col items-center justify-center">
-          <div className="block md:hidden">
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="block w-full md:hidden">
             <Weather />
           </div>
 
           {allMainPosts?.length > 0 && (
-            <div className="">
+            <div className="w-full">
               <HeroArticle id={allMainPosts[0]._id} article={allMainPosts[0]} />
             </div>
           )}

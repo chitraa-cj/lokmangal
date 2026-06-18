@@ -132,7 +132,7 @@ const Weather = () => {
       : loc.countryCode?.toUpperCase() || "IN";
 
   return (
-    <div className="mx-auto mb-4 flex min-h-60 w-[300px] flex-col justify-center rounded-lg bg-white p-3 shadow-lg">
+    <div className="mx-auto mb-4 flex min-h-60 w-full max-w-[300px] flex-col justify-center rounded-lg bg-white p-3 shadow-lg">
       {error && (
         <div className="mb-2 rounded-md bg-yellow-50 p-2">
           <p className="text-xs text-yellow-700">{error}</p>

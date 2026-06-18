@@ -89,6 +89,8 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useNewsPostDetails, useVideos } from "../hooks/useApi";
 import { useEffect } from "react";
+import { useNavbarLanguage } from "../context/NavbarLanguageContext";
+import { isHindiArticle } from "../utils/detectLanguage";
 import HeroArticle from "../components/HeroArticleDetailed";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";
@@ -98,6 +100,7 @@ import Error from "../components/Error";
 const NewsArticlePage = () => {
   const { type, id } = useParams();
   const location = useLocation();
+  const { setLanguage: setNavbarLanguage } = useNavbarLanguage();
 
   // Get the article from the location state if available
   const articleFromState = location.state?.article;
@@ -111,6 +114,15 @@ const NewsArticlePage = () => {
   const { data: videos, isLoading: isLinkLoading, isError } = useVideos();
   // console.log(newsPost);
   // console.log(videos, isLinkLoading, isError);
+
+  useEffect(() => {
+    const article = newsPost || articleFromState;
+    if (article) {
+      setNavbarLanguage(isHindiArticle(article) ? "hi" : "en");
+    }
+
+    return () => setNavbarLanguage("en");
+  }, [newsPost, articleFromState, setNavbarLanguage]);
 
   useEffect(() => {
     let timeoutId;
@@ -147,9 +159,8 @@ const NewsArticlePage = () => {
   if (error || !newsPost) return <Error />;
 
   return (
-    <div className="flex w-full items-start justify-evenly bg-gray-100 pb-12">
-      <div className="max-w-3xl">
-        {/* Main Content */}
+    <div className="flex w-full justify-center overflow-x-hidden bg-gray-100 px-3 pb-12 sm:px-4">
+      <div className="w-full max-w-3xl">
         <main>
           <HeroArticle article={newsPost} />
 

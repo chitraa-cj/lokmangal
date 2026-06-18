@@ -9,18 +9,21 @@ const HeroArticle = ({ article }) => {
   };
 
   return (
-    <div className="mx-auto max-w-[434px] rounded-lg bg-white pt-2 shadow-lg sm:pt-4">
+    <div className="mx-auto w-full max-w-[434px] overflow-hidden rounded-lg bg-white pt-2 shadow-lg sm:pt-4">
       <h1
-        className="mb-2 min-w-full cursor-pointer px-3 text-base font-bold text-black sm:mb-3 sm:px-3 sm:text-lg md:px-4 md:text-xl"
+        className="mb-2 w-full cursor-pointer break-words px-4 text-base font-bold text-black sm:mb-3 sm:text-lg md:px-4 md:text-xl"
         onClick={() => {
           onClickNavigate(article);
         }}
       >
-        <div dangerouslySetInnerHTML={{ __html: article.title }} />
+        <div
+          className="[&_*]:max-w-full [&_*]:break-words"
+          dangerouslySetInnerHTML={{ __html: article.title }}
+        />
       </h1>
 
       {article.hashtags && (
-        <div className="mb-2 px-3 text-xs text-sky-400 sm:text-base md:px-4">
+        <div className="mb-2 break-words px-4 text-xs text-sky-400 sm:text-base md:px-4">
           {article.hashtags.map((tag, index) => (
             <span
               key={index}
@@ -37,7 +40,7 @@ const HeroArticle = ({ article }) => {
         <img
           src={article.imgUrl}
           alt={article.heading}
-          className="mb-3 w-full cursor-pointer object-cover lg:h-80"
+          className="mb-3 h-auto w-full max-w-full cursor-pointer object-cover lg:h-80"
           onClick={() => {
             onClickNavigate(article);
           }}
@@ -45,7 +48,7 @@ const HeroArticle = ({ article }) => {
       </>
 
       <div className="mb-2 flex flex-col sm:mb-4">
-        <p className="line-clamp-3 overflow-hidden text-ellipsis px-3 text-xs text-black sm:text-sm md:px-4 md:text-base">
+        <p className="line-clamp-3 overflow-hidden text-ellipsis px-4 text-xs text-black sm:text-sm md:px-4 md:text-base">
           {article.conclusion}
         </p>
       </div>

@@ -12,6 +12,8 @@
     "dev": "concurrently -n \"backend,frontend\" -c \"green,blue\" \"pnpm run server\" \"pnpm run client\"",
     "data:import": "node backend/seeder.js",
     "data:destroy": "node backend/seeder.js -d",
+    "autopilot": "node backend/automation/run.js",
+    "autopilot:dry": "node backend/automation/run.js --dry-run",
     "build": "cd frontend && pnpm install && pnpm build && cd .. && pnpm install"
   },
   "dependencies": {
@@ -25,6 +27,9 @@
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
+    "node-cron": "^4.4.1",
+    "openai": "^6.44.0",
+    "rss-parser": "^3.13.0",
     "sanitize-html": "^2.16.0"
   },
   "devDependencies": {

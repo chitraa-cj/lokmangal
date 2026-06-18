@@ -14,6 +14,7 @@ import PrivateRoute from "./Utils/PrivateRoute.jsx";
 // import AdminRoute from "./Utils/AdminRoute.jsx";
 
 import App from "./App.jsx";
+import { NavbarLanguageProvider } from "./context/NavbarLanguageContext.jsx";
 
 import LoginPage from "./Pages/LoginPage.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
@@ -61,8 +62,10 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")).render(
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <NavbarLanguageProvider>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </NavbarLanguageProvider>
     </QueryClientProvider>
   </HelmetProvider>,
 );

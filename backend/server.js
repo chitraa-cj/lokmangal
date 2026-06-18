@@ -12,9 +12,13 @@ import fs from "fs"; // For reading/writing files
 import * as cheerio from "cheerio";
 import sanitizeHtml from "sanitize-html";
 import News from "./models/NewsSchema.js"; // Import News model to fetch article data
+import { startScheduler } from "./automation/scheduler.js";
 
 // Connect to database
 connectDB();
+
+// Start the News Autopilot scheduler (no-op unless AUTOPILOT_ENABLED=true)
+startScheduler();
 
 const port = process.env.PORT || 5000;
 const app = express();

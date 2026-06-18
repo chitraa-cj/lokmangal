@@ -46,7 +46,7 @@ const HeroArticleDetailed = ({ article }) => {
   const description = article.conclusion || "Read more on The Lok Mangal News";
 
   return (
-    <div className="min-w-3xl unselectable mb-2">
+    <div className="unselectable mb-2 w-full min-w-0 overflow-hidden">
       <Helmet>
         <title>{sanitizeTitle(article.title)} - The Lok Mangal News</title>
         <meta name="description" content={description} />
@@ -61,22 +61,30 @@ const HeroArticleDetailed = ({ article }) => {
         <meta name="twitter:image" content={imageUrl} />
       </Helmet>
 
-      <div className="mb-3 pt-2">
-        <h1 className="mx-3 text-xl font-bold md:mx-5 lg:mx-8">
-          <div dangerouslySetInnerHTML={{ __html: article.title }} />
+      <div className="mb-3 px-4 pt-2">
+        <h1 className="break-words text-xl font-bold">
+          <div
+            className="[&_*]:max-w-full [&_*]:break-words"
+            dangerouslySetInnerHTML={{ __html: article.title }}
+          />
         </h1>
       </div>
 
-      <img
-        src={article.imgUrl}
-        alt={article.title}
-        className="mx-auto mb-6 h-auto max-h-96 w-[700px] rounded bg-gray-300 object-cover"
-      />
+      <div className="mb-6 px-4">
+        <img
+          src={article.imgUrl}
+          alt={article.title}
+          className="mx-auto h-auto max-h-96 w-full rounded bg-gray-300 object-cover"
+        />
+      </div>
 
       <Share />
 
-      <div className="prose mx-3 mt-6 max-w-none text-black md:mx-5 lg:mx-8">
-        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      <div className="prose mx-4 mt-6 max-w-none break-words text-black md:mx-5 lg:mx-8">
+        <div
+          className="[&_*]:max-w-full [&_img]:h-auto"
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
       </div>
     </div>
   );

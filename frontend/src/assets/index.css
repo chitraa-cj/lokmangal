@@ -6,10 +6,28 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 html {
   font-family: "Noto Sans Devanagari", sans-serif;
   /* scroll-behavior: smooth; */
   scroll-behavior: auto;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.prose img,
+.prose video,
+.prose iframe {
+  max-width: 100%;
+  height: auto;
 }
 textarea {
   resize: none;

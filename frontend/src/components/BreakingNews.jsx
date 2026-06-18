@@ -10,10 +10,12 @@ const BreakingNews = ({ breakingNews }) => {
   // console.log(breakingNews);
 
   return (
-    <div className="mb-6 flex w-full max-w-3xl items-center justify-between space-x-1 rounded-lg bg-red-600 px-2 py-1.5 text-xs text-white shadow-md sm:space-x-2 sm:text-sm lg:rounded-full lg:px-4">
-      <span className="font-bold md:text-xl">BREAKING NEWS</span>
+    <div className="mb-6 flex w-full min-w-0 max-w-3xl items-center justify-between gap-2 rounded-lg bg-red-600 px-3 py-1.5 text-xs text-white shadow-md sm:space-x-2 sm:text-sm lg:rounded-full lg:px-4">
+      <span className="shrink-0 text-[10px] font-bold sm:text-xs md:text-xl">
+        BREAKING NEWS
+      </span>
       <span
-        className="line-clamp-1 flex-1 cursor-pointer items-center justify-center border-l pl-2 text-lg font-semibold sm:pl-4"
+        className="min-w-0 flex-1 cursor-pointer truncate border-l border-red-400 pl-2 text-sm font-semibold sm:pl-4 sm:text-lg"
         onClick={() => onClickNavigate(breakingNews[0])}
       >
         <span dangerouslySetInnerHTML={{ __html: breakingNews[0]?.title }} />
