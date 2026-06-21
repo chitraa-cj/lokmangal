@@ -8,8 +8,10 @@ import { fetchArticleMeta } from "./sources/common.js";
 import { todayDay, freshnessOk } from "./timeline.js";
 import { filterRelevantToday, pickBest, rewriteForPublish } from "./editor.js";
 import { resolveFeaturedImage } from "./images.js";
+import { validateContent } from "./contentGuard.js";
 import { usedSourceIds, recordSource, recentHeadlines } from "./state.js";
 import { publishArticle } from "./publisher.js";
+import { usageStats } from "./budget.js";
 
 const MAX_CANDIDATES = 50; // cap before the relevance LLM call
 const MAX_HYDRATE = 14; // bounded article-page fetches per category
@@ -84,7 +86,21 @@ async function hydrateAll(candidates, limit = 4) {
 }
 
 // Run one category and publish a single article. Returns a result record.
-export async function runCategory(category, { exclude } = {}) {
+// Wraps the work so that hitting the daily OpenAI spend cap stops cleanly
+// (status "budget_exceeded") instead of throwing.
+export async function runCategory(category, opts = {}) {
+  try {
+    return await runCategoryInner(category, opts);
+  } catch (err) {
+    if (err.budgetExceeded) {
+      console.warn(`[autopilot] ${category}: ${err.message}`);
+      return { category, day: todayDay(), status: "budget_exceeded", error: err.message };
+    }
+    throw err;
+  }
+}
+
+async function runCategoryInner(category, { exclude } = {}) {
   const day = todayDay();
   const excludeSet = exclude || (await usedSourceIds());
   const base = { category, day };
@@ -116,67 +132,90 @@ export async function runCategory(category, { exclude } = {}) {
 
   const recent = await recentHeadlines(category);
 
-  // Select the best story, but reject any pick we can't get a real article body
-  // for (prevents thin, fabricated articles). Retry with the next best a few times.
+  // Select-and-vet loop. For each best pick we enforce, in order: a real article
+  // body (no thin/fabricated pieces), a CLEAN featured image (no watermark /
+  // publication logo / agency credit), and rewritten copy free of source
+  // attribution. Any failure drops that pick and we try the next best — nothing
+  // half-vetted is ever published.
   let pool = [...candidates];
-  let chosen = null;
-  for (let attempt = 0; attempt < 4 && pool.length; attempt++) {
+  let lastReject = null;
+  for (let attempt = 0; attempt < 6 && pool.length; attempt++) {
     const pick = await pickBest(category, pool, recent);
     if (!pick) break;
+    pool = pool.filter((c) => c.id !== pick.id); // never reconsider this pick
+
     if (!pick._hydrated) await hydrate(pick);
-    if ((pick.body?.length || 0) >= MIN_BODY_CHARS) {
-      chosen = pick;
-      break;
+    if ((pick.body?.length || 0) < MIN_BODY_CHARS) {
+      lastReject = "thin_body";
+      continue; // too thin — try the next best
     }
-    // Too thin — drop it and try the next best.
-    pool = pool.filter((c) => c.id !== pick.id);
-    chosen = chosen || pick; // remember a fallback in case nothing qualifies
-  }
-  if (!chosen) return { ...base, status: "no_selection" };
 
-  const imgUrl = await resolveFeaturedImage(chosen);
+    // Image compliance gate: a clean, verified featured image or drop the pick.
+    const imgUrl = await resolveFeaturedImage(pick);
+    if (!imgUrl) {
+      excludeSet.add(pick.id); // a watermarked source won't get cleaner; don't revisit
+      lastReject = "no_clean_image";
+      console.warn(`[autopilot] ${category}: dropped "${pick.title}" — no clean image`);
+      continue;
+    }
 
-  // Rewrite into publish-ready English HTML.
-  let rewritten;
-  try {
-    rewritten = await rewriteForPublish(category, chosen);
-  } catch (err) {
-    return { ...base, status: "rewrite_failed", error: err.message, sourceId: chosen.id };
-  }
+    // Rewrite into publish-ready English HTML.
+    let rewritten;
+    try {
+      rewritten = await rewriteForPublish(category, pick);
+    } catch (err) {
+      if (err.budgetExceeded) throw err; // spend cap hit — bubble up and stop
+      lastReject = `rewrite_failed: ${err.message}`;
+      continue; // try the next best rather than failing the whole category
+    }
 
-  // Mark used immediately so the same story can't be picked again this wave/day.
-  excludeSet.add(chosen.id);
+    // Content compliance gate: reject copy that still carries source attribution.
+    const content = validateContent(rewritten);
+    if (!content.clean) {
+      lastReject = "content_provenance";
+      console.warn(
+        `[autopilot] ${category}: dropped "${pick.title}" — content provenance: ${content.reasons.join("; ")}`
+      );
+      continue;
+    }
 
-  if (env.dryRun) {
-    await recordSource({ candidate: chosen, category, day, dryRun: true });
+    // Passed every gate. Mark used so it can't be re-picked this wave/day.
+    excludeSet.add(pick.id);
+
+    if (env.dryRun) {
+      await recordSource({ candidate: pick, category, day, dryRun: true });
+      return {
+        ...base,
+        status: "dry_run",
+        sourceId: pick.id,
+        sourceUrl: pick.sourceUrl,
+        headline: rewritten.headlinePlain,
+        imgUrl,
+        articleType: rewritten.articleType,
+        sourceBodyChars: pick.body?.length || 0,
+        contentWords: rewritten.content.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length,
+        conclusion: rewritten.conclusion,
+        content: rewritten.content,
+        selectionReason: pick.selectionReason,
+      };
+    }
+
+    const post = await publishArticle(rewritten, imgUrl);
+    await recordSource({ candidate: pick, category, day, newsPostId: post._id, dryRun: false });
     return {
       ...base,
-      status: "dry_run",
-      sourceId: chosen.id,
-      sourceUrl: chosen.sourceUrl,
+      status: "published",
+      sourceId: pick.id,
+      sourceUrl: pick.sourceUrl,
       headline: rewritten.headlinePlain,
       imgUrl,
       articleType: rewritten.articleType,
-      sourceBodyChars: chosen.body?.length || 0,
-      contentWords: rewritten.content.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length,
-      conclusion: rewritten.conclusion,
-      content: rewritten.content,
-      selectionReason: chosen.selectionReason,
+      newsPostId: String(post._id),
     };
   }
 
-  const post = await publishArticle(rewritten, imgUrl);
-  await recordSource({ candidate: chosen, category, day, newsPostId: post._id, dryRun: false });
-  return {
-    ...base,
-    status: "published",
-    sourceId: chosen.id,
-    sourceUrl: chosen.sourceUrl,
-    headline: rewritten.headlinePlain,
-    imgUrl,
-    articleType: rewritten.articleType,
-    newsPostId: String(post._id),
-  };
+  // Nothing cleared every compliance gate this run.
+  return { ...base, status: "no_clean_candidate", lastReject };
 }
 
 // Run one wave: one article per category, sequentially, sharing a dedup set.
@@ -189,10 +228,23 @@ export async function runWave(categories = CATEGORIES) {
       const r = await runCategory(category, { exclude });
       results.push(r);
       console.log(`[autopilot] ${category}: ${r.status}${r.headline ? ` — ${r.headline}` : ""}`);
+      // Daily spend cap hit — no point running the rest of the wave; every call
+      // would just fail the same way.
+      if (r.status === "budget_exceeded") {
+        console.warn("[autopilot] daily OpenAI spend cap reached — stopping this wave");
+        break;
+      }
     } catch (err) {
       results.push({ category, status: "error", error: err.message });
       console.error(`[autopilot] ${category} errored: ${err.message}`);
     }
+  }
+  const usage = await usageStats().catch(() => null);
+  if (usage) {
+    console.log(
+      `[autopilot] OpenAI usage today: ${usage.calls}/${usage.maxDailyCalls || "∞"} calls, ` +
+        `${usage.totalTokens}/${usage.maxDailyTokens || "∞"} tokens`
+    );
   }
   const summary = {
     startedAt,

@@ -19,6 +19,8 @@ export const env = {
   dryRun: bool(process.env.AUTOPILOT_DRY_RUN, false),
   openaiKey: process.env.OPENAI_API_KEY || "",
   openaiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
+  // Vision-capable model used by the image guard (gpt-4o-mini supports vision).
+  openaiVisionModel: process.env.OPENAI_VISION_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
   serperKey: process.env.SERPER_API_KEY || "",
   authorUsername: process.env.AUTOPILOT_AUTHOR_USERNAME || "",
   timezone: process.env.AUTOPILOT_TIMEZONE || "Asia/Kolkata",
@@ -40,6 +42,36 @@ export const env = {
   defaultImage:
     process.env.AUTOPILOT_DEFAULT_IMAGE ||
     "https://res.cloudinary.com/dwhtm8byj/image/upload/v1776178764/mdjzos2cseonbcqp7ioo.jpg",
+
+  // --- Compliance guards ---------------------------------------------------
+  // Vision check that rejects images carrying another publication's watermark,
+  // logo, channel bug or news-agency credit (the TOI-logo incident). When a
+  // candidate has no clean image, the whole article is dropped.
+  imageGuard: bool(process.env.AUTOPILOT_IMAGE_GUARD, true),
+  // If true, an image that cannot be *verified* (download/vision error) is
+  // allowed through. Default false = fail closed (reject on any doubt).
+  imageGuardFailOpen: bool(process.env.AUTOPILOT_IMAGE_GUARD_FAIL_OPEN, false),
+  // Hard-reject any image hot-linked from a known publisher/agency/stock CDN,
+  // before downloading. Off by default because our sources ARE publishers and
+  // their own (often clean) og:image lives on these CDNs — the vision check is
+  // the real gate. Turn on for the strictest, no-hotlinking posture.
+  blockPublisherCdn: bool(process.env.AUTOPILOT_BLOCK_PUBLISHER_CDN, false),
+  // Text check that rejects a rewritten article still carrying source
+  // attribution (publisher names, agency credits, bylines, "read more", ©).
+  contentGuard: bool(process.env.AUTOPILOT_CONTENT_GUARD, true),
+  // Detail level for the vision watermark check. "high" is most accurate (catches
+  // small corner logos) but costs more tokens; "low" is a flat ~85 tokens/image.
+  visionDetail: ["low", "high", "auto"].includes(process.env.AUTOPILOT_VISION_DETAIL)
+    ? process.env.AUTOPILOT_VISION_DETAIL
+    : "high",
+
+  // --- OpenAI spend cap ----------------------------------------------------
+  // Hard daily ceiling so a runaway loop or a bad retry day can't run up a large
+  // bill. Checked before every OpenAI call; the day's totals persist in MongoDB
+  // (AutopilotUsage) so the cap survives restarts. 0 = that limit is disabled.
+  budgetEnabled: bool(process.env.AUTOPILOT_BUDGET_ENABLED, true),
+  maxDailyCalls: int(process.env.AUTOPILOT_MAX_DAILY_CALLS, 500),
+  maxDailyTokens: int(process.env.AUTOPILOT_MAX_DAILY_TOKENS, 2000000),
 };
 
 // Polite identification for outbound scraping requests.

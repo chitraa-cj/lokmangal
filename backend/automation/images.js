@@ -1,7 +1,8 @@
 // Featured-image validation and resolution.
 import axios from "axios";
-import { env, USER_AGENT } from "./config.js";
+import { USER_AGENT } from "./config.js";
 import { fetchArticleMeta } from "./sources/common.js";
+import { validateImage } from "./imageGuard.js";
 
 const BAD_IMAGE =
   /news\.google|gstatic|googleusercontent|google\.com|\/logo|favicon|\/icon|placeholder|sprite|blank|spacer|1x1|pixel/i;
@@ -42,26 +43,35 @@ async function imageLoads(url) {
   }
 }
 
-// Resolve the best *verified* featured image for a candidate.
-// Tries: the candidate's own image, then the article page's og:image, then default.
+// Resolve the best *clean, verified* featured image for a candidate.
+// Tries the candidate's own image, then the article page's og:image; each must
+// (a) load as a real image and (b) pass the compliance guard (no watermark,
+// publication logo, channel bug or agency/stock credit). Returns the first URL
+// that passes, or null if none do — the caller drops the article in that case.
 export async function resolveFeaturedImage(candidate) {
   const tried = new Set();
-  const tryUrl = async (url) => {
-    if (!url || tried.has(url) || !isValidFeaturedImage(url)) return null;
-    tried.add(url);
-    return (await imageLoads(url)) ? url : null;
+  const urls = [];
+  const add = (url) => {
+    if (url && !tried.has(url) && isValidFeaturedImage(url)) {
+      tried.add(url);
+      urls.push(url);
+    }
   };
 
-  let ok = await tryUrl(candidate.imgUrl);
-  if (ok) return ok;
-
+  add(candidate.imgUrl);
   try {
     const meta = await fetchArticleMeta(candidate.sourceUrl);
-    ok = await tryUrl(meta.image);
-    if (ok) return ok;
+    add(meta.image);
   } catch (_) {
-    /* fall through */
+    /* fall through with whatever we have */
   }
 
-  return env.defaultImage;
+  for (const url of urls) {
+    if (!(await imageLoads(url))) continue;
+    const verdict = await validateImage(url);
+    if (verdict.clean) return url;
+    console.warn(`[autopilot] image rejected — ${verdict.reason} (${url})`);
+  }
+
+  return null;
 }

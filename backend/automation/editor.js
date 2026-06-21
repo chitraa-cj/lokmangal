@@ -2,20 +2,11 @@
 //   1. relevance filter  — is this story worth publishing today?
 //   2. selection         — pick the single best, avoiding topics we already cover
 //   3. rewrite           — produce publish-ready English HTML in a human newsroom voice
-import OpenAI from "openai";
 import { env, EDITORIAL_GUIDE, FOOTER_TAGS, CATEGORY_DEFAULT_FOOTER } from "./config.js";
-
-let client = null;
-function openai() {
-  if (!client) {
-    if (!env.openaiKey) throw new Error("OPENAI_API_KEY is not set");
-    client = new OpenAI({ apiKey: env.openaiKey });
-  }
-  return client;
-}
+import { createChatCompletion } from "./openaiClient.js";
 
 async function chatJSON({ system, user, temperature }) {
-  const res = await openai().chat.completions.create({
+  const res = await createChatCompletion({
     model: env.openaiModel,
     temperature,
     response_format: { type: "json_object" },
@@ -74,6 +65,7 @@ Return JSON: {"assessments":[{"id":"...","relevantToday":true|false,"reason":"..
       .filter((c) => ok.get(c.id)?.relevantToday)
       .map((c) => ({ ...c, relevantTodayReason: ok.get(c.id)?.reason }));
   } catch (err) {
+    if (err.budgetExceeded) throw err; // spend cap hit — stop, don't fan out more calls
     console.warn(`[autopilot] relevance check failed (${category}): ${err.message}`);
     return candidates; // fail open — better to publish than skip the whole wave
   }
@@ -109,6 +101,7 @@ Return JSON: {"id":"<chosen id>","reason":"<why readers will click>"}`;
     const chosen = candidates.find((c) => c.id === out.id);
     if (chosen) return { ...chosen, selectionReason: out.reason };
   } catch (err) {
+    if (err.budgetExceeded) throw err; // spend cap hit — stop, don't fan out more calls
     console.warn(`[autopilot] selection failed (${category}): ${err.message}`);
   }
   // Fallback: freshest with an image.
