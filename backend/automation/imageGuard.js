@@ -67,19 +67,24 @@ Flag the image if it contains ANY of:
 - a photographer/agency credit line, a copyright notice (©), a website URL or a social handle (@...) burned into the image.
 - the image is clearly a SCREENSHOT of another news site, app or social post (visible UI chrome, headlines, "Read more" buttons).
 
+Decision rules — read carefully:
+- Flag ONLY for a mark you can ACTUALLY SEE in THIS image: a logo, watermark, credit, handle or UI element that is visibly present. Set the matching boolean true and name what you read in "brands".
+- Do NOT flag on copyright, ownership, licensing or "this looks like a news photo" reasoning. A plain, unmarked photograph is CLEAN even if it was probably shot by a news agency. We only care about a VISIBLE third-party mark, not who may own the image.
+- Do NOT flag on guesses ("may contain", "could be associated with", "possibly"). If you cannot point to a specific visible mark, the image is CLEAN.
+- A rejection is only valid when at least one of the boolean flags below is true. If every flag is false, you MUST return clean=true.
+
 Return JSON:
 {
-  "clean": true|false,            // true ONLY if NONE of the above is present
-  "hasWatermark": true|false,
+  "clean": true|false,            // false ONLY when at least one flag below is true
+  "hasWatermark": true|false,     // a visible, legible watermark
   "hasPublicationLogo": true|false,
   "hasChannelBug": true|false,
   "hasAgencyOrStockCredit": true|false,
-  "hasBurnedInText": true|false,  // URL, handle, ©, credit line
+  "hasBurnedInText": true|false,  // URL, handle, ©, credit line you can read
   "isScreenshot": true|false,
-  "brands": ["..."],              // any brand/agency names you can read
-  "reason": "one short sentence"
-}
-If you are unsure whether faint text is a watermark, set clean=false.`;
+  "brands": ["..."],              // any brand/agency names you can actually read
+  "reason": "one short sentence — must cite the specific visible mark"
+}`;
 
 // Vision pass over the actual image pixels. Returns a verdict object.
 async function inspectPixels(url) {
@@ -119,7 +124,20 @@ export async function validateImage(url) {
 
   try {
     const v = await inspectPixels(url);
-    const clean = v.clean === true;
+    // A rejection must be backed by a concrete, visible detection — not a vague
+    // "copyright"/"uncertainty" verdict. The model frequently returns clean=false
+    // with every flag false ("may be third-party", "not clean due to copyright"),
+    // which dropped every otherwise-usable photo. Require evidence: at least one
+    // detection flag true, or a named brand it could actually read.
+    const detected =
+      v.hasWatermark === true ||
+      v.hasPublicationLogo === true ||
+      v.hasChannelBug === true ||
+      v.hasAgencyOrStockCredit === true ||
+      v.hasBurnedInText === true ||
+      v.isScreenshot === true ||
+      (Array.isArray(v.brands) && v.brands.length > 0);
+    const clean = v.clean !== false || !detected;
     if (!clean) {
       const brands = Array.isArray(v.brands) && v.brands.length ? ` [${v.brands.join(", ")}]` : "";
       return {
