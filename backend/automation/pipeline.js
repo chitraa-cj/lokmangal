@@ -150,13 +150,14 @@ async function runCategoryInner(category, { exclude } = {}) {
       continue; // too thin — try the next best
     }
 
-    // Image compliance gate: a clean, verified featured image or drop the pick.
-    const imgUrl = await resolveFeaturedImage(pick);
+    // Image compliance gate: keep the source image unless it carries the source
+    // publisher's own branding (logo/masthead card, channel watermark, screenshot).
+    // When there's no clean image we no longer drop the story — we publish it with
+    // our own default placeholder so a branded image never blocks a good article.
+    let imgUrl = await resolveFeaturedImage(pick);
     if (!imgUrl) {
-      excludeSet.add(pick.id); // a watermarked source won't get cleaner; don't revisit
-      lastReject = "no_clean_image";
-      console.warn(`[autopilot] ${category}: dropped "${pick.title}" — no clean image`);
-      continue;
+      imgUrl = env.defaultImage;
+      console.warn(`[autopilot] ${category}: "${pick.title}" — no clean source image, using default`);
     }
 
     // Rewrite into publish-ready English HTML.

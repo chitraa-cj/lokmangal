@@ -59,11 +59,12 @@ export const env = {
   // Text check that rejects a rewritten article still carrying source
   // attribution (publisher names, agency credits, bylines, "read more", ©).
   contentGuard: bool(process.env.AUTOPILOT_CONTENT_GUARD, true),
-  // Detail level for the vision watermark check. "high" is most accurate (catches
-  // small corner logos) but costs more tokens; "low" is a flat ~85 tokens/image.
+  // Detail level for the vision logo/branding check. "low" is a flat ~85 tokens/
+  // image and is plenty to catch the prominent publisher logos/masthead cards we
+  // reject for; "high" catches tiny corner marks too but costs far more tokens.
   visionDetail: ["low", "high", "auto"].includes(process.env.AUTOPILOT_VISION_DETAIL)
     ? process.env.AUTOPILOT_VISION_DETAIL
-    : "high",
+    : "low",
 
   // --- OpenAI spend cap ----------------------------------------------------
   // Hard daily ceiling so a runaway loop or a bad retry day can't run up a large

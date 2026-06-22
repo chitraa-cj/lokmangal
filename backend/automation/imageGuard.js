@@ -58,32 +58,26 @@ const VISION_SYSTEM =
   "Your job is to reject any image that is NOT safe to republish as our own. " +
   "Respond with JSON only.";
 
-const VISION_PROMPT = `Inspect this image for ANY sign that it belongs to or was produced by a third party. Look carefully at all four corners, edges and any overlaid text — watermarks are often faint, small or semi-transparent.
+const VISION_PROMPT = `Decide whether this image is SAFE for us to republish as our own featured photo.
 
-Flag the image if it contains ANY of:
-- a newspaper/website/publication watermark or logo (e.g. "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran", or any masthead).
-- a TV-channel bug / on-screen graphic (a channel logo sitting in a corner).
-- a news-agency or stock credit ("PTI", "ANI", "Reuters", "AFP", "AP", "IANS", "Getty Images", "Shutterstock", "iStock", "Alamy").
-- a photographer/agency credit line, a copyright notice (©), a website URL or a social handle (@...) burned into the image.
-- the image is clearly a SCREENSHOT of another news site, app or social post (visible UI chrome, headlines, "Read more" buttons).
+REJECT the image ONLY when it is clearly the branding of another publisher, TV channel or news agency. Specifically, reject if:
+- The image IS a logo, masthead or branding card rather than a real photograph — e.g. a solid-colour panel showing a publication/channel name like "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran" (these are the placeholder images publishers serve when an article has no real photo).
+- A newspaper/website/TV-channel LOGO or WATERMARK is prominently overlaid on the photo (a corner channel bug, a masthead across the image, a large semi-transparent watermark).
+- The image is clearly a SCREENSHOT of another news site, app or social post (visible UI chrome, headlines, "Read more" buttons).
 
-Decision rules — read carefully:
-- Flag ONLY for a mark you can ACTUALLY SEE in THIS image: a logo, watermark, credit, handle or UI element that is visibly present. Set the matching boolean true and name what you read in "brands".
-- Do NOT flag on copyright, ownership, licensing or "this looks like a news photo" reasoning. A plain, unmarked photograph is CLEAN even if it was probably shot by a news agency. We only care about a VISIBLE third-party mark, not who may own the image.
-- Do NOT flag on guesses ("may contain", "could be associated with", "possibly"). If you cannot point to a specific visible mark, the image is CLEAN.
-- A rejection is only valid when at least one of the boolean flags below is true. If every flag is false, you MUST return clean=true.
+Do NOT reject for anything else. In particular:
+- A plain, unmarked photograph is CLEAN even if it was probably shot by a news agency. We care only about a VISIBLE publisher/channel logo or branding, not who may own the photo.
+- Do NOT reject on copyright, ownership, licensing, a tiny credit line, or "this looks like a news photo" reasoning.
+- Do NOT reject on guesses ("may contain", "possibly"). If you cannot point to a specific visible logo/branding/screenshot, the image is CLEAN.
 
 Return JSON:
 {
-  "clean": true|false,            // false ONLY when at least one flag below is true
-  "hasWatermark": true|false,     // a visible, legible watermark
-  "hasPublicationLogo": true|false,
-  "hasChannelBug": true|false,
-  "hasAgencyOrStockCredit": true|false,
-  "hasBurnedInText": true|false,  // URL, handle, ©, credit line you can read
-  "isScreenshot": true|false,
-  "brands": ["..."],              // any brand/agency names you can actually read
-  "reason": "one short sentence — must cite the specific visible mark"
+  "clean": true|false,                       // false ONLY when one of the three flags below is true
+  "isLogoOrBrandingCard": true|false,        // the image IS a logo/masthead/branding graphic, not a photo
+  "hasPublicationOrChannelLogo": true|false, // a publisher/TV logo or watermark overlaid on a photo
+  "isScreenshot": true|false,                // a screenshot of another site/app/social post
+  "brands": ["..."],                         // any publication/channel names you can actually read
+  "reason": "one short sentence — cite the specific visible logo/branding, or say why it is clean"
 }`;
 
 // Vision pass over the actual image pixels. Returns a verdict object.
@@ -124,20 +118,16 @@ export async function validateImage(url) {
 
   try {
     const v = await inspectPixels(url);
-    // A rejection must be backed by a concrete, visible detection — not a vague
-    // "copyright"/"uncertainty" verdict. The model frequently returns clean=false
-    // with every flag false ("may be third-party", "not clean due to copyright"),
-    // which dropped every otherwise-usable photo. Require evidence: at least one
-    // detection flag true, or a named brand it could actually read.
+    // Loosened guard: reject ONLY when the image is the source publisher's own
+    // branding — a logo/masthead/branding card (the "TOI card" incident), a
+    // prominent publication/channel logo or watermark overlaid on a photo, or a
+    // screenshot of another outlet. Everything else publishes. A vague clean=false
+    // with none of these flags set is ignored (it dropped otherwise-usable photos).
     const detected =
-      v.hasWatermark === true ||
-      v.hasPublicationLogo === true ||
-      v.hasChannelBug === true ||
-      v.hasAgencyOrStockCredit === true ||
-      v.hasBurnedInText === true ||
-      v.isScreenshot === true ||
-      (Array.isArray(v.brands) && v.brands.length > 0);
-    const clean = v.clean !== false || !detected;
+      v.isLogoOrBrandingCard === true ||
+      v.hasPublicationOrChannelLogo === true ||
+      v.isScreenshot === true;
+    const clean = !detected;
     if (!clean) {
       const brands = Array.isArray(v.brands) && v.brands.length ? ` [${v.brands.join(", ")}]` : "";
       return {
