@@ -54,34 +54,50 @@ async function fetchImageDataUrl(url) {
 }
 
 const VISION_SYSTEM =
-  "You are a strict image-rights compliance reviewer for a news publisher. " +
-  "Your job is to reject any image that is NOT safe to republish as our own. " +
-  "Respond with JSON only.";
+  "You are a strict reviewer for a news publisher. You judge whether an image is " +
+  "(a) legally safe to republish as our own and (b) editorially suitable as the " +
+  "featured photo for a specific news story. Respond with JSON only.";
 
-const VISION_PROMPT = `Decide whether this image is SAFE for us to republish as our own featured photo.
+// The prompt is built per-image so the model can judge RELEVANCE against the
+// actual headline. Rejection here is cheap: the caller falls back to our own
+// logo placeholder rather than dropping the story, so erring toward rejecting a
+// dubious image is safe.
+function buildVisionPrompt(headline) {
+  return `You are vetting an image proposed as the featured photo for this news story:
 
-REJECT the image ONLY when it is clearly the branding of another publisher, TV channel or news agency. Specifically, reject if:
-- The image IS a logo, masthead or branding card rather than a real photograph — e.g. a solid-colour panel showing a publication/channel name like "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran" (these are the placeholder images publishers serve when an article has no real photo).
+HEADLINE: "${headline || "(headline unavailable)"}"
+
+REJECT the image if ANY of the following is true:
+
+A. BRANDING — it is another outlet's property:
+- The image IS a logo, masthead or branding card rather than a real photograph — e.g. a solid-colour panel showing a publication/channel name like "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran" (the placeholder images publishers serve when an article has no real photo).
 - A newspaper/website/TV-channel LOGO or WATERMARK is prominently overlaid on the photo (a corner channel bug, a masthead across the image, a large semi-transparent watermark).
 - The image is clearly a SCREENSHOT of another news site, app or social post (visible UI chrome, headlines, "Read more" buttons).
 
-Do NOT reject for anything else. In particular:
-- A plain, unmarked photograph is CLEAN even if it was probably shot by a news agency. We care only about a VISIBLE publisher/channel logo or branding, not who may own the photo.
-- Do NOT reject on copyright, ownership, licensing, a tiny credit line, or "this looks like a news photo" reasoning.
-- Do NOT reject on guesses ("may contain", "possibly"). If you cannot point to a specific visible logo/branding/screenshot, the image is CLEAN.
+B. IRRELEVANT — it does not match the story:
+- The image has no plausible connection to the headline above — e.g. a glamour/model portrait, an unrelated celebrity, a random product shot, or a stock scene that has nothing to do with what the story is about. When a generic photo is plausibly on-topic (a building, a crowd, officials, a relevant location, a related object), treat it as RELEVANT.
+
+C. INAPPROPRIATE — it is unsuitable atop a general-audience news story:
+- Sexually suggestive, glamour/pin-up, swimwear/lingerie or otherwise not-safe-for-work imagery; graphic gore; or anything unfit to sit above a news headline.
+
+Do NOT reject a plain, on-topic, decent photograph just because it may have been shot by a news agency — we care about visible branding, relevance and decency, not who owns the photo. Do NOT reject on vague guesses; only reject when you can point to a concrete reason.
 
 Return JSON:
 {
-  "clean": true|false,                       // false ONLY when one of the three flags below is true
+  "clean": true|false,                       // false if ANY flag below is true
   "isLogoOrBrandingCard": true|false,        // the image IS a logo/masthead/branding graphic, not a photo
   "hasPublicationOrChannelLogo": true|false, // a publisher/TV logo or watermark overlaid on a photo
   "isScreenshot": true|false,                // a screenshot of another site/app/social post
+  "isIrrelevant": true|false,                // image content does not match the headline
+  "isInappropriate": true|false,             // sexual/glamour/NSFW/gore — unfit as a news photo
   "brands": ["..."],                         // any publication/channel names you can actually read
-  "reason": "one short sentence — cite the specific visible logo/branding, or say why it is clean"
+  "reason": "one short sentence — cite the specific problem, or say why it is clean"
 }`;
+}
 
 // Vision pass over the actual image pixels. Returns a verdict object.
-async function inspectPixels(url) {
+// `context.headline` lets the model judge relevance to the specific story.
+async function inspectPixels(url, context = {}) {
   const dataUrl = await fetchImageDataUrl(url);
   const res = await createChatCompletion({
     model: env.openaiVisionModel,
@@ -92,7 +108,7 @@ async function inspectPixels(url) {
       {
         role: "user",
         content: [
-          { type: "text", text: VISION_PROMPT },
+          { type: "text", text: buildVisionPrompt(context.headline) },
           { type: "image_url", image_url: { url: dataUrl, detail: env.visionDetail } },
         ],
       },
@@ -103,8 +119,9 @@ async function inspectPixels(url) {
 }
 
 // Full verdict for one image URL.
+// `context.headline` is the story headline, used to judge relevance.
 // Returns { clean: boolean, reason: string, flags: {...} }.
-export async function validateImage(url) {
+export async function validateImage(url, context = {}) {
   if (!env.imageGuard) return { clean: true, reason: "guard disabled", flags: {} };
 
   const rep = domainReputation(url);
@@ -117,26 +134,30 @@ export async function validateImage(url) {
   }
 
   try {
-    const v = await inspectPixels(url);
-    // Loosened guard: reject ONLY when the image is the source publisher's own
-    // branding — a logo/masthead/branding card (the "TOI card" incident), a
-    // prominent publication/channel logo or watermark overlaid on a photo, or a
-    // screenshot of another outlet. Everything else publishes. A vague clean=false
-    // with none of these flags set is ignored (it dropped otherwise-usable photos).
+    const v = await inspectPixels(url, context);
+    // Reject when the image is the source publisher's own branding — a
+    // logo/masthead/branding card (the "TOI card" incident), a prominent
+    // publication/channel logo or watermark, or a screenshot of another outlet —
+    // OR when it is clearly off-topic for this story or indecent (a glamour/model
+    // shot on a school-poisoning story is the case this caught). A vague
+    // clean=false with none of these flags set is still ignored. Rejection is not
+    // a drop: the caller falls back to our logo placeholder.
     const detected =
       v.isLogoOrBrandingCard === true ||
       v.hasPublicationOrChannelLogo === true ||
-      v.isScreenshot === true;
+      v.isScreenshot === true ||
+      v.isIrrelevant === true ||
+      v.isInappropriate === true;
     const clean = !detected;
     if (!clean) {
       const brands = Array.isArray(v.brands) && v.brands.length ? ` [${v.brands.join(", ")}]` : "";
       return {
         clean: false,
-        reason: `${v.reason || "watermark/logo/credit detected"}${brands}`,
+        reason: `${v.reason || "branding/irrelevant/indecent image"}${brands}`,
         flags: { domain: rep, vision: v },
       };
     }
-    return { clean: true, reason: "no watermark/logo/credit", flags: { domain: rep, vision: v } };
+    return { clean: true, reason: "clean & on-topic", flags: { domain: rep, vision: v } };
   } catch (err) {
     if (err.budgetExceeded) throw err; // spend cap hit — stop the wave, don't keep paying
     // Could not verify (download blocked, bad content-type, vision/API error).

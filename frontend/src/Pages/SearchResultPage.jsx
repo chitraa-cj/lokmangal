@@ -97,7 +97,7 @@ const SearchPage = () => {
 
         <div className="flex w-full flex-col items-center justify-center space-y-4 sm:space-y-8">
           {posts.map((post) => (
-            <div key={post._id}>
+            <div key={post._id} className="w-full">
               <HeroArticle id={post._id} article={post} />
             </div>
           ))}

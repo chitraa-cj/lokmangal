@@ -518,7 +518,7 @@ const HomePage = () => {
           {gridPosts?.length === 0 && <div className="mt-4 sm:mt-8"></div>}
 
           {allMainPosts?.slice(1, 2).map((post) => (
-            <div key={post._id}>
+            <div key={post._id} className="w-full">
               <HeroArticle id={post._id} article={post} />
             </div>
           ))}
@@ -531,9 +531,9 @@ const HomePage = () => {
 
           {gridPosts?.length < 6 && <div className="mt-4 sm:mt-8"></div>}
 
-          <div className="space-y-4 sm:space-y-8">
+          <div className="w-full space-y-4 sm:space-y-8">
             {allMainPosts?.slice(2).map((post) => (
-              <div key={post._id}>
+              <div key={post._id} className="w-full">
                 <HeroArticle id={post._id} article={post} />
               </div>
             ))}

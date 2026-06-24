@@ -75,6 +75,10 @@ const HeroArticleDetailed = ({ article }) => {
           src={article.imgUrl}
           alt={article.title}
           className="mx-auto h-auto max-h-96 w-full rounded bg-gray-300 object-cover"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/lokmangallogo_00.png";
+          }}
         />
       </div>
 

@@ -44,6 +44,10 @@ const HeroArticle = ({ article }) => {
           onClick={() => {
             onClickNavigate(article);
           }}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/lokmangallogo_00.png";
+          }}
         />
       </>
 

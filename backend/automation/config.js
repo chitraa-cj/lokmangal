@@ -39,9 +39,12 @@ export const env = {
   onlyToday: bool(process.env.AUTOPILOT_ONLY_TODAY, false),
   maxAgeDays: int(process.env.AUTOPILOT_MAX_AGE_DAYS, 2),
   perSourceLimit: int(process.env.AUTOPILOT_PER_SOURCE_LIMIT, 15),
+  // Fallback featured image when no clean, on-topic source photo is found. We use
+  // our own brand logo so a missing/rejected photo degrades to neutral branding
+  // rather than a wrong or branded picture.
   defaultImage:
     process.env.AUTOPILOT_DEFAULT_IMAGE ||
-    "https://res.cloudinary.com/dwhtm8byj/image/upload/v1776178764/mdjzos2cseonbcqp7ioo.jpg",
+    "https://thelokmangal.com/lokmangallogo_00.png",
 
   // --- Compliance guards ---------------------------------------------------
   // Vision check that rejects images carrying another publication's watermark,

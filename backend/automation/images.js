@@ -45,9 +45,10 @@ async function imageLoads(url) {
 
 // Resolve the best *clean, verified* featured image for a candidate.
 // Tries the candidate's own image, then the article page's og:image; each must
-// (a) load as a real image and (b) pass the compliance guard (no watermark,
-// publication logo, channel bug or agency/stock credit). Returns the first URL
-// that passes, or null if none do — the caller drops the article in that case.
+// (a) load as a real image and (b) pass the compliance guard — no watermark /
+// publication logo / channel bug / screenshot, and also on-topic for the
+// headline and decent (no glamour/NSFW). Returns the first URL that passes, or
+// null if none do — the caller then falls back to our logo placeholder.
 export async function resolveFeaturedImage(candidate) {
   const tried = new Set();
   const urls = [];
@@ -68,7 +69,7 @@ export async function resolveFeaturedImage(candidate) {
 
   for (const url of urls) {
     if (!(await imageLoads(url))) continue;
-    const verdict = await validateImage(url);
+    const verdict = await validateImage(url, { headline: candidate.title });
     if (verdict.clean) return url;
     console.warn(`[autopilot] image rejected — ${verdict.reason} (${url})`);
   }

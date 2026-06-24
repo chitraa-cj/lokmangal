@@ -30,6 +30,10 @@ const GridItem = ({ article }) => {
           src={article.imgUrl}
           alt={article.title}
           onClick={() => onClickNavigate(article)}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/lokmangallogo_00.png";
+          }}
           className="rounded-sm"
         />
         <h3 onClick={() => onClickNavigate(article)} className="title">
