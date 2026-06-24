@@ -90,7 +90,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { useNewsPostDetails, useVideos } from "../hooks/useApi";
 import { useEffect } from "react";
 import { useNavbarLanguage } from "../context/NavbarLanguageContext";
-import { isHindiArticle } from "../utils/detectLanguage";
+import { isHindiArticle } from "../Utils/detectLanguage";
 import HeroArticle from "../components/HeroArticleDetailed";
 import VideoCard from "../components/VideoCard";
 import RightSideBar from "../components/RightSideBar";

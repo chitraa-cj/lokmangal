@@ -11,7 +11,7 @@ import {
   getCategoryLabel,
   getCityLabel,
   getHashtagLabel,
-} from "../utils/navConfig";
+} from "../Utils/navConfig";
 
 const fetchHashtags = async () => {
   const { data } = await axios.get("/api/news/hashtags");
