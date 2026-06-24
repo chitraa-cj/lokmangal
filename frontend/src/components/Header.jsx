@@ -121,8 +121,8 @@ export default function Navbar() {
   const renderNavCategory = (category, variant = "desktop") => {
     const itemPadding =
       variant === "mobile"
-        ? "p-2 text-base"
-        : "p-2 pb-3 text-lg md:pb-2";
+        ? "px-3 py-2 text-base"
+        : "px-2.5 py-2.5 text-base xl:px-3 xl:text-lg";
 
     if (category.hasDropdown) {
       return (
@@ -164,8 +164,8 @@ export default function Navbar() {
       ref={navbarRef}
       className="relative z-30 w-full max-w-[100vw] border-b-2 border-gray-300 shadow-sm"
     >
-      <div className="relative z-30 flex items-center justify-center overflow-visible bg-gray-800 md:mt-6 lg:mt-8 lg:min-h-11">
-        <div className="relative w-full overflow-visible px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
+      <div className="relative z-30 flex items-center justify-center overflow-visible bg-gray-800 lg:min-h-12">
+        <div className="relative mx-auto w-full overflow-visible px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
           {/* Mobile: logo + search on one row, categories scroll separately */}
           <div className="lg:hidden">
             <div className="flex items-center justify-between px-3 py-2">
@@ -202,41 +202,35 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Desktop layout */}
-          <div className="hidden items-center justify-between overflow-visible lg:flex">
-            <div className="absolute left-40 hidden lg:block">
-              <Link to="/">
-                <img src="/logo.gif" alt="logo" className="w-28 lg:w-32" />
-              </Link>
-            </div>
+          {/* Desktop layout: logo | centered categories | search */}
+          <div className="hidden items-center justify-between gap-4 overflow-visible px-4 lg:flex">
+            <Link to="/" className="shrink-0">
+              <img src="/logo.gif" alt="logo" className="w-24 xl:w-28" />
+            </Link>
 
-            <div className="block lg:w-[211px]"></div>
-
-            <div className="flex items-center justify-center overflow-visible">
+            <div className="flex flex-1 items-center justify-center overflow-visible">
               {NAV_CATEGORIES.map((category) =>
                 renderNavCategory(category, "desktop"),
               )}
             </div>
 
-            <div className="ml-16 flex items-center justify-center md:ml-0">
-              <form onSubmit={handleSearch} className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="rounded-md bg-gray-700 p-2 py-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2"
-                  >
-                    <Search size={16} className="text-gray-400" />
-                  </button>
-                </div>
-              </form>
-            </div>
+            <form onSubmit={handleSearch} className="flex shrink-0 items-center">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search..."
+                  className="w-40 rounded-md bg-gray-700 p-2 py-1.5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 xl:w-48"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                >
+                  <Search size={16} className="text-gray-400" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

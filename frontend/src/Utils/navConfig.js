@@ -26,26 +26,29 @@ export const NAV_CATEGORIES = [
   },
 ];
 
+// categorySlug must match the stored News.navbarCategories convention:
+// "हमारा शहर <City>" (e.g. "हमारा शहर Bhopal"). The "हमारा शहर " prefix was
+// dropped earlier, which broke these pages — keep it here.
 export const CITY_OPTIONS = [
   {
     en: "Bhopal",
     hi: "भोपाल",
-    categorySlug: "Bhopal",
+    categorySlug: "हमारा शहर Bhopal",
   },
   {
     en: "Jabalpur",
     hi: "जबलपुर",
-    categorySlug: "Jabalpur",
+    categorySlug: "हमारा शहर Jabalpur",
   },
   {
     en: "Indore",
     hi: "इंदौर",
-    categorySlug: "Indore",
+    categorySlug: "हमारा शहर Indore",
   },
   {
     en: "Maharashtra",
     hi: "महाराष्ट्र",
-    categorySlug: "Maharashtra",
+    categorySlug: "हमारा शहर Maharashtra",
   },
 ];
 
