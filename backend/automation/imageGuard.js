@@ -67,6 +67,8 @@ function buildVisionPrompt(headline) {
 
 HEADLINE: "${headline || "(headline unavailable)"}"
 
+GUIDING PRINCIPLE — relevance comes first. If the image is clearly RELATED to this story and is a decent, unbranded photograph, it is USABLE: return clean=true. A related, decent photo is almost always fine to publish. Reject ONLY for one of the specific reasons below.
+
 REJECT the image if ANY of the following is true:
 
 A. BRANDING — it is another outlet's property:

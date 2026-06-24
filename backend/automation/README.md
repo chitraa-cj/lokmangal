@@ -71,7 +71,7 @@ The scheduler auto-starts from `server.js` when `AUTOPILOT_ENABLED=true`.
 | `AUTOPILOT_ONLY_TODAY` | `false` | `true` = strict same-day only (can be too rigid) |
 | `AUTOPILOT_MAX_AGE_DAYS` | `2` | Rolling recency window when `ONLY_TODAY=false` (per-category caps also apply); selection always prefers the freshest |
 | `AUTOPILOT_PER_SOURCE_LIMIT` | `15` | Max candidates pulled per source/query |
-| `AUTOPILOT_DEFAULT_IMAGE` | Brand logo | Fallback featured image when no clean, on-topic photo is found |
+| `AUTOPILOT_DEFAULT_IMAGE` | _(ignored)_ | No longer used. The fallback is hard-wired to the brand logo so a stale value can't reintroduce a random image. Safe to delete from `.env`. |
 | `AUTOPILOT_IMAGE_GUARD` | `true` | Vision check rejecting branded, off-topic or indecent images |
 | `AUTOPILOT_IMAGE_GUARD_FAIL_OPEN` | `false` | `true` = allow images that can't be *verified* (download/API error). Default fails closed |
 | `AUTOPILOT_BLOCK_PUBLISHER_CDN` | `false` | `true` = hard-reject any image hot-linked from a publisher/agency/stock CDN (strictest, no-hotlink posture) |

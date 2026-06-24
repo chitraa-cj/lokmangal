@@ -39,12 +39,12 @@ export const env = {
   onlyToday: bool(process.env.AUTOPILOT_ONLY_TODAY, false),
   maxAgeDays: int(process.env.AUTOPILOT_MAX_AGE_DAYS, 2),
   perSourceLimit: int(process.env.AUTOPILOT_PER_SOURCE_LIMIT, 15),
-  // Fallback featured image when no clean, on-topic source photo is found. We use
-  // our own brand logo so a missing/rejected photo degrades to neutral branding
-  // rather than a wrong or branded picture.
-  defaultImage:
-    process.env.AUTOPILOT_DEFAULT_IMAGE ||
-    "https://thelokmangal.com/lokmangallogo_00.png",
+  // The ONLY fallback image when no clean, on-topic photo is found (not even via
+  // the Google-image search) — our own logo. Never a stock/random photo: a
+  // missing image degrades to neutral branding. AUTOPILOT_DEFAULT_IMAGE is
+  // deliberately NOT honoured here, so a stale/wrong env value (e.g. the old
+  // glamour stock image) can never reintroduce a random fallback.
+  defaultImage: "https://thelokmangal.com/lokmangallogo_00.png",
 
   // --- Compliance guards ---------------------------------------------------
   // Vision check that rejects images carrying another publication's watermark,
@@ -111,6 +111,7 @@ export const CATEGORY_QUERIES = {
     "Bhopal news today when:1d",
     "Indore news today when:1d",
     "Jabalpur news today when:1d",
+    "Maharashtra Mumbai Pune news today when:1d",
   ],
   मनोरंजन: ["Bollywood entertainment news today when:1d"],
 };

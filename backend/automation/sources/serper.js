@@ -5,6 +5,7 @@ import { env, CATEGORY_QUERIES } from "../config.js";
 import { sourceIdFromUrl, isBlockedUrl } from "./common.js";
 
 const ENDPOINT = "https://google.serper.dev/news";
+const IMAGES_ENDPOINT = "https://google.serper.dev/images";
 
 // Serper returns relative dates ("2 hours ago", "1 day ago", "Yesterday").
 // Convert to an approximate ISO timestamp so freshness filtering works.
@@ -25,6 +26,25 @@ function parseRelativeDate(text) {
 
 function validImg(url) {
   return url && /^https?:\/\//i.test(url) && !/gstatic|googleusercontent|\/logo|favicon/i.test(url);
+}
+
+// Google Images search — the image-of-last-resort when a candidate's own photo
+// is rejected by the guard. One cheap Serper call (no OpenAI tokens here); the
+// caller vets each returned URL through the image guard and stops at the first
+// clean one. Returns plain image URLs, best matches first.
+export async function searchImages(query, limit = 5) {
+  if (!env.serperKey || !query) return [];
+  try {
+    const res = await axios.post(
+      IMAGES_ENDPOINT,
+      { q: query, gl: "in", hl: "en", num: limit },
+      { timeout: 15000, headers: { "X-API-KEY": env.serperKey, "Content-Type": "application/json" } }
+    );
+    return (res.data?.images || []).map((i) => i.imageUrl).filter(validImg);
+  } catch (err) {
+    console.warn(`[autopilot] Serper image search failed for "${query}": ${err.message}`);
+    return [];
+  }
 }
 
 export async function fetchSerper(category) {

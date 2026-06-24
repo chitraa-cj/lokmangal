@@ -2,6 +2,7 @@
 // and what we've recently published (for headline-level topic avoidance).
 import AutopilotSource from "../models/AutopilotSourceSchema.js";
 import News from "../models/NewsSchema.js";
+import { CITY_CATEGORY } from "./cities.js";
 
 // Set of sourceIds we've ever used (so we never repeat a story).
 export async function usedSourceIds() {
@@ -43,10 +44,13 @@ export async function publishedTodayCount(category, day) {
 // Recent published headlines in a category — fed to the AI so it avoids
 // re-covering topics we've already published.
 export async function recentHeadlines(category, limit = 15) {
-  const docs = await News.find(
-    { navbarCategories: category },
-    { title: 1, conclusion: 1 }
-  )
+  // "Our City" articles are stored as "हमारा शहर <City>" — match the whole family
+  // by prefix for topic-avoidance, not just the bare umbrella string.
+  const filter =
+    category === CITY_CATEGORY
+      ? { navbarCategories: { $regex: `^${CITY_CATEGORY}` } }
+      : { navbarCategories: category };
+  const docs = await News.find(filter, { title: 1, conclusion: 1 })
     .sort({ createdAt: -1 })
     .limit(limit)
     .lean();

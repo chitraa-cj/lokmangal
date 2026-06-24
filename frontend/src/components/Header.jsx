@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 import { useNavbarLanguage } from "../context/NavbarLanguageContext";
 import {
   NAV_CATEGORIES,
@@ -125,23 +125,52 @@ export default function Navbar() {
         : "px-2.5 py-2.5 text-base xl:px-3 xl:text-lg";
 
     if (category.hasDropdown) {
+      const toggleButton = (
+        <button
+          type="button"
+          className={`flex w-full cursor-pointer items-center whitespace-nowrap font-semibold tracking-wide transition-all duration-200 ease-in-out ${itemPadding}`}
+          onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
+        >
+          {getCategoryLabel(category, language)}
+          {isCityDropdownOpen ? (
+            <ChevronUp size={16} className="ml-1" />
+          ) : (
+            <ChevronDown size={16} className="ml-1" />
+          )}
+        </button>
+      );
+
+      // Mobile: render the cities inline as a full-width row below the nav so the
+      // list is always visible (an absolute popover gets clipped by the page's
+      // overflow-x:hidden). Desktop keeps the floating dropdown.
+      if (variant === "mobile") {
+        return (
+          <Fragment key={category.id}>
+            <div className={`relative ${getActiveClass(category)}`}>{toggleButton}</div>
+            {isCityDropdownOpen && (
+              <div className="flex w-full basis-full flex-wrap items-center justify-center gap-1 px-2 pb-1">
+                {CITY_OPTIONS.map((city) => (
+                  <button
+                    key={city.categorySlug}
+                    type="button"
+                    className="cursor-pointer rounded-md bg-gray-700 px-3 py-1.5 text-sm text-white hover:bg-gray-600"
+                    onClick={() => handleCategoryClick(city.categorySlug)}
+                  >
+                    {getCityLabel(city, language)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </Fragment>
+        );
+      }
+
       return (
         <div
           key={category.id}
           className={`relative ${getActiveClass(category)}`}
         >
-          <button
-            type="button"
-            className={`flex w-full cursor-pointer items-center whitespace-nowrap font-semibold tracking-wide transition-all duration-200 ease-in-out ${itemPadding}`}
-            onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
-          >
-            {getCategoryLabel(category, language)}
-            {isCityDropdownOpen ? (
-              <ChevronUp size={16} className="ml-1" />
-            ) : (
-              <ChevronDown size={16} className="ml-1" />
-            )}
-          </button>
+          {toggleButton}
           {isCityDropdownOpen && renderCityDropdown()}
         </div>
       );
@@ -166,7 +195,7 @@ export default function Navbar() {
     >
       <div className="relative z-30 flex items-center justify-center overflow-visible bg-gray-800 lg:min-h-12">
         <div className="relative mx-auto w-full overflow-visible px-0 text-white xl:max-w-[80vw] 2xl:max-w-[1350px]">
-          {/* Mobile: logo + search on one row, categories scroll separately */}
+          {/* Mobile: logo + search on one row, categories wrap below so all show */}
           <div className="lg:hidden">
             <div className="flex items-center justify-between px-3 py-2">
               <img
@@ -193,8 +222,8 @@ export default function Navbar() {
                 </div>
               </form>
             </div>
-            <div className="overflow-x-auto overflow-y-visible">
-              <div className="flex w-max min-w-full items-center px-2 pb-2">
+            <div className="overflow-y-visible">
+              <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 px-2 pb-2">
                 {NAV_CATEGORIES.map((category) =>
                   renderNavCategory(category, "mobile"),
                 )}

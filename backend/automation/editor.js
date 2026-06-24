@@ -4,6 +4,7 @@
 //   3. rewrite           — produce publish-ready English HTML in a human newsroom voice
 import { env, EDITORIAL_GUIDE, FOOTER_TAGS, CATEGORY_DEFAULT_FOOTER } from "./config.js";
 import { createChatCompletion } from "./openaiClient.js";
+import { CITY_CATEGORY, cityCategory, detectCity } from "./cities.js";
 
 async function chatJSON({ system, user, temperature }) {
   const res = await createChatCompletion({
@@ -156,6 +157,17 @@ Return JSON: {"headline":"...","conclusion":"...","content_html":"<p>...</p>","h
   let hashtags = Array.isArray(out.hashtags) ? out.hashtags.filter(Boolean) : [];
   hashtags = hashtags.map((h) => (h.startsWith("#") ? h : `#${h}`)).slice(0, 4);
 
+  // For "Our City" stories, store "हमारा शहर <City>" (the existing DB convention)
+  // so the per-city navbar pages can filter them. Detect the city from the
+  // headline + body; fall back to the bare umbrella only if none is mentioned.
+  let navbarCategories = category;
+  if (category === CITY_CATEGORY) {
+    const city = detectCity(
+      `${headline}\n${out.content_html || ""}\n${article.title || ""}\n${article.summary || ""}`
+    );
+    navbarCategories = city ? cityCategory(city) : category;
+  }
+
   return {
     // Site stores titles wrapped in an <h1><strong> block.
     title: `<h1><strong>${headline}</strong></h1>`,
@@ -165,6 +177,6 @@ Return JSON: {"headline":"...","conclusion":"...","content_html":"<p>...</p>","h
     hashtags,
     footerTags: footerTag,
     articleType,
-    navbarCategories: category,
+    navbarCategories,
   };
 }
