@@ -39,11 +39,9 @@ export const env = {
   onlyToday: bool(process.env.AUTOPILOT_ONLY_TODAY, false),
   maxAgeDays: int(process.env.AUTOPILOT_MAX_AGE_DAYS, 2),
   perSourceLimit: int(process.env.AUTOPILOT_PER_SOURCE_LIMIT, 15),
-  // The ONLY fallback image when no clean, on-topic photo is found (not even via
-  // the Google-image search) — our own logo. Never a stock/random photo: a
-  // missing image degrades to neutral branding. AUTOPILOT_DEFAULT_IMAGE is
-  // deliberately NOT honoured here, so a stale/wrong env value (e.g. the old
-  // glamour stock image) can never reintroduce a random fallback.
+  // Retained for reference only — NO LONGER used as a publishing fallback. Policy
+  // (see pipeline.js image gate): an article must have a real, clean, on-topic
+  // photo or it is discarded. We never publish on the logo placeholder.
   defaultImage: "https://thelokmangal.com/lokmangallogo_00.png",
 
   // --- Compliance guards ---------------------------------------------------
@@ -98,22 +96,28 @@ export const CATEGORIES = [
   "मनोरंजन",
 ];
 
-// Google News RSS search queries per category (English, India-focused, last 1 day).
-// `हमारा शहर` (Our City) rotates across MP cities.
+// Serper (Google News) search queries per category (English, India-focused).
+// NOTE: do NOT append the `when:1d` operator — Serper's News endpoint does not
+// honour it and silently returns ZERO results for every query (verified). The
+// city bucket has no InShorts fallback, so a broken Serper feed killed all
+// "हमारा शहर" publishing entirely. Recency is enforced separately and reliably
+// by freshnessOk()/CATEGORY_MAX_AGE, and the "today" wording already biases
+// results toward fresh stories.
+// `हमारा शहर` (Our City) rotates across MP cities + Maharashtra.
 export const CATEGORY_QUERIES = {
-  देश: ["India national news today when:1d"],
-  दुनिया: ["world news international today India when:1d"],
-  "प्रदेशक ख़बरें": ["Madhya Pradesh state regional news today when:1d"],
-  राजनीति: ["India politics news today when:1d"],
-  अपराध: ["India crime news today when:1d"],
-  खेल: ["India sports news today -IPL when:1d"],
+  देश: ["India national news today"],
+  दुनिया: ["world news international today India"],
+  "प्रदेशक ख़बरें": ["Madhya Pradesh state regional news today"],
+  राजनीति: ["India politics news today"],
+  अपराध: ["India crime news today"],
+  खेल: ["India sports news today -IPL"],
   "हमारा शहर": [
-    "Bhopal news today when:1d",
-    "Indore news today when:1d",
-    "Jabalpur news today when:1d",
-    "Maharashtra Mumbai Pune news today when:1d",
+    "Bhopal news today",
+    "Indore news today",
+    "Jabalpur news today",
+    "Maharashtra Mumbai Pune news today",
   ],
-  मनोरंजन: ["Bollywood entertainment news today when:1d"],
+  मनोरंजन: ["Bollywood entertainment news today"],
 };
 
 // InShorts English category slug per navbar category (only where it maps cleanly).

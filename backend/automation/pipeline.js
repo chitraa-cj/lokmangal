@@ -150,14 +150,19 @@ async function runCategoryInner(category, { exclude } = {}) {
       continue; // too thin — try the next best
     }
 
-    // Image compliance gate: keep the source image unless it carries the source
-    // publisher's own branding (logo/masthead card, channel watermark, screenshot).
-    // When there's no clean image we no longer drop the story — we publish it with
-    // our own default placeholder so a branded image never blocks a good article.
-    let imgUrl = await resolveFeaturedImage(pick);
+    // Image compliance gate: every published article MUST carry a real, clean,
+    // on-topic photo. resolveFeaturedImage tries, in order, the candidate's own
+    // image, the article's og:image, a Google Images (Serper) search and a
+    // free-licensed search, vetting each through the guard. If NOTHING passes we
+    // DISCARD this story rather than fall back to our logo placeholder — an
+    // article is never published with the default/branding image. We move on to
+    // the next best candidate; if none yields a clean image, the category
+    // publishes nothing this run.
+    const imgUrl = await resolveFeaturedImage(pick);
     if (!imgUrl) {
-      imgUrl = env.defaultImage;
-      console.warn(`[autopilot] ${category}: "${pick.title}" — no clean source image, using default`);
+      lastReject = "no_clean_image";
+      console.warn(`[autopilot] ${category}: dropped "${pick.title}" — no clean image found`);
+      continue;
     }
 
     // Rewrite into publish-ready English HTML.
