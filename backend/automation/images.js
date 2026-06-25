@@ -3,13 +3,14 @@ import axios from "axios";
 import { USER_AGENT } from "./config.js";
 import { fetchArticleMeta } from "./sources/common.js";
 import { searchImages } from "./sources/serper.js";
+import { searchFreeImages } from "./sources/freeImages.js";
 import { validateImage } from "./imageGuard.js";
 
-// Token budget guard for the search fallback: how many searched images we are
-// willing to run through the (low-detail) vision guard before giving up and
-// falling back to the logo. Kept small so a rejected source image costs at most
-// a few extra cheap vision calls.
-const MAX_SEARCH_VALIDATIONS = 3;
+// Token budget guard for each search fallback: how many searched images we are
+// willing to run through the (low-detail) vision guard before giving up. Kept
+// small so a rejected source image costs at most a few extra cheap vision calls
+// per provider.
+const MAX_SEARCH_VALIDATIONS = 5;
 
 const BAD_IMAGE =
   /news\.google|gstatic|googleusercontent|google\.com|\/logo|favicon|\/icon|placeholder|sprite|blank|spacer|1x1|pixel/i;
@@ -65,55 +66,58 @@ function imageSearchQuery(candidate) {
 
 // Resolve the best *clean, verified* featured image for a candidate.
 // In order: the candidate's own image, then the article page's og:image, then —
-// if both are rejected — a Google Images search on the headline. Each URL must
-// (a) load as a real image and (b) pass the compliance guard — no watermark /
-// publication logo / channel bug / screenshot, and also on-topic for the
-// headline and decent (no glamour/NSFW). Returns the first URL that passes, or
-// null if none do — the caller then falls back to our logo placeholder.
+// if both are rejected — a Serper (Google Images) search, then a free CC/public-
+// domain search (Openverse + Wikimedia Commons). Each URL must (a) load as a
+// real image and (b) pass the compliance guard — no watermark / publication
+// logo / channel bug / screenshot, and also on-topic for the headline and decent
+// (no glamour/NSFW). Returns the first URL that passes, or null if none do — the
+// caller then falls back to our logo placeholder.
 export async function resolveFeaturedImage(candidate) {
   const tried = new Set();
-  const urls = [];
-  const add = (url) => {
-    if (url && !tried.has(url) && isValidFeaturedImage(url)) {
+
+  // Validate a list of candidate URLs through the guard, spending at most
+  // `budget` vision checks. Returns the first clean URL, or null.
+  const tryUrls = async (urls, budget, label) => {
+    let validations = 0;
+    for (const url of urls) {
+      if (validations >= budget) break;
+      if (tried.has(url) || !isValidFeaturedImage(url)) continue;
       tried.add(url);
-      urls.push(url);
+      if (!(await imageLoads(url))) continue;
+      validations++;
+      const verdict = await validateImage(url, { headline: candidate.title });
+      if (verdict.clean) {
+        if (label) console.log(`[autopilot] using ${label} image (${url})`);
+        return url;
+      }
+      console.warn(`[autopilot] ${label || "image"} rejected — ${verdict.reason} (${url})`);
     }
+    return null;
   };
 
-  add(candidate.imgUrl);
+  // 1. The candidate's own image + the article page's og:image. No vision budget
+  //    cap here — these are the preferred sources and there are at most two.
+  const ownUrls = [];
+  if (candidate.imgUrl) ownUrls.push(candidate.imgUrl);
   try {
     const meta = await fetchArticleMeta(candidate.sourceUrl);
-    add(meta.image);
+    if (meta.image) ownUrls.push(meta.image);
   } catch (_) {
     /* fall through with whatever we have */
   }
+  const own = await tryUrls(ownUrls, ownUrls.length || 1, "source");
+  if (own) return own;
 
-  for (const url of urls) {
-    if (!(await imageLoads(url))) continue;
-    const verdict = await validateImage(url, { headline: candidate.title });
-    if (verdict.clean) return url;
-    console.warn(`[autopilot] image rejected — ${verdict.reason} (${url})`);
-  }
-
-  // Last resort: search Google Images for a relevant, clean photo. Bounded so a
-  // rejected source image costs at most a few extra (cheap, low-detail) vision
-  // checks before we fall back to the logo.
   const query = imageSearchQuery(candidate);
-  const searchUrls = await searchImages(query, 6);
-  let validations = 0;
-  for (const url of searchUrls) {
-    if (validations >= MAX_SEARCH_VALIDATIONS) break;
-    if (tried.has(url) || !isValidFeaturedImage(url)) continue;
-    tried.add(url);
-    if (!(await imageLoads(url))) continue;
-    validations++;
-    const verdict = await validateImage(url, { headline: candidate.title });
-    if (verdict.clean) {
-      console.log(`[autopilot] using searched image for "${query}" (${url})`);
-      return url;
-    }
-    console.warn(`[autopilot] searched image rejected — ${verdict.reason} (${url})`);
-  }
+
+  // 2. Serper (Google Images) — most topical, current news photos.
+  const serperHit = await tryUrls(await searchImages(query, 10), MAX_SEARCH_VALIDATIONS, "searched");
+  if (serperHit) return serperHit;
+
+  // 3. Free, key-less CC / public-domain search (Openverse + Wikimedia Commons).
+  //    Legally cleaner, runs when Serper is unset or found nothing usable.
+  const freeHit = await tryUrls(await searchFreeImages(query, 10), MAX_SEARCH_VALIDATIONS, "free-licensed");
+  if (freeHit) return freeHit;
 
   return null;
 }

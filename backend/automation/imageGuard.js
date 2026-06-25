@@ -67,22 +67,22 @@ function buildVisionPrompt(headline) {
 
 HEADLINE: "${headline || "(headline unavailable)"}"
 
-GUIDING PRINCIPLE — relevance comes first. If the image is clearly RELATED to this story and is a decent, unbranded photograph, it is USABLE: return clean=true. A related, decent photo is almost always fine to publish. Reject ONLY for one of the specific reasons below.
+GUIDING PRINCIPLE — relevance comes first, and we LEAN TOWARD KEEPING images. If the image is a real photograph that is even loosely related to this story and is decent, it is USABLE: return clean=true. When in doubt, KEEP it (clean=true). Reject ONLY when you are confident one of the specific, concrete reasons below clearly applies.
 
-REJECT the image if ANY of the following is true:
+REJECT the image ONLY if ANY of the following is clearly true:
 
-A. BRANDING — it is another outlet's property:
-- The image IS a logo, masthead or branding card rather than a real photograph — e.g. a solid-colour panel showing a publication/channel name like "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran" (the placeholder images publishers serve when an article has no real photo).
-- A newspaper/website/TV-channel LOGO or WATERMARK is prominently overlaid on the photo (a corner channel bug, a masthead across the image, a large semi-transparent watermark).
+A. BRANDING — it is plainly another outlet's property:
+- The image IS essentially a logo, masthead or branding card rather than a real photograph — a solid-colour or graphic panel whose main content is a publication/channel name like "TOI", "Times of India", "HT", "Hindustan Times", "NDTV", "India Today", "ABP", "Zee", "Aaj Tak", "Dainik Bhaskar", "Jagran" (the placeholder cards publishers serve when an article has no real photo).
+- A newspaper/website/TV-channel LOGO or WATERMARK DOMINATES the photo — a large, legible masthead stamped across the image or a big semi-transparent watermark covering much of it. A small, faint, partial or corner credit/bug that does not dominate the picture is FINE — do NOT reject for that.
 - The image is clearly a SCREENSHOT of another news site, app or social post (visible UI chrome, headlines, "Read more" buttons).
 
-B. IRRELEVANT — it does not match the story:
-- The image has no plausible connection to the headline above — e.g. a glamour/model portrait, an unrelated celebrity, a random product shot, or a stock scene that has nothing to do with what the story is about. When a generic photo is plausibly on-topic (a building, a crowd, officials, a relevant location, a related object), treat it as RELEVANT.
+B. IRRELEVANT — it is obviously about something else entirely:
+- Reject only when the image has NO plausible connection at all to the headline — e.g. a glamour/model portrait, an unrelated celebrity, or a random product shot with nothing to do with the story. Any generic photo that could plausibly fit (a building, a crowd, officials, a relevant location, a related object, a representative scene) counts as RELEVANT — keep it.
 
 C. INAPPROPRIATE — it is unsuitable atop a general-audience news story:
-- Sexually suggestive, glamour/pin-up, swimwear/lingerie or otherwise not-safe-for-work imagery; graphic gore; or anything unfit to sit above a news headline.
+- Clearly sexual/pin-up, swimwear/lingerie or otherwise not-safe-for-work imagery, or graphic gore. A normal, fully-clothed person or ordinary news scene is FINE.
 
-Do NOT reject a plain, on-topic, decent photograph just because it may have been shot by a news agency — we care about visible branding, relevance and decency, not who owns the photo. Do NOT reject on vague guesses; only reject when you can point to a concrete reason.
+Do NOT reject a plain, on-topic, decent photograph just because it may have been shot by a news agency, carries a faint credit line, or merely "looks like a news photo" — we care only about clear branding that dominates, total irrelevance, and genuine indecency. Do NOT reject on vague guesses; only reject when you can point to a concrete, obvious reason.
 
 Return JSON:
 {
