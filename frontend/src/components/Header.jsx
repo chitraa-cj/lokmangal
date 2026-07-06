@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
-import { useState, useRef, useEffect, Fragment } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavbarLanguage } from "../context/NavbarLanguageContext";
 import {
   NAV_CATEGORIES,
@@ -140,28 +140,14 @@ export default function Navbar() {
         </button>
       );
 
-      // Mobile: render the cities inline as a full-width row below the nav so the
-      // list is always visible (an absolute popover gets clipped by the page's
-      // overflow-x:hidden). Desktop keeps the floating dropdown.
+      // Mobile: only render the toggle button here so it can sit inside the
+      // horizontally scrolling category row. The city list is rendered as a
+      // separate wrapping panel below the scroll row (see the mobile layout).
       if (variant === "mobile") {
         return (
-          <Fragment key={category.id}>
-            <div className={`relative ${getActiveClass(category)}`}>{toggleButton}</div>
-            {isCityDropdownOpen && (
-              <div className="flex w-full basis-full flex-wrap items-center justify-center gap-1 px-2 pb-1">
-                {CITY_OPTIONS.map((city) => (
-                  <button
-                    key={city.categorySlug}
-                    type="button"
-                    className="cursor-pointer rounded-md bg-gray-700 px-3 py-1.5 text-sm text-white hover:bg-gray-600"
-                    onClick={() => handleCategoryClick(city.categorySlug)}
-                  >
-                    {getCityLabel(city, language)}
-                  </button>
-                ))}
-              </div>
-            )}
-          </Fragment>
+          <div key={category.id} className={`relative ${getActiveClass(category)}`}>
+            {toggleButton}
+          </div>
         );
       }
 
@@ -222,13 +208,29 @@ export default function Navbar() {
                 </div>
               </form>
             </div>
-            <div className="overflow-y-visible">
-              <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 px-2 pb-2">
+            {/* Horizontally scrollable category row (like the hashtag ticker) */}
+            <div className="overflow-x-auto">
+              <div className="flex w-max min-w-full items-center gap-x-1 whitespace-nowrap px-2 pb-2">
                 {NAV_CATEGORIES.map((category) =>
                   renderNavCategory(category, "mobile"),
                 )}
               </div>
             </div>
+            {/* City list panel below the scroll row so it can wrap freely */}
+            {isCityDropdownOpen && (
+              <div className="flex flex-wrap items-center justify-center gap-1 px-2 pb-2">
+                {CITY_OPTIONS.map((city) => (
+                  <button
+                    key={city.categorySlug}
+                    type="button"
+                    className="cursor-pointer rounded-md bg-gray-700 px-3 py-1.5 text-sm text-white hover:bg-gray-600"
+                    onClick={() => handleCategoryClick(city.categorySlug)}
+                  >
+                    {getCityLabel(city, language)}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Desktop layout: logo | centered categories | search */}
