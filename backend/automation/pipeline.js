@@ -1,6 +1,7 @@
 // Orchestrates the autopilot: gather -> relevance -> hydrate -> freshness ->
 // prefer-image -> select -> enrich -> rewrite -> publish, with cross-run dedup.
 import { env, CATEGORIES } from "./config.js";
+import { CITY_CATEGORY, CITY_SLUGS, CITY_QUERIES, CITY_GUIDE, cityCategory } from "./cities.js";
 import { fetchInshorts } from "./sources/inshorts.js";
 import { fetchSerper } from "./sources/serper.js";
 import { fetchSites } from "./sources/siteScraper.js";
@@ -38,11 +39,14 @@ function titleKey(t = "") {
 // All sources expose real publisher article URLs, so every candidate can yield a
 // full body + real image (Google News RSS is intentionally excluded — its
 // redirect links hide both).
-async function gatherCandidates(category, exclude) {
+async function gatherCandidates(category, exclude, { city } = {}) {
+  // A city-scoped run pulls only that city's Serper query + site sections;
+  // InShorts has no city feed so it's skipped (empty) for city runs.
+  const serperOpts = city ? { queries: [CITY_QUERIES[city]] } : {};
   const [serper, inshorts, sites] = await Promise.all([
-    fetchSerper(category).catch(() => []),
+    fetchSerper(category, serperOpts).catch(() => []),
     fetchInshorts(category).catch(() => []),
-    fetchSites(category).catch(() => []),
+    fetchSites(category, { citySlug: city }).catch(() => []),
   ]);
   const seenId = new Set();
   const seenTitle = new Set();
@@ -100,12 +104,18 @@ export async function runCategory(category, opts = {}) {
   }
 }
 
-async function runCategoryInner(category, { exclude } = {}) {
+async function runCategoryInner(category, { exclude, city } = {}) {
   const day = todayDay();
   const excludeSet = exclude || (await usedSourceIds());
-  const base = { category, day };
+  // A city-scoped run (city set) uses that city's guide, keys its dedup/state
+  // under "हमारा शहर <City>", and pins the stored city.
+  const isCityRun = category === CITY_CATEGORY && !!city;
+  const guide = isCityRun ? CITY_GUIDE[city] : undefined;
+  const stateCategory = isCityRun ? cityCategory(city) : category;
+  const editorOpts = { guide };
+  const base = { category: stateCategory, day };
 
-  let candidates = await gatherCandidates(category, excludeSet);
+  let candidates = await gatherCandidates(category, excludeSet, { city });
   if (!candidates.length) return { ...base, status: "no_candidates" };
 
   // Cap, putting image-rich sources first, before the relevance LLM call.
@@ -113,7 +123,7 @@ async function runCategoryInner(category, { exclude } = {}) {
   candidates = candidates.slice(0, MAX_CANDIDATES);
 
   // Relevance on titles/summaries (cheap) narrows the pool before we fetch pages.
-  candidates = await filterRelevantToday(category, candidates);
+  candidates = await filterRelevantToday(category, candidates, editorOpts);
   if (!candidates.length) return { ...base, status: "no_relevant" };
 
   // Candidates that already carry a date (URL date / RSS / InShorts): filter them
@@ -130,7 +140,7 @@ async function runCategoryInner(category, { exclude } = {}) {
   // Prefer candidates whose image is actually available.
   candidates = preferImageRich(candidates);
 
-  const recent = await recentHeadlines(category);
+  const recent = await recentHeadlines(category, 15, { city });
 
   // Select-and-vet loop. For each best pick we enforce, in order: a real article
   // body (no thin/fabricated pieces), a CLEAN featured image (no watermark /
@@ -140,7 +150,7 @@ async function runCategoryInner(category, { exclude } = {}) {
   let pool = [...candidates];
   let lastReject = null;
   for (let attempt = 0; attempt < 6 && pool.length; attempt++) {
-    const pick = await pickBest(category, pool, recent);
+    const pick = await pickBest(category, pool, recent, editorOpts);
     if (!pick) break;
     pool = pool.filter((c) => c.id !== pick.id); // never reconsider this pick
 
@@ -168,7 +178,7 @@ async function runCategoryInner(category, { exclude } = {}) {
     // Rewrite into publish-ready English HTML.
     let rewritten;
     try {
-      rewritten = await rewriteForPublish(category, pick);
+      rewritten = await rewriteForPublish(category, pick, { guide, forceCity: city });
     } catch (err) {
       if (err.budgetExceeded) throw err; // spend cap hit — bubble up and stop
       lastReject = `rewrite_failed: ${err.message}`;
@@ -189,7 +199,7 @@ async function runCategoryInner(category, { exclude } = {}) {
     excludeSet.add(pick.id);
 
     if (env.dryRun) {
-      await recordSource({ candidate: pick, category, day, dryRun: true });
+      await recordSource({ candidate: pick, category: stateCategory, day, dryRun: true });
       return {
         ...base,
         status: "dry_run",
@@ -207,7 +217,7 @@ async function runCategoryInner(category, { exclude } = {}) {
     }
 
     const post = await publishArticle(rewritten, imgUrl);
-    await recordSource({ candidate: pick, category, day, newsPostId: post._id, dryRun: false });
+    await recordSource({ candidate: pick, category: stateCategory, day, newsPostId: post._id, dryRun: false });
     return {
       ...base,
       status: "published",
@@ -224,16 +234,32 @@ async function runCategoryInner(category, { exclude } = {}) {
   return { ...base, status: "no_clean_candidate", lastReject };
 }
 
-// Run one wave: one article per category, sequentially, sharing a dedup set.
+// Expand the flat category list into publish "beats". The "हमारा शहर" bucket
+// fans out into one beat per city (Bhopal, Indore, Jabalpur, Maharashtra) so
+// every city gets its own scoped slot instead of losing a single pooled pick.
+// `key` is the per-beat state/scheduling identity (the stored "हमारा शहर <City>").
+export function publishBeats(categories = CATEGORIES) {
+  const beats = [];
+  for (const category of categories) {
+    if (category === CITY_CATEGORY) {
+      for (const city of CITY_SLUGS) beats.push({ category, city, key: cityCategory(city) });
+    } else {
+      beats.push({ category, city: null, key: category });
+    }
+  }
+  return beats;
+}
+
+// Run one wave: one article per beat, sequentially, sharing a dedup set.
 export async function runWave(categories = CATEGORIES) {
   const exclude = await usedSourceIds();
   const startedAt = new Date().toISOString();
   const results = [];
-  for (const category of categories) {
+  for (const { category, city, key } of publishBeats(categories)) {
     try {
-      const r = await runCategory(category, { exclude });
+      const r = await runCategory(category, { exclude, city });
       results.push(r);
-      console.log(`[autopilot] ${category}: ${r.status}${r.headline ? ` — ${r.headline}` : ""}`);
+      console.log(`[autopilot] ${key}: ${r.status}${r.headline ? ` — ${r.headline}` : ""}`);
       // Daily spend cap hit — no point running the rest of the wave; every call
       // would just fail the same way.
       if (r.status === "budget_exceeded") {

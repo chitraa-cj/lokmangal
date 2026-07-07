@@ -47,9 +47,11 @@ export async function searchImages(query, limit = 5) {
   }
 }
 
-export async function fetchSerper(category) {
+// `opts.queries` overrides the category's default query list — used by the city
+// bucket to scope a run to a single city (e.g. just the Maharashtra query).
+export async function fetchSerper(category, { queries: queryOverride } = {}) {
   if (!env.serperKey) return [];
-  const queries = CATEGORY_QUERIES[category] || [];
+  const queries = queryOverride || CATEGORY_QUERIES[category] || [];
   const out = [];
   for (const q of queries) {
     let data;

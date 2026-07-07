@@ -10,8 +10,8 @@
 // exceeds the daily cap.
 import crypto from "crypto";
 import cron from "node-cron";
-import { env, CATEGORIES } from "./config.js";
-import { runCategory } from "./pipeline.js";
+import { env } from "./config.js";
+import { runCategory, publishBeats } from "./pipeline.js";
 import { todayDay } from "./timeline.js";
 import { publishedTodayCount } from "./state.js";
 
@@ -79,12 +79,16 @@ async function planDay() {
     return;
   }
 
+  // Each beat (category, or a single city of the "हमारा शहर" bucket) is planned
+  // independently — its own daily target and its own already-published count —
+  // so every city, Maharashtra included, gets its own guaranteed slot(s).
+  const beats = publishBeats();
   let scheduled = 0;
-  for (const category of CATEGORIES) {
-    const target = dailyTarget(category, day);
+  for (const { category, city, key } of beats) {
+    const target = dailyTarget(key, day);
     let alreadyDone = 0;
     try {
-      alreadyDone = await publishedTodayCount(category, day);
+      alreadyDone = await publishedTodayCount(key, day);
     } catch (_) {}
     const remaining = Math.max(0, target - alreadyDone);
     for (let i = 0; i < remaining; i++) {
@@ -93,18 +97,18 @@ async function planDay() {
       const hh = String(Math.floor(at / 3600)).padStart(2, "0");
       const mm = String(Math.floor((at % 3600) / 60)).padStart(2, "0");
       setTimeout(() => {
-        enqueue(`${category} @${hh}:${mm}`, async () => {
-          console.log(`[autopilot] publishing ${category} (random slot ${hh}:${mm})`);
-          const r = await runCategory(category);
-          console.log(`[autopilot] ${category}: ${r.status}${r.headline ? ` — ${r.headline}` : ""}`);
+        enqueue(`${key} @${hh}:${mm}`, async () => {
+          console.log(`[autopilot] publishing ${key} (random slot ${hh}:${mm})`);
+          const r = await runCategory(category, { city });
+          console.log(`[autopilot] ${key}: ${r.status}${r.headline ? ` — ${r.headline}` : ""}`);
         });
       }, delayMs);
       scheduled++;
-      console.log(`[autopilot] scheduled ${category} at ~${hh}:${mm} ${env.timezone}`);
+      console.log(`[autopilot] scheduled ${key} at ~${hh}:${mm} ${env.timezone}`);
     }
   }
   console.log(
-    `[autopilot] planDay ${day}: ${scheduled} publish(es) scheduled across ${CATEGORIES.length} categories`
+    `[autopilot] planDay ${day}: ${scheduled} publish(es) scheduled across ${beats.length} beats`
   );
 }
 
@@ -120,9 +124,10 @@ export function startScheduler() {
 
   const lo = env.minPerCategory;
   const hi = env.maxPerCategory;
+  const beatCount = publishBeats().length; // categories, with the city bucket split per city
   console.log(
-    `[autopilot] enabled — ${lo}${hi > lo ? `-${hi}` : ""} article(s)/category/day at random times ` +
-      `in [${env.dayStart}-${env.dayEnd}] ${env.timezone} (~${lo * CATEGORIES.length}-${hi * CATEGORIES.length}/day)`
+    `[autopilot] enabled — ${lo}${hi > lo ? `-${hi}` : ""} article(s)/beat/day at random times ` +
+      `in [${env.dayStart}-${env.dayEnd}] ${env.timezone} (~${lo * beatCount}-${hi * beatCount}/day)`
   );
 
   // Re-plan each day at 00:05 (editorial tz).

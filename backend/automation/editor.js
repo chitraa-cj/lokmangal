@@ -41,7 +41,8 @@ function editorialDate() {
 }
 
 // Step 1: keep only candidates the model judges relevant to publish today.
-export async function filterRelevantToday(category, candidates) {
+// `opts.guide` overrides the category guide (city runs pass a per-city guide).
+export async function filterRelevantToday(category, candidates, { guide } = {}) {
   if (!candidates.length) return [];
   const compact = candidates.map((c) => ({
     id: c.id,
@@ -52,7 +53,7 @@ export async function filterRelevantToday(category, candidates) {
   const system = "You are a strict news editor. Respond with JSON only.";
   const user = `Editorial date: ${editorialDate()} (Asia/Kolkata).
 Category: ${category}
-Guide: ${EDITORIAL_GUIDE[category] || ""}
+Guide: ${guide || EDITORIAL_GUIDE[category] || ""}
 
 For EACH candidate decide if it is relevant to publish TODAY (current, not stale, fits the category).
 Candidates JSON:
@@ -73,7 +74,7 @@ Return JSON: {"assessments":[{"id":"...","relevantToday":true|false,"reason":"..
 }
 
 // Step 2: pick exactly one story, avoiding anything close to what we already published.
-export async function pickBest(category, candidates, recentHeadlines = []) {
+export async function pickBest(category, candidates, recentHeadlines = [], { guide } = {}) {
   if (!candidates.length) return null;
   if (candidates.length === 1) return candidates[0];
   const compact = candidates.map((c) => ({
@@ -87,7 +88,7 @@ export async function pickBest(category, candidates, recentHeadlines = []) {
   const system = "You are an engagement-focused news editor. Respond with JSON only.";
   const user = `Editorial date: ${editorialDate()}.
 Category: ${category}
-Guide: ${EDITORIAL_GUIDE[category] || ""}
+Guide: ${guide || EDITORIAL_GUIDE[category] || ""}
 
 We have ALREADY published these headlines recently — do NOT pick a story that covers the same topic:
 ${JSON.stringify(recentHeadlines)}
@@ -114,11 +115,14 @@ Return JSON: {"id":"<chosen id>","reason":"<why readers will click>"}`;
 }
 
 // Step 3: rewrite into publish-ready English HTML.
-export async function rewriteForPublish(category, article) {
+// `opts.guide` overrides the category guide; `opts.forceCity` pins the stored
+// city (city runs are already scoped to one city, so we don't re-detect).
+export async function rewriteForPublish(category, article, { guide, forceCity } = {}) {
   const body = (article.body || article.summary || "").slice(0, 8000);
   const sourceDate = article.createdAt
     ? new Date(article.createdAt).toLocaleString("en-IN", { timeZone: env.timezone, dateStyle: "medium", timeStyle: "short" })
     : "unknown";
+  const guideText = guide || EDITORIAL_GUIDE[category] || "";
   const system =
     "You are a senior reporter writing publish-ready news for an Indian news website. Output JSON only. " +
     "Write like a real human reporter — direct, varied sentence length, concrete detail. " +
@@ -126,7 +130,7 @@ export async function rewriteForPublish(category, article) {
     "CRITICAL: use only facts present in the source. Do NOT invent names, numbers, dates, quotes or outcomes. If a detail isn't in the source, leave it out.";
   const user = `Editorial date: ${editorialDate()}.
 Category: ${category}
-Guide: ${EDITORIAL_GUIDE[category] || ""}
+Guide: ${guideText}
 Allowed footer tags: ${JSON.stringify(FOOTER_TAGS)}
 
 Source published: ${sourceDate}
@@ -162,9 +166,12 @@ Return JSON: {"headline":"...","conclusion":"...","content_html":"<p>...</p>","h
   // headline + body; fall back to the bare umbrella only if none is mentioned.
   let navbarCategories = category;
   if (category === CITY_CATEGORY) {
-    const city = detectCity(
-      `${headline}\n${out.content_html || ""}\n${article.title || ""}\n${article.summary || ""}`
-    );
+    // A scoped city run pins its city (forceCity); otherwise detect from the copy.
+    const city =
+      forceCity ||
+      detectCity(
+        `${headline}\n${out.content_html || ""}\n${article.title || ""}\n${article.summary || ""}`
+      );
     navbarCategories = city ? cityCategory(city) : category;
   }
 

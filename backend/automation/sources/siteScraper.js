@@ -43,10 +43,16 @@ const SITES = [
         "https://timesofindia.indiatimes.com/city/bhopal",
         "https://timesofindia.indiatimes.com/topic/madhya-pradesh",
       ],
-      "हमारा शहर": [
-        "https://timesofindia.indiatimes.com/city/bhopal",
-        "https://timesofindia.indiatimes.com/city/indore",
-        "https://timesofindia.indiatimes.com/city/jabalpur",
+    },
+    // Per-city section URLs for the "हमारा शहर" bucket (scoped by city slug).
+    citySections: {
+      Bhopal: ["https://timesofindia.indiatimes.com/city/bhopal"],
+      Indore: ["https://timesofindia.indiatimes.com/city/indore"],
+      Jabalpur: ["https://timesofindia.indiatimes.com/city/jabalpur"],
+      Maharashtra: [
+        "https://timesofindia.indiatimes.com/city/mumbai",
+        "https://timesofindia.indiatimes.com/city/pune",
+        "https://timesofindia.indiatimes.com/city/nagpur",
       ],
     },
   },
@@ -63,9 +69,13 @@ const SITES = [
       खेल: "https://www.hindustantimes.com/sports",
       मनोरंजन: "https://www.hindustantimes.com/entertainment",
       "प्रदेशक ख़बरें": "https://www.hindustantimes.com/cities/bhopal-news",
-      "हमारा शहर": [
-        "https://www.hindustantimes.com/cities/bhopal-news",
-        "https://www.hindustantimes.com/cities/indore-news",
+    },
+    citySections: {
+      Bhopal: ["https://www.hindustantimes.com/cities/bhopal-news"],
+      Indore: ["https://www.hindustantimes.com/cities/indore-news"],
+      Maharashtra: [
+        "https://www.hindustantimes.com/cities/mumbai-news",
+        "https://www.hindustantimes.com/cities/pune-news",
       ],
     },
   },
@@ -113,11 +123,13 @@ async function scrapeSiteSection(site, category, sectionUrl) {
   return out;
 }
 
-// Scrape every configured site for a category, in parallel.
-export async function fetchSites(category) {
+// Scrape every configured site for a category, in parallel. When `opts.citySlug`
+// is set (the "हमारा शहर" bucket runs per city), use that city's section URLs so
+// the run is scoped to a single city instead of pooling all of them.
+export async function fetchSites(category, { citySlug } = {}) {
   const tasks = [];
   for (const site of SITES) {
-    const sec = site.sections[category];
+    const sec = citySlug ? site.citySections?.[citySlug] : site.sections[category];
     if (!sec) continue;
     for (const url of Array.isArray(sec) ? sec : [sec]) {
       tasks.push(scrapeSiteSection(site, category, url).catch(() => []));

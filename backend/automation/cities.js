@@ -22,6 +22,28 @@ const CITY_PATTERNS = [
 
 export const CITY_SLUGS = CITY_PATTERNS.map((c) => c.slug);
 
+// Per-city Serper (Google News) query. The city bucket runs once PER CITY (see
+// scheduler + pipeline), each scoped to just this query so every city — including
+// Maharashtra, which the pooled single-pick used to starve — gets its own slot.
+// NOTE: never append `when:1d` (Serper's News endpoint silently returns ZERO
+// results for it; recency is enforced by freshnessOk()/CATEGORY_MAX_AGE instead).
+export const CITY_QUERIES = {
+  Bhopal: "Bhopal city news today",
+  Indore: "Indore city news today",
+  Jabalpur: "Jabalpur city news today",
+  Maharashtra: "Maharashtra Mumbai Pune Nagpur Nashik news today",
+};
+
+// Per-city editorial guidance fed to the AI relevance filter, selector and
+// rewriter for that city's run. Each names its own city so Maharashtra stories
+// are no longer judged off-topic against a Bhopal/Indore/Jabalpur-only guide.
+export const CITY_GUIDE = {
+  Bhopal: "City news for Bhopal: civic issues, local events, infrastructure, local administration, things Bhopal residents care about today.",
+  Indore: "City news for Indore: civic issues, local events, infrastructure, local administration, things Indore residents care about today.",
+  Jabalpur: "City news for Jabalpur: civic issues, local events, infrastructure, local administration, things Jabalpur residents care about today.",
+  Maharashtra: "City news for Maharashtra (Mumbai, Pune, Nagpur, Nashik, Thane): civic issues, local events, infrastructure, city/state administration, things residents across Maharashtra care about today.",
+};
+
 // The stored navbarCategories value for a city article, e.g. "हमारा शहर Bhopal".
 export function cityCategory(citySlug) {
   return `${CITY_CATEGORY} ${citySlug}`;

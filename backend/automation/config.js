@@ -138,7 +138,10 @@ export const EDITORIAL_GUIDE = {
   राजनीति: "Politics: power moves happening NOW — alliances, defections, cabinet changes, election strategy. Not post-mortems of months-old events.",
   अपराध: "Crime: significant cases, arrests, investigations, court verdicts with public interest. Avoid graphic exploitation.",
   खेल: "Sports that are STILL relevant today — not finished leagues. Do NOT use IPL/IPL-team match stories (season over). Prefer active international cricket/football, national team news, current tournaments, transfers, injuries.",
-  "हमारा शहर": "City news for Bhopal/Indore/Jabalpur: civic issues, local events, infrastructure, local administration, things residents care about today.",
+  // The city bucket runs PER CITY (see cities.js CITY_GUIDE / pipeline beats),
+  // each with its own city-specific guide. This umbrella string is only a
+  // fallback for an unscoped run and must cover every city, Maharashtra included.
+  "हमारा शहर": "City news for Bhopal/Indore/Jabalpur and Maharashtra (Mumbai/Pune/Nagpur/Nashik/Thane): civic issues, local events, infrastructure, local administration, things residents care about today.",
   मनोरंजन: "Entertainment: viral NOW — new film/trailer drops, casting news, box office this week, celebrity news. Clickable tabloid energy is fine.",
 };
 
